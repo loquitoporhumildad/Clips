@@ -67,6 +67,25 @@ export const api = {
     const {error} = await sb.storage.from('clips-media').upload(`${carpeta}/${nombre}`, archivo, {upsert: true, contentType: archivo.type});
     return error ? error.message : null;
   },
+  // Buzón: links, notas y archivos sueltos para Claude. Van a clips-media/buzon
+  // y el índice nocturno los copia a la rama media-index, donde Claude los lee.
+  async buzon(dueno) {
+    if (DEMO) return [{nombre: 'juan-demo-nota.txt', texto: 'https://www.twitch.tv/videos/123 · campaña de Whop', de: 'juan'}];
+    const {data} = await sb.storage.from('clips-media').list('buzon', {limit: 100, sortBy: {column: 'created_at', order: 'desc'}});
+    const mios = (data ?? []).filter((f) => f.id && (dueno === 'todos' || f.name.startsWith(`${dueno}-`))).slice(0, 12);
+    return Promise.all(mios.map(async (f) => {
+      const de = f.name.split('-')[0];
+      if (!f.name.endsWith('-nota.txt')) return {nombre: f.name, texto: null, de};
+      const {data: b} = await sb.storage.from('clips-media').download(`buzon/${f.name}`);
+      return {nombre: f.name, texto: b ? await b.text() : '', de};
+    }));
+  },
+  async enviarNota(dueno, texto) {
+    if (DEMO) return null;
+    const nombre = `${dueno}-${new Date().toISOString().replace(/[:.]/g, '')}-nota.txt`;
+    const {error} = await sb.storage.from('clips-media').upload(`buzon/${nombre}`, new Blob([texto], {type: 'text/plain'}), {contentType: 'text/plain'});
+    return error ? error.message : null;
+  },
   async estadoPedido(id, status) {
     if (!DEMO) await sb.from('clips_requests').update({status}).eq('id', id);
   },
