@@ -42,6 +42,34 @@ export function ritmo(local, paso, dur) {
   return tramos.map((x) => ({t: x.t, movimiento: x.k ? Number(((x.mov / x.k) * 100).toFixed(1)) : 0, volumen_db: x.vol === null ? null : Number(x.vol.toFixed(1))}));
 }
 
+// Gemini mira el video (imagen y sonido) y devuelve las escenas con su tiempo.
+// Docs: ai.google.dev/gemini-api/docs/video-understanding (video en línea < 100 MB).
+export async function escenas(local) {
+  const {GEMINI_API_KEY, GEMINI_MODEL = 'gemini-3.8-flash'} = process.env;
+  if (!GEMINI_API_KEY) return null;
+  const pedido = `Eres editor de videos cortos verticales. Divide este video en escenas (cada corte de cámara).
+Devuelve SOLO un JSON: una lista de objetos con
+"inicio" y "fin" (segundos, con un decimal),
+"descripcion" (qué se ve, en español, máximo 15 palabras),
+"energia" (1 = quieto, 5 = acción intensa),
+"texto_o_logo" (true si hay texto grande, logos, marcas de consola o clasificación por edad en pantalla),
+"sirve_de_fondo" (true si funciona como fondo oscurecido detrás de texto: imagen limpia, sin texto ni logos).`;
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`, {
+    method: 'POST',
+    headers: {'x-goog-api-key': GEMINI_API_KEY, 'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      contents: [{parts: [
+        {inline_data: {mime_type: 'video/mp4', data: fs.readFileSync(local).toString('base64')}, video_metadata: {fps: 4}},
+        {text: pedido},
+      ]}],
+      generationConfig: {responseMimeType: 'application/json', temperature: 0.2},
+    }),
+  });
+  if (!r.ok) throw new Error(`Gemini ${r.status}: ${(await r.text()).slice(0, 300)}`);
+  const texto = (await r.json()).candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('') ?? '';
+  return JSON.parse(texto);
+}
+
 const resumen = [];
 for (const dir of principal ? await list('') : []) {
   if (dir.id) continue;
@@ -63,8 +91,16 @@ for (const dir of principal ? await list('') : []) {
     if (res.status !== 0) { console.log(`No se pudo indexar ${rel}: ${res.stderr.slice(0, 300)}`); continue; }
     const tramos = ritmo(local, paso, dur);
     fs.writeFileSync(`${salida}.json`, JSON.stringify(tramos));
+    let vistas = '';
+    try {
+      const e = await escenas(local);
+      if (e) { fs.writeFileSync(`${salida}.escenas.json`, JSON.stringify(e, null, 1)); vistas = ` · Gemini: ${e.length} escenas`; }
+    } catch (err) {
+      console.log(`Gemini no pudo con ${rel}: ${err.message}`);
+      vistas = ' · Gemini: falló';
+    }
     const top = [...tramos].sort((x, y) => y.movimiento - x.movimiento).slice(0, 5).map((x) => `${x.t}s (${x.movimiento})`).join(', ');
-    resumen.push(`- \`${rel}\` · ${Math.round(dur)} s · un cuadro cada ${paso} s · más movimiento en: ${top}`);
+    resumen.push(`- \`${rel}\` · ${Math.round(dur)} s · un cuadro cada ${paso} s · más movimiento en: ${top}${vistas}`);
     console.log(`Indexado ${rel} (${Math.round(dur)} s)`);
   }
 }

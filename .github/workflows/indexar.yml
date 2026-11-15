@@ -3,7 +3,7 @@ name: Indexar medios
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 3 * * *'   # 10:30 p. m. Panamá, antes de la sesión nocturna
+    - cron: '15 1 * * *'   # 8:15 p. m. Panamá, antes de la sesión nocturna de las 8:40
 
 permissions:
   contents: write
@@ -26,6 +26,7 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node remotion/indexar.mjs
       - name: Publicar en la rama media-index
         run: |
