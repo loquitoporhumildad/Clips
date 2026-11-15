@@ -3,6 +3,7 @@
   "brand": "gta",
   "theme": "vice",
   "langs": ["en", "es"],
+  "beat": false,
   "tag": {"en": "COUNTDOWN", "es": "CUENTA REGRESIVA"},
   "accounts": {"en": "Vice Data", "es": "Datos de Vice"},
   "scenes": [
@@ -77,7 +78,7 @@
       "hashtags": ["#GTA6", "#GTAVI", "#GTA6español", "#videojuegos", "#gaming"]
     }
   },
-  "notes": "Publicar el 15 de noviembre. El cierre es una pregunta para provocar comentarios: responde los primeros.",
+  "notes": "Sonido: al publicar, busca en la app \"Hot Together\" de The Pointer Sisters (la canción del tráiler 2) y ponla de fondo. Publicar el 15 de noviembre. El cierre es una pregunta para provocar comentarios: responde los primeros.",
   "sources": [
     "https://www.gtaboom.com/gta-6-release-date-and-delay-history-9f6b",
     "https://www.engadget.com/gaming/grand-theft-auto-vi-is-delayed-to-november-19-2026-211848530.html",
