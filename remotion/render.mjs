@@ -85,6 +85,7 @@ for (const spec of specs) {
     if (s.bg && !fs.existsSync(path.join(media, s.bg))) {
       console.log(`Fondo no encontrado: ${s.bg}`);
       delete s.bg;
+      delete s.cuts;
     }
     if (!s.bg && pool.length && spec.autoBg === true) s.bg = pool[k++ % pool.length];
   }

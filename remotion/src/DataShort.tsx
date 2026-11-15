@@ -18,10 +18,26 @@ const Bg: React.FC<{s: Scene; dark: string}> = ({s, dark}) => {
   const src = staticFile(`media/${s.bg}`);
   const zoom = 1.08 + frame * 0.0006;
   const fill: React.CSSProperties = {width: '100%', height: '100%', objectFit: 'cover', transform: `scale(${zoom})`};
+  const velo = <AbsoluteFill style={{background: `linear-gradient(180deg, ${dark}a6 0%, ${dark}73 45%, ${dark}d9 100%)`}} />;
+  // "cuts": salta entre varios momentos del mismo video, un corte por golpe de música.
+  if (s.cuts?.length && isVideo(s.bg)) {
+    const paso = Math.max(2, Math.round((s.cutEvery ?? 0.5) * fps));
+    const total = Math.ceil((s.seconds * fps) / paso);
+    return (
+      <AbsoluteFill>
+        {Array.from({length: total}, (_, i) => (
+          <Sequence key={i} from={i * paso} durationInFrames={paso}>
+            <OffthreadVideo muted src={src} startFrom={Math.round(s.cuts![i % s.cuts!.length] * fps)} style={{width: '100%', height: '100%', objectFit: 'cover', transform: `scale(${1.06 + (i % 2) * 0.05})`}} />
+          </Sequence>
+        ))}
+        {velo}
+      </AbsoluteFill>
+    );
+  }
   return (
     <AbsoluteFill>
       {isVideo(s.bg) ? <OffthreadVideo muted src={src} startFrom={Math.round((s.bgStart ?? 0) * fps)} style={fill} /> : <Img src={src} style={fill} />}
-      <AbsoluteFill style={{background: `linear-gradient(180deg, ${dark}a6 0%, ${dark}73 45%, ${dark}d9 100%)`}} />
+      {velo}
     </AbsoluteFill>
   );
 };
@@ -69,9 +85,11 @@ export const DataShort: React.FC<Props> = ({spec, lang}) => {
         const seq = (
           <Sequence key={i} from={from} durationInFrames={len}>
             <Bg s={s} dark={t.bg1} />
-            <Cut>
-              <SceneView s={s} t={t} lang={lang} />
-            </Cut>
+            {spec.scenes.length === 1 ? <SceneView s={s} t={t} lang={lang} /> : (
+              <Cut>
+                <SceneView s={s} t={t} lang={lang} />
+              </Cut>
+            )}
           </Sequence>
         );
         from += len;
