@@ -84,6 +84,12 @@ export const DataShort: React.FC<Props> = ({spec, lang}) => {
       )}
       <Grain />
       {spec.audio !== false && <Audio src={staticFile(`audio/${spec.id}.wav`)} />}
+      {spec.music && (
+        <Audio
+          src={staticFile(`media/${spec.music}`)}
+          volume={(f) => 0.55 * Math.min(1, f / 10, (durationInFrames - f) / 20)}
+        />
+      )}
     </AbsoluteFill>
   );
 };

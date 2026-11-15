@@ -4,7 +4,8 @@ import fs from 'node:fs';
 
 const SR = 44100;
 
-export function makeAudio(spec, file) {
+export function makeAudio(spec, file, opts = {}) {
+  const drums = opts.drums !== false; // con música propia solo quedan los golpes de corte
   const total = spec.scenes.reduce((a, s) => a + s.seconds, 0);
   const n = Math.ceil(total * SR);
   const buf = new Float32Array(n);
@@ -20,9 +21,9 @@ export function makeAudio(spec, file) {
   const beat = 60 / bpm;
 
   // sub-bajo continuo, con "bombeo" en cada golpe
-  add(0, total, (t) => 0.1 * Math.sin(2 * Math.PI * 49 * t) * (0.35 + 0.65 * Math.min(1, ((t % beat) / beat) * 2.5)));
+  if (drums) add(0, total, (t) => 0.1 * Math.sin(2 * Math.PI * 49 * t) * (0.35 + 0.65 * Math.min(1, ((t % beat) / beat) * 2.5)));
 
-  for (let k = 0; k * beat < total; k++) {
+  for (let k = 0; drums && k * beat < total; k++) {
     const t0 = k * beat;
     // bombo: en 1 y 3, y un doble antes del 1 cada 4 tiempos
     const kick = (at, g) => {

@@ -16,6 +16,9 @@ export type VideoSpec = {
   theme: string;
   langs: Lang[];
   audio?: boolean;
+  music?: string;
+  autoBg?: boolean;
+  brand?: string;
   tag?: T | string;
   scenes: Scene[];
 };
