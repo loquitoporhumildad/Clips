@@ -1,0 +1,38 @@
+name: Indexar medios
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 3 * * *'   # 10:30 p. m. Panamá, antes de la sesión nocturna
+
+permissions:
+  contents: write
+
+concurrency:
+  group: indexar
+  cancel-in-progress: true
+
+jobs:
+  indexar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+      - name: Hojas de contacto
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: node remotion/indexar.mjs
+      - name: Publicar en la rama media-index
+        run: |
+          cd out/indice
+          git init -q -b media-index
+          git config user.name "clips-bot"
+          git config user.email "clips-bot@users.noreply.github.com"
+          git add -A
+          git commit -qm "Índice de medios $(date -u +%F)"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" media-index
