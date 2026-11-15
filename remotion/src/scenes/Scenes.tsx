@@ -129,6 +129,32 @@ const Outro: React.FC<{s: Extract<Scene, {type: 'outro'}>; t: Theme; lang: Lang}
   );
 };
 
+// Formato "progreso": número gigante, barra casi llena y fondo que cambia con la música.
+// Pensado para verse en bucle: no tiene entrada ni salida.
+const Progress: React.FC<{s: Extract<Scene, {type: 'progress'}>; t: Theme; lang: Lang}> = ({s, t, lang}) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const golpe = 1 + 0.035 * Math.max(0, 1 - ((frame % Math.round(fps * 0.5)) / (fps * 0.18)));
+  const brillo = 0.55 + 0.45 * Math.abs(Math.sin(frame / 9));
+  return (
+    <AbsoluteFill style={{padding: '300px 160px 440px 80px', justifyContent: 'center', textShadow: '0 6px 0 rgba(0,0,0,0.5), 0 0 50px rgba(0,0,0,0.6)'}}>
+      <div style={{fontFamily: BODY, fontWeight: 900, fontSize: 54, letterSpacing: 3, color: t.text}}>{tr(s.kicker, lang)}</div>
+      <div style={{display: 'flex', alignItems: 'baseline', gap: 26, transform: `scale(${golpe})`, transformOrigin: 'left center'}}>
+        <span style={{fontFamily: HEAD, fontSize: 520, lineHeight: 0.92, color: t.accent}}>{s.value}</span>
+        <span style={{fontFamily: HEAD, fontSize: 150, color: t.accent2}}>{tr(s.unit, lang)}</span>
+      </div>
+      <div style={{marginTop: 34, height: 44, borderRadius: 22, background: 'rgba(255,255,255,0.22)', overflow: 'hidden', boxShadow: '0 6px 0 rgba(0,0,0,0.35)'}}>
+        <div style={{height: '100%', width: `${s.percent}%`, borderRadius: 22, background: t.accent, opacity: brillo}} />
+      </div>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 18}}>
+        <span style={{fontFamily: BODY, fontWeight: 800, fontSize: 44, color: t.text}}>{tr(s.label, lang)}</span>
+        <span style={{fontFamily: HEAD, fontSize: 84, color: t.text, fontVariantNumeric: 'tabular-nums'}}>{fmt(s.percent, 1)}%</span>
+      </div>
+      {s.footer && <div style={{fontFamily: BODY, fontWeight: 800, fontSize: 46, color: t.accent2, marginTop: 44}}>{tr(s.footer, lang)}</div>}
+    </AbsoluteFill>
+  );
+};
+
 export const SceneView: React.FC<{s: Scene; t: Theme; lang: Lang}> = ({s, t, lang}) => {
   switch (s.type) {
     case 'hook':
@@ -139,6 +165,8 @@ export const SceneView: React.FC<{s: Scene; t: Theme; lang: Lang}> = ({s, t, lan
       return <Bars s={s} t={t} lang={lang} />;
     case 'versus':
       return <Versus s={s} t={t} lang={lang} />;
+    case 'progress':
+      return <Progress s={s} t={t} lang={lang} />;
     case 'outro':
       return <Outro s={s} t={t} lang={lang} />;
   }

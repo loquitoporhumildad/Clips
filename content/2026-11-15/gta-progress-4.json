@@ -1,0 +1,84 @@
+{
+  "id": "gta-progress-4",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": [
+    "en",
+    "es"
+  ],
+  "beat": false,
+  "audio": false,
+  "accounts": {
+    "en": "Vice Data",
+    "es": "Datos de Vice"
+  },
+  "scenes": [
+    {
+      "type": "progress",
+      "seconds": 11,
+      "kicker": {
+        "en": "PROGRESS TO GTA VI",
+        "es": "PROGRESO HACIA GTA VI"
+      },
+      "value": 4,
+      "unit": {
+        "en": "DAYS",
+        "es": "DÍAS"
+      },
+      "percent": 99.6,
+      "label": {
+        "en": "1,076 / 1,080 days",
+        "es": "1,076 / 1,080 días"
+      },
+      "footer": {
+        "en": "NOV 19 · since the first trailer",
+        "es": "19 NOV · desde el primer tráiler"
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "cuts": [
+        10.2,
+        2.4,
+        16.3,
+        8.3,
+        12.3,
+        4.4,
+        18.4,
+        11.0,
+        3.2,
+        17.2,
+        9.2,
+        13.0
+      ],
+      "cutEvery": 0.5
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "99.6% of the wait for GTA VI is over",
+      "description": "1,076 of 1,080 days since the first trailer. 4 to go. Where will you be at midnight?",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6countdown",
+        "#vicecity",
+        "#gaming"
+      ]
+    },
+    "es": {
+      "title": "Ya pasó el 99.6 % de la espera por GTA VI",
+      "description": "1,076 de 1,080 días desde el primer tráiler. Faltan 4. ¿Dónde vas a estar a medianoche?",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6español",
+        "#vicecity",
+        "#videojuegos"
+      ]
+    }
+  },
+  "notes": "Formato copiado de los virales de esta semana: 11 s, sin audio propio, pensado para bucle. Ponle en la app una canción rápida en tendencia (los que pegaron usaron pop acelerado o dancehall) y, si puedes, ajusta el inicio para que los cortes caigan con el ritmo.",
+  "sources": [
+    "https://www.gtaboom.com/gta-6-release-date-and-delay-history-9f6b",
+    "vidIQ: búsqueda de virales de GTA VI en Instagram y TikTok, 15 nov 2026"
+  ]
+}
