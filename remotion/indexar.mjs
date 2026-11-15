@@ -55,22 +55,31 @@ Devuelve SOLO un JSON: una lista de objetos con
 "texto_o_logo" (true si hay texto grande, logos, marcas de consola o clasificación por edad en pantalla),
 "sirve_de_fondo" (true si funciona como fondo oscurecido detrás de texto: imagen limpia, sin texto ni logos).`;
   // Gemini responde 429/503 cuando está saturado: se reintenta con espera.
-  let r;
+  let r, ultimo = '';
+  const base64 = fs.readFileSync(local).toString('base64');
+  console.log(`Gemini: enviando ${(base64.length / 1e6).toFixed(1)} MB`);
   for (let intento = 0; intento < 4; intento++) {
-    r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`, {
-      method: 'POST',
-      headers: {'x-goog-api-key': GEMINI_API_KEY, 'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        contents: [{parts: [
-          {inline_data: {mime_type: 'video/mp4', data: fs.readFileSync(local).toString('base64')}, video_metadata: {fps: 4}},
-          {text: pedido},
-        ]}],
-        generationConfig: {responseMimeType: 'application/json', temperature: 0.2},
-      }),
-    });
-    if (![429, 500, 503].includes(r.status)) break;
+    try {
+      r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`, {
+        method: 'POST',
+        headers: {'x-goog-api-key': GEMINI_API_KEY, 'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          contents: [{parts: [
+            {inline_data: {mime_type: 'video/mp4', data: base64}, video_metadata: {fps: 4}},
+            {text: pedido},
+          ]}],
+          generationConfig: {responseMimeType: 'application/json', temperature: 0.2},
+        }),
+      });
+    } catch (err) {
+      // Corte de red: se anota la causa y se reintenta.
+      ultimo = `${err.message} (${err.cause?.code ?? err.cause?.message ?? 'sin causa'})`;
+      r = null;
+    }
+    if (r && ![429, 500, 503].includes(r.status)) break;
     await new Promise((ok) => setTimeout(ok, 15000 * (intento + 1)));
   }
+  if (!r) throw new Error(`sin conexión: ${ultimo}`);
   if (!r.ok) throw new Error(`Gemini ${r.status}: ${(await r.text()).slice(0, 300)}`);
   const texto = (await r.json()).candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('') ?? '';
   return JSON.parse(texto);
