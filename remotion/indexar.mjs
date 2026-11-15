@@ -86,6 +86,15 @@ Devuelve SOLO un JSON: una lista de objetos con
 }
 
 const resumen = [];
+// Buzón: links y notas que Juan o el socio mandan desde el panel.
+const buzon = [];
+for (const f of principal ? await list('buzon') : []) {
+  if (!f.id) continue;
+  const de = f.name.split('-')[0];
+  let texto = `(archivo) buzon/${f.name}`;
+  if (f.name.endsWith('-nota.txt')) texto = (await (await sb(`/storage/v1/object/clips-media/buzon/${encodeURIComponent(f.name)}`)).text()).trim();
+  buzon.push(`- ${f.created_at?.slice(0, 16) ?? ''} · **${de}**: ${texto.replace(/\n/g, ' ')}`);
+}
 for (const dir of principal ? await list('') : []) {
   if (dir.id) continue;
   for (const f of await list(dir.name)) {
@@ -120,4 +129,5 @@ for (const dir of principal ? await list('') : []) {
   }
 }
 if (principal) fs.mkdirSync(dest, {recursive: true});
+if (principal) fs.writeFileSync(path.join(dest, 'BUZON.md'), `# Buzón\n\nLo que mandaron desde el panel (lo más viejo arriba).\n\n${buzon.sort().join('\n') || 'Vacío.'}\n`);
 if (principal) fs.writeFileSync(path.join(dest, 'LEEME.md'), `# Índice de medios\n\nHojas de contacto de los videos subidos desde el panel. Cada cuadro lleva su tiempo.\n\n${resumen.join('\n') || 'Sin videos todavía.'}\n`);

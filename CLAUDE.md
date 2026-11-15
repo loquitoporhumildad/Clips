@@ -26,18 +26,22 @@ Nombres sin "GTA" ni "Rockstar" (marca registrada y para poder pasar a otros
 juegos). Nombres por confirmar según disponibilidad (primera opción = nombre por defecto).
 
 ### Juan — desde hoy (3 marcas, 9 cuentas)
-1. Gaming / GTA VI en inglés — Vice Data (alternativas: Leonida Intel, Open World Data)
+1. Datos curiosos de GTA VI en inglés — Vice Data (alternativas: Leonida Intel, Open World Data)
+   - TikTok · Instagram · YouTube Shorts — animación con Remotion sobre clips del tráiler
+2. Tendencias con datos en inglés — Why It's Trending (alternativas: Trend in Data, The Number Behind)
    - TikTok · Instagram · YouTube Shorts — animación con Remotion
-2. IA y tecnología en inglés — Model Drop (alternativas: AI in 60, Prompted Daily)
-   - TikTok · Instagram · YouTube Shorts — animación con Remotion
-   Por qué: siempre hay tema nuevo, buen pago por vista, afiliados.
+   Formato fijo: "el dato detrás de lo que es tendencia hoy" (deportes, tecnología,
+   cine, lo que pegue). Si un tema pega mucho, se le abre su propia marca.
+   (Reemplaza a Model Drop, que era solo IA; decidido el 15 nov.)
 3. Clips de streamers / campañas en inglés — Clip Vault
    - TikTok · Instagram · YouTube Shorts — cortes y subtítulos (no Remotion)
+   GTA VI primero; otros streamers cuando haya campañas que paguen.
    Por qué: única marca que paga desde el primer día (pago por vista verificada,
-   sin seguidores). La semana del estreno de GTA VI, priorizar campañas de
-   streamers jugando GTA. Cortes automáticos: workflow "Cortar stream"
+   sin seguidores). Cortes automáticos: workflow "Cortar stream"
    (clips/cortar.py): link del stream → picos del chat (empieza 20 s antes) y
    del audio → clips 9:16 con subtítulos en el panel. Siempre con campaña o permiso.
+   Links: Claude propone campañas cada noche y Juan también pega los suyos en
+   el Buzón del panel (pestaña Pedidos → rama media-index, BUZON.md).
 
 ### Socio — desde hoy (2 marcas, 6 cuentas)
 1. Gaming / GTA VI en español — Datos de Vice (alternativas: Leonida al Día, Mundo Abierto en Datos)
@@ -45,7 +49,7 @@ juegos). Nombres por confirmar según disponibilidad (primera opción = nombre p
 2. Deportes con datos en español — La Pizarra Data (alternativas: Gol en Datos, Cancha y Números)
    - TikTok · Instagram · YouTube Shorts
    Por qué: partidos de fútbol y NBA a diario, datos de los modelos de Juan, poca competencia con datos animados.
-Después: Tendencias con datos en inglés (Why It's Trending) y Campañas en español (Clips al Día)
+Después: Campañas en español (Clips al Día)
 
 Hoy: 5 marcas, 15 cuentas. Regla: abrir o cerrar marcas según números
 (ej. promedio 1,000 vistas por video o un video de 10,000+).

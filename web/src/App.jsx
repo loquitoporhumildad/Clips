@@ -222,14 +222,71 @@ function Pedido({r, avisar, recargar}) {
   );
 }
 
+function Buzon({dueno, avisar}) {
+  const quien = dueno === 'todos' ? 'juan' : dueno;
+  const [lista, setLista] = useState([]);
+  const [texto, setTexto] = useState('');
+  const [ocupado, setOcupado] = useState(false);
+  const cargar = useCallback(() => api.buzon(dueno).then(setLista).catch(() => setLista([])), [dueno]);
+  useEffect(() => { cargar(); }, [cargar]);
+
+  const enviar = async (e) => {
+    e.preventDefault();
+    if (!texto.trim()) return avisar('Escribe o pega algo primero.');
+    setOcupado(true);
+    const error = await api.enviarNota(quien, texto.trim());
+    setOcupado(false);
+    if (error) return avisar(error);
+    setTexto('');
+    avisar('Enviado. Claude lo lee en la sesión de la noche.');
+    cargar();
+  };
+  const subir = async (e) => {
+    const elegidos = [...e.target.files];
+    if (!elegidos.length) return;
+    setOcupado(true);
+    let bien = 0;
+    for (const f of elegidos) {
+      if (f.size > 50 * 1024 * 1024) { avisar(`${f.name} pesa más de 50 MB.`); continue; }
+      const error = await api.subir('buzon', new File([f], `${quien}-${f.name}`, {type: f.type}));
+      error ? avisar(`${f.name}: ${error}`) : bien++;
+    }
+    if (bien) avisar(bien === 1 ? '1 archivo enviado' : `${bien} archivos enviados`);
+    e.target.value = '';
+    setOcupado(false);
+    cargar();
+  };
+
+  return (
+    <motion.article variants={sube} className="tarjeta">
+      <h3>Buzón para Claude</h3>
+      <p>Pega aquí links de streams o videos, ideas, o lo que Claude te haya pedido. También puedes mandar archivos.</p>
+      <form onSubmit={enviar}>
+        <textarea className="nota" rows={3} value={texto} onChange={(e) => setTexto(e.target.value)} placeholder="Ej. https://www.twitch.tv/videos/… campaña de Whop, paga $1 por mil vistas" />
+        <motion.button {...PRESION} className="pildora llena" disabled={ocupado}>{ocupado ? 'Enviando…' : 'Enviar'}</motion.button>
+      </form>
+      <label className="soltar buzon-archivo">
+        <input type="file" multiple onChange={subir} disabled={ocupado} />
+        <b>Elegir archivos</b> para mandarlos
+      </label>
+      {lista.length > 0 && (
+        <ul className="enviados">
+          {lista.map((x) => <li key={x.nombre}>{dueno === 'todos' && <b>{x.de}: </b>}{x.texto ?? x.nombre.replace(/^[a-z]+-/, '')}</li>)}
+        </ul>
+      )}
+    </motion.article>
+  );
+}
+
 function Pedidos({dueno, avisar}) {
   const [lista, setLista] = useState(null);
   const cargar = useCallback(() => api.pedidos(dueno).then(setLista).catch((e) => avisar(e.message)), [dueno]);
   useEffect(() => { setLista(null); cargar(); }, [cargar]);
   if (!lista) return null;
-  if (!lista.length) return <Vacio>No hay pedidos. Cuando Claude necesite clips o música para un video, los verás aquí.</Vacio>;
   return (
     <motion.div variants={cascada} initial="oculto" animate="visible">
+      <Buzon dueno={dueno} avisar={avisar} />
+      {!lista.length && <p className="apoyo">Claude no te ha pedido nada por ahora.</p>}
       {lista.map((r) => <Pedido key={r.id} r={r} avisar={avisar} recargar={cargar} />)}
     </motion.div>
   );
