@@ -21,7 +21,7 @@ const Bg: React.FC<{s: Scene; dark: string}> = ({s, dark}) => {
   return (
     <AbsoluteFill>
       {isVideo(s.bg) ? <OffthreadVideo muted src={src} startFrom={Math.round((s.bgStart ?? 0) * fps)} style={fill} /> : <Img src={src} style={fill} />}
-      <AbsoluteFill style={{background: `linear-gradient(180deg, ${dark}cc 0%, ${dark}99 45%, ${dark}f2 100%)`}} />
+      <AbsoluteFill style={{background: `linear-gradient(180deg, ${dark}a6 0%, ${dark}73 45%, ${dark}d9 100%)`}} />
     </AbsoluteFill>
   );
 };
