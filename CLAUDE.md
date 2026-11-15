@@ -35,8 +35,9 @@ juegos). Nombres por confirmar según disponibilidad (primera opción = nombre p
    - TikTok · Instagram · YouTube Shorts — cortes y subtítulos (no Remotion)
    Por qué: única marca que paga desde el primer día (pago por vista verificada,
    sin seguidores). La semana del estreno de GTA VI, priorizar campañas de
-   streamers jugando GTA. Mientras no haya cortes automáticos: Claude elige
-   los momentos por transcripción y Juan corta en CapCut.
+   streamers jugando GTA. Cortes automáticos: workflow "Cortar stream"
+   (clips/cortar.py): link del stream → picos del chat (empieza 20 s antes) y
+   del audio → clips 9:16 con subtítulos en el panel. Siempre con campaña o permiso.
 
 ### Socio — desde hoy (2 marcas, 6 cuentas)
 1. Gaming / GTA VI en español — Datos de Vice (alternativas: Leonida al Día, Mundo Abierto en Datos)

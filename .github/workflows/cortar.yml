@@ -1,0 +1,95 @@
+name: Cortar stream
+
+# Entra el link de un stream, salen clips verticales con subtítulos en el panel.
+# Solo para streams con campaña abierta o permiso del streamer.
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Link del stream o VOD (Twitch, Kick, YouTube)'
+        required: true
+      campana:
+        description: 'Campaña o permiso (ej. "Whop: xQc GTA VI")'
+        required: true
+      cantidad:
+        description: 'Cuántos clips'
+        default: '5'
+      duracion:
+        description: 'Segundos por clip'
+        default: '35'
+      modo:
+        description: 'recorte = centro de la pantalla · relleno = video completo con fondo borroso'
+        type: choice
+        options: [recorte, relleno]
+        default: recorte
+      desde_min:
+        description: 'Buscar desde este minuto del stream (vacío = inicio)'
+        required: false
+      hasta_min:
+        description: 'Buscar hasta este minuto (vacío = final)'
+        required: false
+      chat:
+        description: 'Usar el chat para encontrar los momentos (si falla, usa el audio)'
+        type: boolean
+        default: true
+      owner:
+        description: 'De quién es'
+        type: choice
+        options: [juan, socio]
+        default: juan
+
+concurrency:
+  group: cortar
+  cancel-in-progress: false
+
+jobs:
+  cortar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: clips/requirements.txt
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-montserrat
+      - run: pip install -q -r clips/requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: whisper-small
+      - name: Cookies (solo si YouTube bloquea)
+        env:
+          YTDLP_COOKIES: ${{ secrets.YTDLP_COOKIES }}
+        run: |
+          if [ -n "$YTDLP_COOKIES" ]; then
+            printf '%s' "$YTDLP_COOKIES" > "$RUNNER_TEMP/cookies.txt"
+            echo "YTDLP_COOKIES_FILE=$RUNNER_TEMP/cookies.txt" >> "$GITHUB_ENV"
+          fi
+      - name: Cortar
+        env:
+          CLIP_URL: ${{ inputs.url }}
+          CLIP_CAMPANA: ${{ inputs.campana }}
+          CLIP_CANTIDAD: ${{ inputs.cantidad }}
+          CLIP_DURACION: ${{ inputs.duracion }}
+          CLIP_MODO: ${{ inputs.modo }}
+          CLIP_DESDE_MIN: ${{ inputs.desde_min }}
+          CLIP_HASTA_MIN: ${{ inputs.hasta_min }}
+          CLIP_OWNER: ${{ inputs.owner }}
+          CLIP_CHAT: ${{ inputs.chat && '1' || '0' }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: python clips/cortar.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: clips
+          path: |
+            out/clips/**/*.mp4
+            out/clips/**/clips.json
+            !out/clips/tmp/**
+          retention-days: 7
+          if-no-files-found: ignore
