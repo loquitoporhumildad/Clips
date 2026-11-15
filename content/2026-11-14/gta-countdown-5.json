@@ -1,0 +1,84 @@
+{
+  "id": "gta-countdown-5",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": ["en", "es"],
+  "accounts": {"en": "Vice Data", "es": "Datos de Vice"},
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 2.6,
+      "kicker": {"en": "5 DAYS", "es": "5 DÍAS"},
+      "text": {
+        "en": "The most-watched video launch in history becomes a game.",
+        "es": "El video más visto de la historia en su estreno se convierte en juego."
+      }
+    },
+    {
+      "type": "bars",
+      "seconds": 5,
+      "title": {"en": "Views in the first 24 hours", "es": "Vistas en las primeras 24 horas"},
+      "unit": "M",
+      "items": [
+        {"label": {"en": "GTA VI · Trailer 2", "es": "GTA VI · Tráiler 2"}, "value": 475, "highlight": true},
+        {"label": "Deadpool & Wolverine", "value": 365},
+        {"label": "Spider-Man: No Way Home", "value": 355.5}
+      ],
+      "source": "Rockstar Games via The Hollywood Reporter · all platforms"
+    },
+    {
+      "type": "stat",
+      "seconds": 3.4,
+      "value": 90421491,
+      "label": {
+        "en": "YouTube views in 24h for Trailer 1. Still a Guinness record.",
+        "es": "vistas en YouTube en 24h del Tráiler 1. Sigue siendo récord Guinness."
+      },
+      "source": "Guinness World Records"
+    },
+    {
+      "type": "stat",
+      "seconds": 3,
+      "value": 13,
+      "suffix": {"en": "YEARS", "es": "AÑOS"},
+      "label": {"en": "since GTA V came out (2013).", "es": "desde que salió GTA V (2013)."}
+    },
+    {
+      "type": "versus",
+      "seconds": 4,
+      "title": {"en": "Price of a new AAA game", "es": "Precio de un juego AAA nuevo"},
+      "prefix": "$",
+      "decimals": 2,
+      "left": {"label": {"en": "GTA VI Standard", "es": "GTA VI Estándar"}, "value": 79.99},
+      "right": {"label": {"en": "Typical AAA", "es": "AAA típico"}, "value": 69.99},
+      "note": {"en": "+$10 over the usual price", "es": "+$10 sobre el precio normal"},
+      "source": "Rockstar Games"
+    },
+    {
+      "type": "outro",
+      "seconds": 3,
+      "big": {"en": "NOV 19", "es": "19 NOV"},
+      "small": {"en": "PS5 · Xbox Series X|S", "es": "PS5 · Xbox Series X|S"},
+      "cta": {"en": "Follow for the countdown", "es": "Síguenos para la cuenta regresiva"}
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "GTA VI is 5 days away and it's already breaking records",
+      "description": "475M views in 24h, a Guinness record and a $79.99 price tag. Daily countdown to Nov 19.",
+      "hashtags": ["#GTA6", "#GTAVI", "#GTA6countdown", "#gaming", "#rockstargames"]
+    },
+    "es": {
+      "title": "Faltan 5 días para GTA VI y ya rompió récords",
+      "description": "475M de vistas en 24h, récord Guinness y $79.99 de precio. Cuenta regresiva diaria al 19 de noviembre.",
+      "hashtags": ["#GTA6", "#GTAVI", "#GTA6español", "#videojuegos", "#gaming"]
+    }
+  },
+  "notes": "Sin audio a propósito: agregar en la app un sonido en tendencia antes de publicar.",
+  "sources": [
+    "https://www.techradar.com/gaming/the-latest-grand-theft-auto-6-trailer-has-set-a-major-record-by-racking-up-475-million-views-in-just-24-hours",
+    "https://epicflix.com/grand-theft-auto-vi-trailer-2-falls-short-of-breaking-youtube-record-set-by-first-trailer",
+    "https://tbreak.com/gta-6-price-standard-ultimate-edition/",
+    "https://www.engadget.com/gaming/grand-theft-auto-vi-is-delayed-to-november-19-2026-211848530.html"
+  ]
+}

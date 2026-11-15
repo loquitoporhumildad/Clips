@@ -1,0 +1,51 @@
+name: Render videos
+
+on:
+  push:
+    branches: [main]
+    paths: ['content/**']
+  schedule:
+    - cron: '0 11 * * *'   # 6:00 a. m. Panamá
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Fecha a renderizar (YYYY-MM-DD). Vacío = hoy en Panamá'
+        required: false
+
+concurrency:
+  group: render
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: remotion/package-lock.json
+      - name: Librerías para Chrome
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libnss3 libdbus-1-3 libatk1.0-0 libgbm-dev libasound2t64 \
+            libxrandr2 libxkbcommon-dev libxfixes3 libxcomposite1 libxdamage1 \
+            libatk-bridge2.0-0 libpango-1.0-0 libcairo2 libcups2
+      - run: npm ci
+        working-directory: remotion
+      - name: Render
+        working-directory: remotion
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          RENDER_DATE: ${{ inputs.date }}
+        run: node render.mjs $RENDER_DATE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: videos
+          path: out/
+          retention-days: 7
+          if-no-files-found: ignore
