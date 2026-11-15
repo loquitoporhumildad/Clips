@@ -128,6 +128,13 @@ Sin que lo pidamos:
 2. Busca en la web qué hay nuevo HOY: tendencias y formatos virales por
    red, campañas abiertas y tarifas, cambios de algoritmo o reglas,
    herramientas nuevas.
+   Campañas (cada noche, para Clip Vault): revisar Content Rewards/Whop, Vyro y
+   programas propios de streamers (Discord). Guardar en clips_trends
+   (source 'campanas') tarifa, tope por clip, redes y reglas. Para las que
+   valgan la pena: buscar el VOD más reciente del streamer, tomar el link y
+   lanzar el workflow "Cortar stream". Unirse a la campaña y enviar los links
+   publicados lo hace Juan (es su cuenta de Whop).
+   Leer el Buzón: rama media-index, BUZON.md (links y notas del panel).
 3. Propón al menos una mejora respecto a ayer y por qué.
 4. Herramientas: qué conector, API, repo, skill o librería serviría;
    cuáles activamos nosotros y cuáles creas tú.
