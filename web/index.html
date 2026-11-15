@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clips · Panel</title>
+<style>
+  :root{--bg:#0d0716;--card:#1a1028;--line:#2e2142;--text:#f4eefc;--muted:#a897c2;--accent:#ff3ea5;--accent2:#2de2e6;--ok:#3dff9a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  header{position:sticky;top:0;z-index:5;background:rgba(13,7,22,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;gap:12px}
+  header h1{font-size:18px;margin:0;flex:1;letter-spacing:.5px}
+  header h1 b{color:var(--accent)}
+  nav{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:8;display:flex;gap:4px;padding:6px;border-radius:999px;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+    box-shadow:0 10px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.25)}
+  nav button{white-space:nowrap;border:0;background:transparent;border-radius:999px;padding:10px 16px;font-size:14px}
+  nav button.on{background:rgba(255,62,165,.9);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+  .seg{display:flex;gap:4px;padding:4px;margin:14px 0 4px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px)}
+  .seg button{flex:1;border:0;background:transparent;padding:9px 6px;font-size:14px}
+  .seg button.on{background:rgba(45,226,230,.9);color:#002b2c}
+  body{background:radial-gradient(900px 500px at 10% -10%,#3b0a4f 0%,transparent 60%),radial-gradient(700px 500px at 110% 20%,#0b3d4a 0%,transparent 55%),var(--bg);background-attachment:fixed;min-height:100vh}
+  .card{background:rgba(26,16,40,.72)!important;backdrop-filter:blur(10px)}
+  main{padding:0 16px 110px;max-width:760px;margin:0 auto}
+  button,.btn{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--card);color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer;text-decoration:none;display:inline-block}
+  button.on,button.primary,.btn.primary{background:var(--accent);border-color:var(--accent);color:#1a0010}
+  button.ghost{background:transparent}
+  button:disabled{opacity:.5}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .tag{font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:#2e2142;color:var(--accent2)}
+  .tag.pend{color:#ffd23f}.tag.ok{color:var(--ok)}
+  h2{font-size:15px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:22px 0 4px}
+  h3{margin:8px 0 4px;font-size:17px}
+  p{margin:6px 0}.muted{color:var(--muted);font-size:14px}
+  video{width:100%;max-height:70vh;border-radius:12px;background:#000;margin:8px 0}
+  pre{white-space:pre-wrap;word-break:break-word;background:#120a1e;border:1px solid var(--line);border-radius:10px;padding:10px;font:14px/1.4 ui-monospace,Menlo,monospace;margin:8px 0}
+  input,select{font:inherit;width:100%;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:#120a1e;color:var(--text);margin:6px 0}
+  .metrics input{width:92px}
+  .files{font-size:13px;color:var(--muted);margin-top:6px}
+  #msg{position:fixed;left:16px;right:16px;bottom:84px;background:var(--accent2);color:#002b2c;font-weight:800;padding:12px 14px;border-radius:12px;display:none;z-index:9}
+</style>
+</head>
+<body>
+<header><h1><b>CLIPS</b> · panel</h1><span id="who" class="muted"></span><button id="out" class="ghost" hidden>Salir</button></header>
+<div id="app"></div>
+<div id="msg"></div>
+<script type="module">
+import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+const sb = createClient('https://gxipxajizzenankexarj.supabase.co', 'sb_publishable_Cj1gdSovetxWLwDKS1dV7Q_dqb0hNMp');
+const $ = (s) => document.querySelector(s);
+const app = $('#app');
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const say = (t) => { const m = $('#msg'); m.textContent = t; m.style.display = 'block'; clearTimeout(say.t); say.t = setTimeout(() => m.style.display = 'none', 3500); };
+let tab = 'videos', owner = 'juan';
+const OWNERS = [['juan', 'Juan'], ['socio', 'Socio'], ['todos', 'Todos']];
+
+async function boot() {
+  const {data: {session}} = await sb.auth.getSession();
+  $('#out').hidden = !session;
+  if (!session) return login();
+  const {data: me} = await sb.from('clips_members').select('name, role').maybeSingle();
+  if (!me) {
+    app.innerHTML = `<main><div class="card"><h3>Cuenta pendiente</h3><p>Tu cuenta (${esc(session.user.email)}) ya existe, pero falta que la aprueben. Avísale a Claude en el proyecto para que te dé acceso.</p></div></main>`;
+    return;
+  }
+  $('#who').textContent = me.name;
+  owner = me.role === 'socio' ? 'socio' : 'juan';
+  render();
+}
+
+function login() {
+  app.innerHTML = `<main><div class="card"><h3>Entrar</h3>
+    <input id="em" type="email" placeholder="Correo" autocomplete="email">
+    <input id="pw" type="password" placeholder="Contraseña (mín. 8)" autocomplete="current-password">
+    <div class="row"><button class="primary" id="in">Entrar</button><button id="up">Crear cuenta</button></div>
+    <p class="muted">La primera vez: crea la cuenta, confirma el correo que te llega y luego entra.</p></div></main>`;
+  const creds = () => ({email: $('#em').value.trim(), password: $('#pw').value});
+  $('#in').onclick = async () => { const {error} = await sb.auth.signInWithPassword(creds()); error ? say(error.message) : boot(); };
+  $('#up').onclick = async () => { const {error} = await sb.auth.signUp(creds()); say(error ? error.message : 'Cuenta creada. Revisa tu correo para confirmarla.'); };
+}
+
+async function render() {
+  app.innerHTML = `<nav>
+    <button data-t="videos" class="${tab==='videos'?'on':''}">Videos</button>
+    <button data-t="pedidos" class="${tab==='pedidos'?'on':''}">Pedidos y archivos</button>
+    <button data-t="rend" class="${tab==='rend'?'on':''}">Rendimiento</button></nav>
+    <main><div class="seg">${OWNERS.map(([k, n]) => `<button data-o="${k}" class="${owner===k?'on':''}">${n}</button>`).join('')}</div><div id="m"><p class="muted">Cargando…</p></div></main>`;
+  app.querySelectorAll('nav button').forEach((b) => b.onclick = () => { tab = b.dataset.t; render(); });
+  app.querySelectorAll('.seg button').forEach((b) => b.onclick = () => { owner = b.dataset.o; render(); });
+  if (tab === 'videos') return videos();
+  if (tab === 'pedidos') return pedidos();
+  return rend();
+}
+
+async function videos() {
+  let q = sb.from('clips_videos').select('*').order('day', {ascending: false}).order('id').limit(40);
+  if (owner !== 'todos') q = q.eq('owner', owner);
+  const {data, error} = await q;
+  if (error) return $('#m').innerHTML = `<p>${esc(error.message)}</p>`;
+  if (!data.length) return $('#m').innerHTML = '<p class="muted">Aún no hay videos.</p>';
+  let html = '', day = '';
+  for (const v of data) {
+    if (v.day !== day) { day = v.day; html += `<h2>${esc(day)}</h2>`; }
+    const text = [v.title, '', v.description, '', (v.hashtags || []).join(' ')].join('\n');
+    html += `<div class="card" data-id="${v.id}">
+      <div class="row"><span class="tag">${esc(v.account || v.brand)}</span><span class="tag">${esc(v.lang)}</span><span class="tag ${v.status==='publicado'?'ok':'pend'}">${esc(v.status)}</span></div>
+      <h3>${esc(v.title || v.spec_id)}</h3>
+      <div class="slot"><button class="load" data-p="${esc(v.storage_path)}">▶ Ver video</button></div>
+      <pre>${esc(text)}</pre>
+      ${v.notes ? `<p class="muted">${esc(v.notes)}</p>` : ''}
+      <div class="row"><button class="dl primary" data-p="${esc(v.storage_path)}">Descargar</button><button class="cp">Copiar texto</button>
+      <button class="st" data-s="${v.status==='publicado'?'listo':'publicado'}">${v.status==='publicado'?'Marcar no publicado':'Marcar publicado'}</button></div></div>`;
+  }
+  $('#m').innerHTML = html;
+  const signed = async (p, download) => (await sb.storage.from('clips-videos').createSignedUrl(p, 3600, download ? {download: true} : undefined)).data?.signedUrl;
+  $('#m').querySelectorAll('.load').forEach((b) => b.onclick = async () => { const u = await signed(b.dataset.p); u ? b.parentElement.innerHTML = `<video controls playsinline autoplay src="${u}"></video>` : say('El video ya no está (se borran a los 7 días).'); });
+  $('#m').querySelectorAll('.dl').forEach((b) => b.onclick = async () => { const u = await signed(b.dataset.p, true); u ? location.href = u : say('El video ya no está.'); });
+  $('#m').querySelectorAll('.cp').forEach((b) => b.onclick = async () => { await navigator.clipboard.writeText(b.closest('.card').querySelector('pre').textContent); say('Texto copiado'); });
+  $('#m').querySelectorAll('.st').forEach((b) => b.onclick = async () => { await sb.from('clips_videos').update({status: b.dataset.s}).eq('id', b.closest('.card').dataset.id); videos(); });
+}
+
+async function pedidos() {
+  let q = sb.from('clips_requests').select('*').order('status', {ascending: false}).order('id', {ascending: false}).limit(40);
+  if (owner !== 'todos') q = q.or(`owner.eq.${owner},owner.is.null`);
+  const {data, error} = await q;
+  if (error) return $('#m').innerHTML = `<p>${esc(error.message)}</p>`;
+  let html = '<p class="muted">Aquí Claude deja lo que necesita para los próximos videos. Sube los archivos y se usan solos en el siguiente render.</p>';
+  for (const r of data) {
+    html += `<div class="card" data-id="${r.id}" data-f="${esc(r.folder)}">
+      <div class="row"><span class="tag">${esc(r.brand)}</span><span class="tag">${esc(r.kind)}</span><span class="tag ${r.status==='listo'?'ok':'pend'}">${esc(r.status)}</span></div>
+      <h3>${esc(r.title)}</h3><p class="muted">${esc(r.detail)}</p>
+      <input type="file" multiple accept="${r.kind==='musica'?'audio/*':'video/*,image/*'}">
+      <div class="row"><button class="upl primary">Subir</button><button class="done">${r.status==='listo'?'Reabrir':'Marcar listo'}</button></div>
+      <div class="files">Cargando archivos…</div></div>`;
+  }
+  $('#m').innerHTML = html || '<p class="muted">Sin pedidos.</p>';
+  $('#m').querySelectorAll('.card').forEach(async (c) => {
+    const folder = c.dataset.f;
+    const list = async () => { const {data: f} = await sb.storage.from('clips-media').list(folder, {limit: 100}); c.querySelector('.files').textContent = f?.length ? `En la carpeta "${folder}": ${f.map((x) => x.name).join(', ')}` : `La carpeta "${folder}" está vacía.`; };
+    list();
+    c.querySelector('.upl').onclick = async (e) => {
+      const files = [...c.querySelector('input').files];
+      if (!files.length) return say('Elige uno o más archivos.');
+      e.target.disabled = true;
+      for (const f of files) {
+        if (f.size > 50 * 1024 * 1024) { say(`${f.name} pesa más de 50 MB`); continue; }
+        const name = f.name.normalize('NFD').replace(/[^\w.\-]+/g, '-').toLowerCase();
+        const {error} = await sb.storage.from('clips-media').upload(`${folder}/${name}`, f, {upsert: true, contentType: f.type});
+        say(error ? `${f.name}: ${error.message}` : `Subido ${name}`);
+      }
+      e.target.disabled = false; list();
+    };
+    c.querySelector('.done').onclick = async () => { const on = c.querySelector('.tag.ok'); await sb.from('clips_requests').update({status: on ? 'pendiente' : 'listo'}).eq('id', c.dataset.id); pedidos(); };
+  });
+}
+
+async function rend() {
+  let q = sb.from('clips_videos').select('id,day,account,lang,title').eq('status', 'publicado').order('day', {ascending: false}).limit(30);
+  if (owner !== 'todos') q = q.eq('owner', owner);
+  const {data: vids} = await q;
+  const {data: mets} = await sb.from('clips_metrics').select('*').order('captured_at', {ascending: false}).limit(500);
+  if (!vids?.length) return $('#m').innerHTML = '<p class="muted">Marca un video como publicado en la pestaña Videos y aquí podrás anotar sus vistas por plataforma.</p>';
+  const last = (id, p) => mets?.find((m) => m.video_id === id && m.platform === p);
+  let total = 0, html = '';
+  for (const v of vids) {
+    html += `<div class="card metrics" data-id="${v.id}"><div class="row"><span class="tag">${esc(v.account)}</span><span class="muted">${esc(v.day)}</span></div><h3>${esc(v.title)}</h3><div class="row">`;
+    for (const p of ['tiktok', 'instagram', 'youtube']) { const m = last(v.id, p); total += m?.views || 0; html += `<label class="muted">${p}<br><input type="number" inputmode="numeric" data-p="${p}" value="${m?.views ?? ''}" placeholder="vistas"></label>`; }
+    html += `</div><button class="sv primary">Guardar vistas</button></div>`;
+  }
+  $('#m').innerHTML = `<div class="card"><h3>${total.toLocaleString('es')} vistas en total</h3><p class="muted">Anota las vistas de cada video una vez al día. Con eso Claude decide qué repetir y qué cambiar.</p></div>` + html;
+  $('#m').querySelectorAll('.sv').forEach((b) => b.onclick = async () => {
+    const c = b.closest('.card');
+    const rows = [...c.querySelectorAll('input')].filter((i) => i.value !== '').map((i) => ({video_id: +c.dataset.id, platform: i.dataset.p, views: +i.value}));
+    if (!rows.length) return say('Escribe al menos un número.');
+    const {error} = await sb.from('clips_metrics').insert(rows);
+    say(error ? error.message : 'Guardado'); if (!error) rend();
+  });
+}
+
+$('#out').onclick = async () => { await sb.auth.signOut(); $('#who').textContent = ''; boot(); };
+boot();
+</script>
+</body>
+</html>
