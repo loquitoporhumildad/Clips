@@ -4,6 +4,7 @@ import {Lottie} from 'lottie-react';
 import NumberFlow from '@number-flow/react';
 import {api, DEMO, enEspanol, sb} from './datos.js';
 import check from './check.json';
+import BlurText from './bits/BlurText.jsx'; // React Bits (MIT + Commons Clause)
 
 const PRESION = {whileTap: {scale: 0.97}};
 const cascada = {visible: {transition: {staggerChildren: 0.055}}};
@@ -44,11 +45,26 @@ function Fondo() {
 }
 
 function Titulo({ligera, fuerte}) {
+  // Entrada palabra por palabra (BlurText de React Bits).
   return (
-    <h1 className="titulo">
-      <em>{ligera}</em>
-      <strong>{fuerte}</strong>
-    </h1>
+    <div className="titulo" role="heading" aria-level="1" aria-label={`${ligera} ${fuerte}`}>
+      <BlurText key={ligera} text={ligera} className="ligera" delay={60} distance={12} blur={6} stepDuration={0.28} trigger="load" />
+      <BlurText key={fuerte} text={fuerte} className="fuerte" delay={60} distance={12} blur={6} stepDuration={0.28} trigger="load" />
+    </div>
+  );
+}
+
+// Tira de mini pantallas que se desliza sola en la entrada (estilo Marquee de Magic UI).
+function Tira() {
+  const fichas = ['475M', '4 días', '$79.99', '1,080', '19 nov', '13 años'];
+  return (
+    <div className="tira" aria-hidden="true">
+      <div className="tira-pista">
+        {[...fichas, ...fichas].map((t, i) => (
+          <span key={i} className={`mini${i % 3 === 1 ? ' senal' : i % 3 === 2 ? ' clara' : ''}`}><b>{t}</b><i /><i /></span>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -243,12 +259,45 @@ function Rendimiento({dueno, avisar}) {
     if (!error) cargar();
   };
 
+  const porRed = REDES.map(([k, n]) => ({k, n, vistas: datos.videos.reduce((a, v) => a + (ultima(v.id, k) || 0), 0)}));
+  const tope = Math.max(1, ...porRed.map((r) => r.vistas));
+  const porVideo = datos.videos.map((v) => ({v, vistas: REDES.reduce((a, [k]) => a + (ultima(v.id, k) || 0), 0)})).sort((x, y) => y.vistas - x.vistas);
+  const mejor = porVideo[0];
+  const num = (n) => n.toLocaleString('es');
+
   return (
     <motion.div variants={cascada} initial="oculto" animate="visible">
-      <motion.div variants={sube} style={{margin: '4px 0 22px'}}>
-        <div className="cifra"><NumberFlow value={total} locales="es" /></div>
-        <span>vistas en total, sumando las tres redes</span>
-      </motion.div>
+      <div className="bento">
+        <motion.section variants={sube} className="ficha total">
+          <div className="cifra"><NumberFlow value={total} locales="es" /></div>
+          <span>vistas en total, sumando las tres redes</span>
+        </motion.section>
+        <motion.section variants={sube} className="ficha ancha">
+          <h3>Vistas por red</h3>
+          <div className="barras" role="list">
+            {porRed.map((r) => (
+              <div key={r.k} role="listitem" className="barra-fila" title={`${r.n}: ${num(r.vistas)} vistas (${total ? Math.round((r.vistas / total) * 100) : 0}% del total)`}>
+                <span className="barra-nombre">{r.n}</span>
+                <span className="barra-pista">
+                  <motion.span className="barra-marca" initial={{width: 0}} animate={{width: `${(r.vistas / tope) * 100}%`}} transition={{type: 'spring', damping: 24, stiffness: 120}} />
+                </span>
+                <span className="barra-valor">{num(r.vistas)}</span>
+              </div>
+            ))}
+          </div>
+        </motion.section>
+        <motion.section variants={sube} className="ficha">
+          <h3>El que más pegó</h3>
+          <p className="mejor">{mejor.vistas ? mejor.v.title : 'Aún sin vistas anotadas'}</p>
+          {mejor.vistas > 0 && <span className="apoyo">{num(mejor.vistas)} vistas</span>}
+        </motion.section>
+        <motion.section variants={sube} className="ficha">
+          <h3>Publicados</h3>
+          <div className="cifra chica"><NumberFlow value={datos.videos.length} /></div>
+          <span className="apoyo">{datos.videos.length === 1 ? 'video' : 'videos'}</span>
+        </motion.section>
+      </div>
+      <motion.div variants={sube} className="dia">Anota las vistas de hoy</motion.div>
       {datos.videos.map((v) => (
         <motion.form key={v.id} variants={sube} className="tarjeta" onSubmit={(e) => guardar(e, v)}>
           <span className="sello">{v.account}</span>
@@ -290,6 +339,7 @@ function Entrada({avisar, alEntrar}) {
         <motion.button {...PRESION} className="pildora llena" disabled={ocupado}>{crear ? 'Crear cuenta' : 'Entrar'}</motion.button>
       </form>
       <p>{crear ? 'La contraseña lleva 8 caracteres o más. Después de crearla, Claude la activa desde el proyecto.' : 'Si nunca has entrado, toca "Primera vez".'}</p>
+      <Tira />
     </div>
   );
 }
@@ -303,7 +353,7 @@ const DUENOS = [['juan', 'Juan'], ['socio', 'Socio'], ['todos', 'Los dos']];
 
 export default function App() {
   const [estado, setEstado] = useState({cargando: true});
-  const [pestana, setPestana] = useState('videos');
+  const [pestana, setPestana] = useState(() => (DEMO && new URLSearchParams(location.search).get('tab')) || 'videos');
   const [dueno, setDueno] = useState('juan');
   const [aviso, setAviso] = useState(null);
   const [tema, setTema] = useState(() => document.documentElement.dataset.tema || (matchMedia('(prefers-color-scheme: dark)').matches ? 'oscuro' : 'claro'));
