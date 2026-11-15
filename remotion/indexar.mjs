@@ -10,7 +10,8 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const tmp = path.join(here, '..', 'out', 'medios');
 const dest = path.join(here, '..', 'out', 'indice');
 const {SUPABASE_URL, SUPABASE_SERVICE_KEY} = process.env;
-if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) throw new Error('Faltan SUPABASE_URL y SUPABASE_SERVICE_KEY');
+const principal = process.argv[1] === fileURLToPath(import.meta.url);
+if (principal && (!SUPABASE_URL || !SUPABASE_SERVICE_KEY)) throw new Error('Faltan SUPABASE_URL y SUPABASE_SERVICE_KEY');
 
 const sb = async (p, init = {}) => {
   const r = await fetch(`${SUPABASE_URL}${p}`, {...init, headers: {apikey: SUPABASE_SERVICE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`, ...(init.headers ?? {})}});
@@ -20,8 +21,29 @@ const sb = async (p, init = {}) => {
 const list = async (prefix) => (await sb('/storage/v1/object/list/clips-media', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({prefix, limit: 200})})).json();
 const run = (cmd, args) => spawnSync(cmd, args, {encoding: 'utf8'});
 
+// "Ritmo" medido, para lo que una imagen quieta no muestra: cuánto cambia la
+// imagen (movimiento/cortes) y qué tan fuerte suena cada tramo.
+export function ritmo(local, paso, dur) {
+  const n = Math.max(1, Math.ceil(dur / paso));
+  const tramos = Array.from({length: n}, (_, i) => ({t: i * paso, mov: 0, k: 0, vol: null}));
+  const leer = (salida, clave, usar) => {
+    let t = 0;
+    for (const l of salida.split('\n')) {
+      const m = l.match(/pts_time:([\d.]+)/);
+      if (m) t = Number(m[1]);
+      const v = l.match(new RegExp(`${clave}=(-?[\\d.]+|-inf)`));
+      if (v) usar(tramos[Math.min(n - 1, Math.floor(t / paso))], v[1] === '-inf' ? -90 : Number(v[1]));
+    }
+  };
+  const v = run('ffmpeg', ['-loglevel', 'error', '-i', local, '-an', '-vf', "scale=160:-2,select='gte(scene,0)',metadata=print:file=-", '-f', 'null', '-']);
+  leer(v.stdout, 'lavfi\\.scene_score', (x, val) => { x.mov += val; x.k++; });
+  const a = run('ffmpeg', ['-loglevel', 'error', '-i', local, '-vn', '-af', `aresample=16000,asetnsamples=n=${16000 * paso}:p=0,astats=metadata=1:reset=1,ametadata=print:key=lavfi.astats.Overall.RMS_level:file=-`, '-f', 'null', '-']);
+  leer(a.stdout, 'lavfi\\.astats\\.Overall\\.RMS_level', (x, val) => { x.vol = val; });
+  return tramos.map((x) => ({t: x.t, movimiento: x.k ? Number(((x.mov / x.k) * 100).toFixed(1)) : 0, volumen_db: x.vol === null ? null : Number(x.vol.toFixed(1))}));
+}
+
 const resumen = [];
-for (const dir of await list('')) {
+for (const dir of principal ? await list('') : []) {
   if (dir.id) continue;
   for (const f of await list(dir.name)) {
     if (!f.id || !/\.(mp4|mov|webm|mkv)$/i.test(f.name)) continue;
@@ -39,9 +61,12 @@ for (const dir of await list('')) {
     const vf = `fps=1/${paso},scale=240:-2,drawtext=text='%{pts\\:hms}':x=5:y=5:fontsize=20:fontcolor=white:box=1:boxcolor=black@0.65:boxborderw=4,tile=6x${filas}`;
     const res = run('ffmpeg', ['-loglevel', 'error', '-y', '-i', local, '-vf', vf, '-frames:v', '1', '-q:v', '5', salida]);
     if (res.status !== 0) { console.log(`No se pudo indexar ${rel}: ${res.stderr.slice(0, 300)}`); continue; }
-    resumen.push(`- \`${rel}\` · ${Math.round(dur)} s · un cuadro cada ${paso} s`);
+    const tramos = ritmo(local, paso, dur);
+    fs.writeFileSync(`${salida}.json`, JSON.stringify(tramos));
+    const top = [...tramos].sort((x, y) => y.movimiento - x.movimiento).slice(0, 5).map((x) => `${x.t}s (${x.movimiento})`).join(', ');
+    resumen.push(`- \`${rel}\` · ${Math.round(dur)} s · un cuadro cada ${paso} s · más movimiento en: ${top}`);
     console.log(`Indexado ${rel} (${Math.round(dur)} s)`);
   }
 }
-fs.mkdirSync(dest, {recursive: true});
-fs.writeFileSync(path.join(dest, 'LEEME.md'), `# Índice de medios\n\nHojas de contacto de los videos subidos desde el panel. Cada cuadro lleva su tiempo.\n\n${resumen.join('\n') || 'Sin videos todavía.'}\n`);
+if (principal) fs.mkdirSync(dest, {recursive: true});
+if (principal) fs.writeFileSync(path.join(dest, 'LEEME.md'), `# Índice de medios\n\nHojas de contacto de los videos subidos desde el panel. Cada cuadro lleva su tiempo.\n\n${resumen.join('\n') || 'Sin videos todavía.'}\n`);
