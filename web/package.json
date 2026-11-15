@@ -1,0 +1,22 @@
+{
+  "name": "clips-panel",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@number-flow/react": "^0.6.2",
+    "@supabase/supabase-js": "^2.119.0",
+    "lottie-react": "^3.1.2",
+    "motion": "^14.14.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.3.0",
+    "vite": "^8.3.8"
+  }
+}

@@ -3,3 +3,4 @@ out/
 remotion/public/audio/
 .env
 *.log
+web/dist/
