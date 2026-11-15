@@ -1,0 +1,145 @@
+/* Lenguaje visual heredado de Apetini: papel crema, tarjetas blancas, píldoras,
+   títulos en cursiva ligera + negrita, sombras casi imperceptibles. */
+:root {
+  --papel: #f6f4ee;
+  --papel-hondo: #edeae1;
+  --tarjeta: #ffffff;
+  --tinta: #1b2440;
+  --tinta-suave: #56607a;
+  --tinta-tenue: #8b93a6;
+  --borde: #e2ded3;
+  --senal: #e8356d;
+  --senal-suave: #fbe3ea;
+  --bruma: #e4e9f3;
+  --ambar: #a86f0c;
+  --ambar-suave: #f6ead3;
+  --verde: #1f8a5b;
+  --verde-suave: #e1efe6;
+  --sombra: 0 1px 2px rgba(27, 36, 64, 0.04), 0 8px 24px rgba(27, 36, 64, 0.05);
+  --sombra-flota: 0 2px 4px rgba(27, 36, 64, 0.05), 0 18px 40px rgba(27, 36, 64, 0.12);
+  --vidrio: rgba(255, 255, 255, 0.62);
+  --vidrio-borde: rgba(27, 36, 64, 0.1);
+  --sobre-tinta: #ffffff;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema='claro']) {
+    --papel: #171b24; --papel-hondo: #11141b; --tarjeta: #202634; --tinta: #eef1f7; --tinta-suave: #a9b1c4;
+    --tinta-tenue: #7c859a; --borde: #303849; --senal: #ff6b96; --senal-suave: #3d2230; --bruma: #2a3142;
+    --ambar: #e9b45a; --ambar-suave: #3a3020; --verde: #5fd09a; --verde-suave: #1f3a2d;
+    --sombra: 0 1px 2px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.18);
+    --sombra-flota: 0 2px 4px rgba(0, 0, 0, 0.25), 0 18px 40px rgba(0, 0, 0, 0.4);
+    --vidrio: rgba(32, 38, 52, 0.66); --vidrio-borde: rgba(255, 255, 255, 0.12); --sobre-tinta: #171b24;
+    color-scheme: dark;
+  }
+}
+:root[data-tema='oscuro'] {
+  --papel: #171b24; --papel-hondo: #11141b; --tarjeta: #202634; --tinta: #eef1f7; --tinta-suave: #a9b1c4;
+  --tinta-tenue: #7c859a; --borde: #303849; --senal: #ff6b96; --senal-suave: #3d2230; --bruma: #2a3142;
+  --ambar: #e9b45a; --ambar-suave: #3a3020; --verde: #5fd09a; --verde-suave: #1f3a2d;
+  --sombra: 0 1px 2px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.18);
+  --sombra-flota: 0 2px 4px rgba(0, 0, 0, 0.25), 0 18px 40px rgba(0, 0, 0, 0.4);
+  --vidrio: rgba(32, 38, 52, 0.66); --vidrio-borde: rgba(255, 255, 255, 0.12); --sobre-tinta: #171b24;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--papel); color: var(--tinta);
+  font: 15px/1.42 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; border: 0; background: none; padding: 0; -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--senal); outline-offset: 2px; }
+
+/* Fondo de íconos muy suaves, como el de Apetini pero con claquetas y notas. */
+.fondo { position: fixed; inset: 0; z-index: 0; color: var(--tinta); opacity: 0.045; pointer-events: none; }
+.fondo svg { width: 100%; height: 100%; }
+
+.app { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 0 20px calc(120px + env(safe-area-inset-bottom)); }
+
+.barra { display: flex; align-items: center; gap: 10px; padding: 18px 0 6px; }
+.marca { flex: 1; display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 19px; letter-spacing: -0.4px; }
+.marca i { width: 26px; height: 26px; border-radius: 9px; background: var(--senal); display: grid; place-items: center; }
+.marca i::after { content: ''; border-left: 9px solid #fff; border-top: 6px solid transparent; border-bottom: 6px solid transparent; margin-left: 2px; }
+.redondo { width: 40px; height: 40px; border-radius: 999px; background: var(--tarjeta); border: 1px solid var(--borde); display: grid; place-items: center; }
+.redondo svg { width: 19px; height: 19px; }
+.salir { font-size: 13.5px; font-weight: 600; color: var(--tinta-suave); padding: 10px 6px; }
+
+.titulo { margin: 22px 0 18px; }
+.titulo em { display: block; font-size: 25px; font-weight: 300; letter-spacing: -0.3px; color: var(--tinta-suave); }
+.titulo strong { display: block; font-size: 31px; font-weight: 700; letter-spacing: -0.8px; line-height: 1.08; margin-top: -1px; }
+
+.selector { position: relative; display: inline-flex; padding: 4px; border-radius: 999px; background: var(--papel-hondo); margin-bottom: 8px; }
+.selector button { position: relative; z-index: 1; padding: 8px 18px; border-radius: 999px; font-weight: 600; font-size: 14px; color: var(--tinta-suave); }
+.selector button[aria-pressed='true'] { color: var(--tinta); }
+.selector .gota { position: absolute; inset: 0; z-index: -1; border-radius: 999px; background: var(--tarjeta); box-shadow: var(--sombra); }
+
+.dia { font-size: 13px; font-weight: 600; color: var(--tinta-tenue); margin: 26px 0 10px; }
+
+/* Video: tira vertical 9:16 a la izquierda, datos a la derecha. */
+.video { display: grid; grid-template-columns: 104px 1fr; gap: 16px; padding: 14px; background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 24px; box-shadow: var(--sombra); margin-bottom: 12px; }
+.video.abierto { grid-template-columns: 1fr; }
+.poster { position: relative; aspect-ratio: 9 / 16; width: 100%; border-radius: 16px; overflow: hidden; background: var(--tinta); color: var(--sobre-tinta); display: grid; place-items: center; }
+.poster .rayas { position: absolute; inset: 0; opacity: 0.16; background: repeating-linear-gradient(180deg, transparent 0 22px, currentColor 22px 23px); }
+.poster .play { width: 44px; height: 44px; border-radius: 999px; background: var(--senal); display: grid; place-items: center; }
+.poster .play::after { content: ''; border-left: 13px solid #fff; border-top: 8px solid transparent; border-bottom: 8px solid transparent; margin-left: 3px; }
+.poster small { position: absolute; left: 10px; bottom: 9px; font-size: 11.5px; font-weight: 600; opacity: 0.8; }
+.video video { width: 100%; max-height: 72vh; border-radius: 16px; background: #000; display: block; }
+.info { min-width: 0; display: flex; flex-direction: column; }
+.cuenta { font-size: 13px; font-weight: 600; color: var(--tinta-suave); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.video h3 { margin: 5px 0 8px; font-size: 16.5px; line-height: 1.25; letter-spacing: -0.2px; }
+.nota { font-size: 13.5px; color: var(--tinta-suave); margin: 0 0 10px; }
+.texto { margin: 0 0 12px; padding: 12px 14px; border-radius: 16px; background: var(--papel); font-size: 13.5px; white-space: pre-wrap; word-break: break-word; overflow: hidden; }
+.acciones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+
+.pildora { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 42px; padding: 0 18px; border-radius: 999px; font-weight: 600; font-size: 14px; border: 1px solid var(--borde); background: var(--tarjeta); }
+.pildora.llena { background: var(--tinta); border-color: var(--tinta); color: var(--sobre-tinta); }
+.pildora.senal { background: var(--senal); border-color: var(--senal); color: #fff; }
+.pildora.hecho { background: var(--verde-suave); border-color: transparent; color: var(--verde); padding-left: 10px; }
+.pildora:disabled { opacity: 0.5; }
+.pildora .lottie { width: 24px; height: 24px; }
+.enlace { font-weight: 600; font-size: 13.5px; color: var(--tinta-suave); text-decoration: underline; text-underline-offset: 3px; padding: 6px 0; }
+
+.sello { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: var(--bruma); color: var(--tinta-suave); }
+.sello.pendiente { background: var(--ambar-suave); color: var(--ambar); }
+.sello.listo { background: var(--verde-suave); color: var(--verde); }
+
+.tarjeta { padding: 18px; background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 24px; box-shadow: var(--sombra); margin-bottom: 12px; }
+.tarjeta h3 { margin: 8px 0 6px; font-size: 17px; letter-spacing: -0.2px; line-height: 1.25; }
+.tarjeta p { margin: 0 0 12px; color: var(--tinta-suave); font-size: 14px; }
+.soltar { display: block; padding: 16px; border-radius: 18px; border: 1.5px dashed var(--borde); background: var(--papel); text-align: center; font-weight: 600; font-size: 14px; color: var(--tinta-suave); margin-bottom: 10px; cursor: pointer; }
+.soltar input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.soltar b { color: var(--tinta); }
+.archivos { font-size: 13px; color: var(--tinta-tenue); margin-top: 10px; }
+
+.cifra { font-size: 54px; font-weight: 700; letter-spacing: -2px; line-height: 1; font-variant-numeric: tabular-nums; }
+.cifra + span { color: var(--tinta-suave); font-size: 14px; }
+.redes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0 12px; }
+.redes label { font-size: 12.5px; font-weight: 600; color: var(--tinta-suave); }
+.campo, .redes input { width: 100%; min-height: 46px; padding: 0 14px; border-radius: 16px; border: 1px solid var(--borde); background: var(--papel); margin-top: 5px; font-variant-numeric: tabular-nums; }
+.campo { margin: 0 0 10px; min-height: 50px; border-radius: 999px; padding: 0 20px; }
+.vacio { padding: 34px 10px; color: var(--tinta-suave); max-width: 34ch; }
+.vacio svg { width: 76px; height: 76px; color: var(--tinta-tenue); margin-bottom: 10px; }
+
+/* Menú flotante de vidrio */
+.menu { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 5; display: flex; gap: 2px; padding: 6px; border-radius: 999px; background: var(--vidrio); border: 1px solid var(--vidrio-borde); box-shadow: var(--sombra-flota); -webkit-backdrop-filter: blur(20px) saturate(170%); backdrop-filter: blur(20px) saturate(170%); }
+.menu button { position: relative; display: flex; align-items: center; gap: 7px; height: 46px; padding: 0 16px; border-radius: 999px; font-weight: 600; font-size: 13.5px; color: var(--tinta-suave); white-space: nowrap; }
+.menu button[aria-current='page'] { color: var(--sobre-tinta); }
+.menu svg { width: 19px; height: 19px; position: relative; z-index: 1; }
+.menu span { position: relative; z-index: 1; }
+.menu .gota { position: absolute; inset: 0; border-radius: 999px; background: var(--tinta); }
+
+.aviso { position: fixed; left: 50%; bottom: calc(92px + env(safe-area-inset-bottom)); z-index: 6; max-width: calc(100vw - 40px); padding: 12px 18px; border-radius: 999px; background: var(--tinta); color: var(--sobre-tinta); font-weight: 600; font-size: 14px; box-shadow: var(--sombra-flota); text-align: center; }
+
+.entrada { max-width: 400px; padding-top: 6vh; }
+.entrada .pildora { width: 100%; min-height: 50px; font-size: 15px; }
+.entrada p { color: var(--tinta-suave); font-size: 13.5px; margin: 12px 4px 0; }
+
+@media (min-width: 768px) {
+  .app { padding-top: 12px; }
+  .video { grid-template-columns: 132px 1fr; padding: 16px; gap: 20px; }
+  .video.abierto { grid-template-columns: 320px 1fr; }
+}
