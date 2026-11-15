@@ -6,7 +6,7 @@ import {BODY, HEAD, Rise, Source, fmt, useEnter} from './common';
 
 // Zona segura: TikTok/Reels tapan ~380px abajo y ~150px a la derecha.
 const Frame: React.FC<{children: React.ReactNode}> = ({children}) => (
-  <AbsoluteFill style={{padding: '300px 160px 440px 80px', justifyContent: 'center'}}>{children}</AbsoluteFill>
+  <AbsoluteFill style={{padding: '300px 160px 440px 80px', justifyContent: 'center', textShadow: '0 6px 0 rgba(0,0,0,0.45), 0 0 40px rgba(0,0,0,0.5)'}}>{children}</AbsoluteFill>
 );
 
 const Hook: React.FC<{s: Extract<Scene, {type: 'hook'}>; t: Theme; lang: Lang}> = ({s, t, lang}) => {

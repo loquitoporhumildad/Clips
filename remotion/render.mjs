@@ -6,6 +6,7 @@ import {renderMedia, selectComposition} from '@remotion/renderer';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {makeAudio} from './audio.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..');
@@ -27,8 +28,22 @@ const specs = fs
   .filter((f) => f.endsWith('.json'))
   .map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')));
 
+// Audio generado por código y fondos opcionales (public/media).
+const pub = path.join(here, 'public');
+fs.mkdirSync(path.join(pub, 'audio'), {recursive: true});
+fs.mkdirSync(path.join(pub, 'media'), {recursive: true});
+for (const spec of specs) {
+  if (spec.audio !== false) makeAudio(spec, path.join(pub, 'audio', `${spec.id}.wav`));
+  for (const s of spec.scenes) {
+    if (s.bg && !fs.existsSync(path.join(pub, 'media', s.bg))) {
+      console.log(`Fondo no encontrado, se usa degradado: ${s.bg}`);
+      delete s.bg;
+    }
+  }
+}
+
 console.log(`Empaquetando Remotion…`);
-const serveUrl = await bundle({entryPoint: path.join(here, 'src/index.ts')});
+const serveUrl = await bundle({entryPoint: path.join(here, 'src/index.ts'), publicDir: pub});
 
 const done = [];
 for (const spec of specs) {
@@ -67,12 +82,12 @@ const sb = async (p, init) => {
 if (SUPABASE_URL && SUPABASE_SERVICE_KEY) {
   for (const d of done) {
     const key = `${date}/${path.basename(d.file)}`;
-    await sb(`/storage/v1/object/videos/${key}`, {
+    await sb(`/storage/v1/object/clips-videos/${key}`, {
       method: 'POST',
       headers: {'Content-Type': 'video/mp4', 'x-upsert': 'true'},
       body: fs.readFileSync(d.file),
     });
-    await sb(`/rest/v1/videos?on_conflict=day,spec_id,lang`, {
+    await sb(`/rest/v1/clips_videos?on_conflict=day,spec_id,lang`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates'},
       body: JSON.stringify({

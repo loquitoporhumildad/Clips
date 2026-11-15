@@ -85,9 +85,12 @@ Di en cada sesión en qué etapa estamos y qué falta para la siguiente.
 - GitHub: repo privado `loquitoporhumildad/Clips` (si los minutos de
   Actions no alcanzan, evaluar hacerlo público). Cada uno trabaja en su
   rama y une con pull requests.
-- Supabase: proyecto `clips` en la organización `nbapicks`. No tocar
-  ningún otro proyecto (ni `humildad` ni Apetini). Borrar videos de más de
-  7 días; guardar métricas.
+- Supabase: dentro del proyecto `nba-predictor`, tablas con prefijo `clips_`
+  (clips_videos, clips_metrics, clips_trends, clips_bitacora) y bucket
+  `clips-videos`. No tocar las tablas de NBA ni ningún otro proyecto.
+  Borrar videos de más de 7 días; guardar métricas.
+- Audio: beat generado por código (remotion/audio.mjs). Fondos de video o
+  imagen: archivos en remotion/public/media, campo "bg" de cada escena.
 - Vercel: página con login (Supabase Auth) y sección por persona: Clips de
   hoy (vista previa, descarga, textos), Tendencias (por red y Google),
   Rendimiento (vistas, retención, ganancias por video y cuenta), Qué

@@ -1,4 +1,7 @@
 node_modules/
 out/
+remotion/public/audio/
+remotion/public/media/*
+!remotion/public/media/.gitkeep
 .env
 *.log

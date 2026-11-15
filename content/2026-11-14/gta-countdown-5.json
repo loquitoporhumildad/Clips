@@ -3,6 +3,7 @@
   "brand": "gta",
   "theme": "vice",
   "langs": ["en", "es"],
+  "tag": {"en": "COUNTDOWN", "es": "CUENTA REGRESIVA"},
   "accounts": {"en": "Vice Data", "es": "Datos de Vice"},
   "scenes": [
     {
@@ -74,7 +75,7 @@
       "hashtags": ["#GTA6", "#GTAVI", "#GTA6español", "#videojuegos", "#gaming"]
     }
   },
-  "notes": "Sin audio a propósito: agregar en la app un sonido en tendencia antes de publicar.",
+  "notes": "Trae beat propio. Si usas un sonido en tendencia de la app, baja el audio original al 20-30%.",
   "sources": [
     "https://www.techradar.com/gaming/the-latest-grand-theft-auto-6-trailer-has-set-a-major-record-by-racking-up-475-million-views-in-just-24-hours",
     "https://epicflix.com/grand-theft-auto-vi-trailer-2-falls-short-of-breaking-youtube-record-set-by-first-trailer",
