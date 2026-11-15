@@ -93,7 +93,7 @@ for (const spec of specs) {
   if (spec.music && spec.music !== 'auto' && !fs.existsSync(path.join(media, spec.music))) delete spec.music;
   if ((!spec.music || spec.music === 'auto') && tracks.length && spec.music !== false) spec.music = tracks[hash(spec.id) % tracks.length];
   if (spec.music === 'auto' || spec.music === false) delete spec.music;
-  if (spec.audio !== false) makeAudio(spec, path.join(pub, 'audio', `${spec.id}.wav`), {drums: !spec.music});
+  if (spec.audio !== false) makeAudio(spec, path.join(pub, 'audio', `${spec.id}.wav`), {drums: !spec.music && spec.beat !== false});
   console.log(`${spec.id}: música=${spec.music ?? 'beat propio'}, fondos=${spec.scenes.filter((s) => s.bg).length}/${spec.scenes.length}`);
 }
 
