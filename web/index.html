@@ -5,44 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Clips · Panel</title>
 <style>
-  :root{--bg:#0d0716;--card:#1a1028;--line:#2e2142;--text:#f4eefc;--muted:#a897c2;--accent:#ff3ea5;--accent2:#2de2e6;--ok:#3dff9a}
+  :root{--bg:#241a38;--bg2:#3a2360;--bg3:#1f4a58;--card:rgba(58,44,86,.78);--solid:#33274d;--field:#2b2042;--line:#4d3d70;--text:#f7f2ff;--muted:#c3b5dc;--accent:#ff5cb3;--accent2:#4be8ec;--ok:#5dffad;--warn:#ffd95e;--head:rgba(36,26,56,.86);--glass:rgba(255,255,255,.12);--glassline:rgba(255,255,255,.28);--onaccent:#2a0018;--shadow:rgba(0,0,0,.35)}
+  :root[data-theme="light"]{--bg:#f4f0fb;--bg2:#ffd9ee;--bg3:#d3f6f7;--card:rgba(255,255,255,.82);--solid:#ffffff;--field:#f3eefb;--line:#ddd2ef;--text:#231a35;--muted:#6c5f85;--accent:#e0218a;--accent2:#0aa5aa;--ok:#0f9d58;--warn:#b7791f;--head:rgba(244,240,251,.88);--glass:rgba(255,255,255,.6);--glassline:rgba(120,90,170,.28);--onaccent:#ffffff;--shadow:rgba(80,50,120,.22)}
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-  header{position:sticky;top:0;z-index:5;background:rgba(13,7,22,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;gap:12px}
+  body{margin:0;color:var(--text);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:radial-gradient(900px 500px at 10% -10%,var(--bg2) 0%,transparent 60%),radial-gradient(700px 500px at 110% 20%,var(--bg3) 0%,transparent 55%),var(--bg);background-attachment:fixed;min-height:100vh}
+  header{position:sticky;top:0;z-index:5;background:var(--head);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;align-items:center;gap:10px}
   header h1{font-size:18px;margin:0;flex:1;letter-spacing:.5px}
   header h1 b{color:var(--accent)}
+  header button{padding:8px 12px}
   nav{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:8;display:flex;gap:4px;padding:6px;border-radius:999px;
-    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
-    box-shadow:0 10px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.25)}
+    background:var(--glass);border:1px solid var(--glassline);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+    box-shadow:0 10px 40px var(--shadow),inset 0 1px 0 rgba(255,255,255,.3)}
   nav button{white-space:nowrap;border:0;background:transparent;border-radius:999px;padding:10px 16px;font-size:14px}
-  nav button.on{background:rgba(255,62,165,.9);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
-  .seg{display:flex;gap:4px;padding:4px;margin:14px 0 4px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px)}
+  nav button.on{background:var(--accent);color:var(--onaccent)}
+  .seg{display:flex;gap:4px;padding:4px;margin:14px 0 4px;border-radius:14px;background:var(--glass);border:1px solid var(--glassline);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
   .seg button{flex:1;border:0;background:transparent;padding:9px 6px;font-size:14px}
-  .seg button.on{background:rgba(45,226,230,.9);color:#002b2c}
-  body{background:radial-gradient(900px 500px at 10% -10%,#3b0a4f 0%,transparent 60%),radial-gradient(700px 500px at 110% 20%,#0b3d4a 0%,transparent 55%),var(--bg);background-attachment:fixed;min-height:100vh}
-  .card{background:rgba(26,16,40,.72)!important;backdrop-filter:blur(10px)}
+  .seg button.on{background:var(--accent2);color:#00292b}
   main{padding:0 16px 110px;max-width:760px;margin:0 auto}
-  button,.btn{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--card);color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer;text-decoration:none;display:inline-block}
-  button.on,button.primary,.btn.primary{background:var(--accent);border-color:var(--accent);color:#1a0010}
+  button,.btn{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--solid);color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer;text-decoration:none;display:inline-block}
+  button.primary,.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--onaccent)}
   button.ghost{background:transparent}
   button:disabled{opacity:.5}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}
+  .card{background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0;box-shadow:0 6px 24px var(--shadow)}
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  .tag{font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:#2e2142;color:var(--accent2)}
-  .tag.pend{color:#ffd23f}.tag.ok{color:var(--ok)}
+  .tag{font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--field);border:1px solid var(--line);color:var(--accent2)}
+  .tag.pend{color:var(--warn)}.tag.ok{color:var(--ok)}
   h2{font-size:15px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:22px 0 4px}
   h3{margin:8px 0 4px;font-size:17px}
   p{margin:6px 0}.muted{color:var(--muted);font-size:14px}
   video{width:100%;max-height:70vh;border-radius:12px;background:#000;margin:8px 0}
-  pre{white-space:pre-wrap;word-break:break-word;background:#120a1e;border:1px solid var(--line);border-radius:10px;padding:10px;font:14px/1.4 ui-monospace,Menlo,monospace;margin:8px 0}
-  input,select{font:inherit;width:100%;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:#120a1e;color:var(--text);margin:6px 0}
+  pre{white-space:pre-wrap;word-break:break-word;background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px;font:14px/1.4 ui-monospace,Menlo,monospace;margin:8px 0}
+  input,select{font:inherit;width:100%;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--field);color:var(--text);margin:6px 0}
   .metrics input{width:92px}
   .files{font-size:13px;color:var(--muted);margin-top:6px}
-  #msg{position:fixed;left:16px;right:16px;bottom:84px;background:var(--accent2);color:#002b2c;font-weight:800;padding:12px 14px;border-radius:12px;display:none;z-index:9}
+  #msg{position:fixed;left:16px;right:16px;bottom:84px;background:var(--accent2);color:#00292b;font-weight:800;padding:12px 14px;border-radius:12px;display:none;z-index:9}
 </style>
 </head>
 <body>
-<header><h1><b>CLIPS</b> · panel</h1><span id="who" class="muted"></span><button id="out" class="ghost" hidden>Salir</button></header>
+<header><h1><b>CLIPS</b> · panel</h1><span id="who" class="muted"></span><button id="theme" class="ghost" aria-label="Cambiar tema">☀️</button><button id="out" class="ghost" hidden>Salir</button></header>
 <div id="app"></div>
 <div id="msg"></div>
 <script type="module">
@@ -53,6 +53,14 @@ const app = $('#app');
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const say = (t) => { const m = $('#msg'); m.textContent = t; m.style.display = 'block'; clearTimeout(say.t); say.t = setTimeout(() => m.style.display = 'none', 3500); };
 let tab = 'videos', owner = 'juan';
+// Tema claro/oscuro: recuerda la elección; si no hay, sigue el del teléfono.
+const root = document.documentElement;
+const setTheme = (t) => { root.dataset.theme = t; $('#theme').textContent = t === 'light' ? '🌙' : '☀️'; try { localStorage.setItem('clips-theme', t); } catch {} };
+let saved = null; try { saved = localStorage.getItem('clips-theme'); } catch {}
+setTheme(saved || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+$('#theme').onclick = () => setTheme(root.dataset.theme === 'light' ? 'dark' : 'light');
+const ERR = {'Invalid login credentials': 'Correo o contraseña incorrectos. Si es tu primera vez, toca "Crear cuenta".', 'Email not confirmed': 'Falta confirmar el correo. Revisa tu bandeja (y spam) o avísale a Claude para que la confirme.', 'User already registered': 'Ese correo ya tiene cuenta. Toca "Entrar".'};
+const es = (m) => ERR[m] || m;
 const OWNERS = [['juan', 'Juan'], ['socio', 'Socio'], ['todos', 'Todos']];
 
 async function boot() {
@@ -69,15 +77,21 @@ async function boot() {
   render();
 }
 
-function login() {
-  app.innerHTML = `<main><div class="card"><h3>Entrar</h3>
+function login(mode = 'in') {
+  const up = mode === 'up';
+  app.innerHTML = `<main><div class="seg"><button data-m="in" class="${up?'':'on'}">Ya tengo cuenta</button><button data-m="up" class="${up?'on':''}">Primera vez</button></div>
+    <div class="card"><h3>${up ? 'Crear cuenta' : 'Entrar'}</h3>
     <input id="em" type="email" placeholder="Correo" autocomplete="email">
-    <input id="pw" type="password" placeholder="Contraseña (mín. 8)" autocomplete="current-password">
-    <div class="row"><button class="primary" id="in">Entrar</button><button id="up">Crear cuenta</button></div>
-    <p class="muted">La primera vez: crea la cuenta, confirma el correo que te llega y luego entra.</p></div></main>`;
-  const creds = () => ({email: $('#em').value.trim(), password: $('#pw').value});
-  $('#in').onclick = async () => { const {error} = await sb.auth.signInWithPassword(creds()); error ? say(error.message) : boot(); };
-  $('#up').onclick = async () => { const {error} = await sb.auth.signUp(creds()); say(error ? error.message : 'Cuenta creada. Revisa tu correo para confirmarla.'); };
+    <input id="pw" type="password" placeholder="Contraseña (mínimo 8 caracteres)" autocomplete="${up?'new-password':'current-password'}">
+    <button class="primary" id="go">${up ? 'Crear cuenta' : 'Entrar'}</button>
+    <p class="muted">${up ? 'Después de crearla, confirma el correo que te llega y avísale a Claude para que te apruebe.' : 'Si nunca has entrado, toca "Primera vez".'}</p></div></main>`;
+  app.querySelectorAll('.seg button').forEach((b) => b.onclick = () => login(b.dataset.m));
+  $('#go').onclick = async () => {
+    const creds = {email: $('#em').value.trim(), password: $('#pw').value};
+    if (!creds.email || creds.password.length < 8) return say('Escribe tu correo y una contraseña de 8 caracteres o más.');
+    if (up) { const {error} = await sb.auth.signUp(creds); say(error ? es(error.message) : 'Cuenta creada. Confirma el correo y avísale a Claude.'); if (!error) login('in'); }
+    else { const {error} = await sb.auth.signInWithPassword(creds); error ? say(es(error.message)) : boot(); }
+  };
 }
 
 async function render() {
