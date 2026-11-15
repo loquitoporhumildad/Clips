@@ -4,3 +4,4 @@ remotion/public/audio/
 .env
 *.log
 web/dist/
+__pycache__/
