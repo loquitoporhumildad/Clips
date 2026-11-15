@@ -86,7 +86,7 @@ for (const spec of specs) {
       console.log(`Fondo no encontrado: ${s.bg}`);
       delete s.bg;
     }
-    if (!s.bg && pool.length && spec.autoBg !== false) s.bg = pool[k++ % pool.length];
+    if (!s.bg && pool.length && spec.autoBg === true) s.bg = pool[k++ % pool.length];
   }
   // Música: la que pida el guion, o una de public/media/music elegida por día.
   const tracks = filesIn('music', /\.(mp3|wav|m4a|ogg)$/i);

@@ -2,80 +2,148 @@
   "id": "gta-countdown-4",
   "brand": "gta",
   "theme": "vice",
-  "langs": ["en", "es"],
+  "langs": [
+    "en",
+    "es"
+  ],
   "beat": false,
-  "tag": {"en": "COUNTDOWN", "es": "CUENTA REGRESIVA"},
-  "accounts": {"en": "Vice Data", "es": "Datos de Vice"},
+  "tag": {
+    "en": "COUNTDOWN",
+    "es": "CUENTA REGRESIVA"
+  },
+  "accounts": {
+    "en": "Vice Data",
+    "es": "Datos de Vice"
+  },
   "scenes": [
     {
       "type": "hook",
       "seconds": 2.6,
-      "kicker": {"en": "4 DAYS", "es": "4 DÍAS"},
+      "kicker": {
+        "en": "4 DAYS",
+        "es": "4 DÍAS"
+      },
       "text": {
         "en": "It was supposed to come out in 2025. Here's how long we actually waited.",
         "es": "Iba a salir en 2025. Esto es lo que esperamos de verdad."
-      }
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 10.0
     },
     {
       "type": "stat",
       "seconds": 3.4,
       "value": 1080,
-      "suffix": {"en": "DAYS", "es": "DÍAS"},
+      "suffix": {
+        "en": "DAYS",
+        "es": "DÍAS"
+      },
       "label": {
         "en": "from the first trailer (Dec 5, 2023) to launch day.",
         "es": "desde el primer tráiler (5 dic 2023) hasta el estreno."
-      }
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 2.2
     },
     {
       "type": "stat",
       "seconds": 3,
       "value": 2,
-      "suffix": {"en": "DELAYS", "es": "RETRASOS"},
+      "suffix": {
+        "en": "DELAYS",
+        "es": "RETRASOS"
+      },
       "label": {
         "en": "2025 → May 26, 2026 → November 19, 2026.",
         "es": "2025 → 26 de mayo de 2026 → 19 de noviembre de 2026."
       },
-      "source": "Rockstar Games"
+      "source": "Rockstar Games",
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 16.0
     },
     {
       "type": "stat",
       "seconds": 3,
       "value": 177,
-      "suffix": {"en": "DAYS", "es": "DÍAS"},
+      "suffix": {
+        "en": "DAYS",
+        "es": "DÍAS"
+      },
       "label": {
         "en": "added by the last delay alone. Almost six months.",
         "es": "sumó solo el último retraso. Casi seis meses."
-      }
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 8.0
     },
     {
       "type": "versus",
       "seconds": 4,
-      "title": {"en": "What it costs on day one", "es": "Lo que cuesta el día uno"},
+      "title": {
+        "en": "What it costs on day one",
+        "es": "Lo que cuesta el día uno"
+      },
       "prefix": "$",
       "decimals": 2,
-      "left": {"label": {"en": "Ultimate Edition", "es": "Edición Ultimate"}, "value": 99.99},
-      "right": {"label": {"en": "Standard Edition", "es": "Edición Estándar"}, "value": 79.99},
-      "note": {"en": "No disc: download code in the box", "es": "Sin disco: código de descarga en la caja"},
+      "left": {
+        "label": {
+          "en": "Ultimate Edition",
+          "es": "Edición Ultimate"
+        },
+        "value": 99.99
+      },
+      "right": {
+        "label": {
+          "en": "Standard Edition",
+          "es": "Edición Estándar"
+        },
+        "value": 79.99
+      },
+      "note": {
+        "en": "No disc: download code in the box",
+        "es": "Sin disco: código de descarga en la caja"
+      },
       "source": "Rockstar Games"
     },
     {
       "type": "outro",
       "seconds": 3,
-      "big": {"en": "NOV 19", "es": "19 NOV"},
-      "small": {"en": "Would you have waited one more?", "es": "¿Habrías aguantado otro retraso?"},
-      "cta": {"en": "Follow · 3 days tomorrow", "es": "Síguenos · mañana faltan 3"}
+      "big": {
+        "en": "NOV 19",
+        "es": "19 NOV"
+      },
+      "small": {
+        "en": "Would you have waited one more?",
+        "es": "¿Habrías aguantado otro retraso?"
+      },
+      "cta": {
+        "en": "Follow · 3 days tomorrow",
+        "es": "Síguenos · mañana faltan 3"
+      }
     }
   ],
   "meta": {
     "en": {
       "title": "GTA VI: 1,080 days from first trailer to launch",
       "description": "Two delays, 177 extra days and a $79.99 price tag. 4 days to go. Would you have survived another delay?",
-      "hashtags": ["#GTA6", "#GTAVI", "#GTA6countdown", "#gaming", "#rockstargames"]
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6countdown",
+        "#gaming",
+        "#rockstargames"
+      ]
     },
     "es": {
       "title": "GTA VI: 1,080 días desde el primer tráiler hasta el estreno",
       "description": "Dos retrasos, 177 días extra y $79.99 de precio. Faltan 4 días. ¿Habrías aguantado otro retraso?",
-      "hashtags": ["#GTA6", "#GTAVI", "#GTA6español", "#videojuegos", "#gaming"]
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6español",
+        "#videojuegos",
+        "#gaming"
+      ]
     }
   },
   "notes": "Sonido: al publicar, busca en la app \"Hot Together\" de The Pointer Sisters (la canción del tráiler 2) y ponla de fondo. Publicar el 15 de noviembre. El cierre es una pregunta para provocar comentarios: responde los primeros.",
