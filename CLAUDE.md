@@ -166,7 +166,9 @@ Di en cada sesión en qué etapa estamos y qué falta para la siguiente.
   (minutos gratis). Entrada: `link` o `link|campaña`; sin campaña, los clips quedan
   marcados "no publicar".
 - **Streamers objetivo** (Juan, Clip Vault): Westcol, RDJavi, Danirep, AuronPlay,
-  illojuan, Rubius. Regla: solo con campaña o permiso. Cada noche buscar si alguno
+  illojuan, Rubius. Regla para Clip Vault (la que cobra): solo con campaña o permiso.
+  La única excepción es la cuenta de crecimiento (decisión de Juan, riesgo asumido; al lanzar
+  el vigilante para ella se escribe "Crecimiento sin campaña" en el campo campaña). Cada noche buscar si alguno
   abrió campaña (Whop/Vyro/Discord del streamer) y, si la hay, lanzar el vigilante en
   sus directos y proponer los clips. Sin campaña ni permiso, los clips sirven para crecer
   audiencia, no para cobrar: TikTok paga solo videos originales de más de 1 minuto con
@@ -234,7 +236,7 @@ Sin que lo pidamos:
 - Verifica con búsqueda tarifas, reglas y herramientas.
 - Automatiza con código antes que con apps pagas.
 - Respeta reglas de campaña y derechos de autor: solo contenido con
-  permiso o claramente original.
+  permiso o claramente original (excepción decidida por Juan: la cuenta de crecimiento).
 - Videos renderizados por nosotros, sin marca de agua de otras apps.
 - Sé honesto con lo que no puedes hacer y da la forma más corta de hacerlo.
 - Explica en 2-3 líneas el porqué de cada decisión.
