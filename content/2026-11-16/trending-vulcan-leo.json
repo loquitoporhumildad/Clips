@@ -1,0 +1,120 @@
+{
+  "id": "trending-vulcan-leo",
+  "brand": "trending",
+  "theme": "ai",
+  "langs": [
+    "en"
+  ],
+  "beat": false,
+  "tag": {
+    "en": "WHY IT'S TRENDING"
+  },
+  "accounts": {
+    "en": "Why It's Trending"
+  },
+  "owners": {
+    "en": "juan"
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 2.6,
+      "kicker": {
+        "en": "ROCKET FAILURE"
+      },
+      "text": {
+        "en": "Amazon just lost 40 satellites in 10 minutes."
+      }
+    },
+    {
+      "type": "stat",
+      "seconds": 3,
+      "value": 40,
+      "suffix": {
+        "en": "SATELLITES"
+      },
+      "label": {
+        "en": "Amazon Leo internet satellites lost on Sunday's Vulcan launch."
+      },
+      "source": "Spaceflight Now"
+    },
+    {
+      "type": "stat",
+      "seconds": 2.8,
+      "value": 10,
+      "suffix": {
+        "en": "MINUTES"
+      },
+      "label": {
+        "en": "into the flight. That's when the rocket failed."
+      },
+      "source": "Spaceflight Now · UPI"
+    },
+    {
+      "type": "stat",
+      "seconds": 3.2,
+      "value": 5,
+      "suffix": {
+        "en": "FLIGHTS"
+      },
+      "label": {
+        "en": "is all Vulcan has flown. This was United Launch Alliance's first total mission failure."
+      },
+      "source": "Spaceflight Now"
+    },
+    {
+      "type": "versus",
+      "seconds": 4,
+      "title": {
+        "en": "Amazon Leo satellites"
+      },
+      "left": {
+        "label": {
+          "en": "Launched, if this had worked"
+        },
+        "value": 436
+      },
+      "right": {
+        "label": {
+          "en": "Needed for the full network"
+        },
+        "value": 3300
+      },
+      "note": {
+        "en": "More than 3,300 needed to finish the constellation"
+      },
+      "source": "Spaceflight Now"
+    },
+    {
+      "type": "outro",
+      "seconds": 3,
+      "big": {
+        "en": "40 LOST"
+      },
+      "small": {
+        "en": "Can Amazon still catch Starlink?"
+      },
+      "cta": {
+        "en": "Follow · numbers behind trends"
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "Why it's trending: Amazon lost 40 satellites in 10 minutes",
+      "description": "A Vulcan rocket failed 10 minutes into flight on Sunday with 40 Amazon Leo satellites on board. Amazon needs more than 3,300. Can it still catch Starlink?",
+      "hashtags": [
+        "#space",
+        "#amazon",
+        "#rocketlaunch",
+        "#technews",
+        "#whyitstrending"
+      ]
+    }
+  },
+  "notes": "Publicar el 16 de noviembre en Why It's Trending (reemplaza a Model Drop). Música: en la app, instrumental sin letra a volumen bajo, tipo ambient o electrónica suave (busca \"ambient tech\" o \"cinematic tension\"). Sin fondo de video: no hay material propio de este tema, va con degradado. No usar imágenes del lanzamiento de terceros.",
+  "sources": [
+    "https://spaceflightnow.com/2026/11/15/ula-suffers-first-total-mission-failure-with-loss-of-vulcan-rocket-carrying-40-amazon-leo-satellites/",
+    "https://ca.news.yahoo.com/ula-vulcan-rocket-fails-liftoff-002821389.html"
+  ]
+}
