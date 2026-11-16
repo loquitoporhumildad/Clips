@@ -43,6 +43,18 @@ juegos). Nombres por confirmar según disponibilidad (primera opción = nombre p
    Links: Claude propone campañas cada noche y Juan también pega los suyos en
    el Buzón del panel (pestaña Pedidos → rama media-index, BUZON.md).
 
+4. Cuenta de crecimiento: clips en vivo SIN campaña (nombre por confirmar, sin "GTA";
+   ideas: Stream Moments, Peak Clips, Live Drop) — TikTok · Instagram · YouTube Shorts
+   Objetivo: NO cobra; atrae gente y gana fama con clips de directos (Westcol, RDJavi,
+   Danirep, AuronPlay, illojuan, Rubius y los de GTA VI). Cuando tenga audiencia
+   (referencia: 10.000 seguidores y videos que pasen de 50.000 vistas), se usa para
+   campañas y programas que sí paguen. Es una cuenta aparte de Clip Vault: si recibe
+   un reclamo de copyright, no arrastra a la cuenta que cobra. Mitigar: clips cortos,
+   con subtítulos y crédito al streamer en la descripción, y bajar un clip si el
+   streamer lo pide. El riesgo no desaparece: sin permiso puede haber reclamos o baneo.
+   Aviso: los seguidores no se transfieren a otra cuenta; la fama sirve para entrar a
+   campañas con esa misma cuenta o para promocionar la cuenta que cobra.
+
 ### Socio — desde hoy (2 marcas, 6 cuentas)
 1. Gaming / GTA VI en español — Datos de Vice (alternativas: Leonida al Día, Mundo Abierto en Datos)
    - TikTok · Instagram · YouTube Shorts
@@ -165,6 +177,13 @@ Di en cada sesión en qué etapa estamos y qué falta para la siguiente.
   `remotion/public/media/music/`, `render.mjs` elige una por video y la voz la baja; si no hay, usa el
   beat propio). En los videos que se perfilen virales, añadir al publicar una canción de
   moda desde la app de cada red. Claude anota en `notas` de cada guion la canción sugerida.
+
+## Prioridad de trabajo (decidido 16 nov)
+1. Clips en vivo CON campaña o permiso (Clip Vault): es lo único que cobra desde el día uno.
+2. Cuenta de crecimiento con clips en vivo sin campaña: fama, no dinero.
+3. Videos de datos con Remotion (GTA VI, tendencias, deportes).
+Cada directo se vigila una sola vez; el mismo clip sirve a la cuenta que cobra solo si hay
+campaña, y a la de crecimiento si no la hay.
 
 ## Plan GTA VI, 16-29 nov (2 semanas)
 Meta: muchos videos de GTA VI adictivos, con voz, música y cortes rápidos.
