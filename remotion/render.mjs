@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {makeAudio} from './audio.mjs';
+import {execFileSync} from 'node:child_process';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..');
@@ -71,6 +72,17 @@ if (hasSb) {
   }
 }
 
+// Voz en off (gratis, edge-tts). Si falla, los videos salen igual, solo con música.
+let voz = {};
+if (process.env.SIN_VOZ !== '1') {
+  try {
+    execFileSync('python3', [path.join(root, 'clips', 'voz.py'), date], {stdio: 'inherit'});
+    voz = JSON.parse(fs.readFileSync(path.join(pub, 'audio', 'voz', 'manifest.json'), 'utf8'));
+  } catch (e) {
+    console.log(`Sin voz en off: ${e.message.split('\n')[0]}`);
+  }
+}
+
 const filesIn = (sub, re) => {
   const d = path.join(media, sub);
   return fs.existsSync(d) ? fs.readdirSync(d).filter((f) => re.test(f)).sort().map((f) => `${sub}/${f}`) : [];
@@ -78,6 +90,17 @@ const filesIn = (sub, re) => {
 const hash = (str) => [...str].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7);
 
 for (const spec of specs) {
+  // Voz: cada escena dura lo que dure su voz (la más larga entre idiomas) + un respiro.
+  spec.scenes.forEach((s, i) => {
+    s.vozFile = {};
+    for (const lang of spec.langs) {
+      const k = `${spec.id}-${lang}-${i}`;
+      if (voz[k]) {
+        s.vozFile[lang] = `voz/${k}.mp3`;
+        s.seconds = Math.max(s.seconds, Math.round((voz[k] + 0.35) * 10) / 10);
+      }
+    }
+  });
   // Fondos: si la marca tiene clips/imágenes, se reparten entre las escenas sin fondo.
   const pool = filesIn(spec.brand ?? '', /\.(mp4|webm|mov|jpe?g|png|webp)$/i);
   let k = hash(spec.id);

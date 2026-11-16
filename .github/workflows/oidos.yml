@@ -1,0 +1,47 @@
+name: Oídos
+
+# Transcribe y analiza el audio de un video: gancho de los primeros 3 s, momentos
+# donde sube el sonido, silencios, ritmo (BPM) y transcripción con tiempos.
+# Sirve para analizar videos virales antes de copiar su gancho.
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Link del video o stream (YouTube, Twitch VOD, TikTok…)'
+        required: true
+      desde_min:
+        description: 'Desde el minuto (vacío = inicio)'
+        required: false
+      hasta_min:
+        description: 'Hasta el minuto (vacío = final)'
+        required: false
+
+jobs:
+  oidos:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: clips/requirements.txt
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: pip install -q -r clips/requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: whisper-small
+      - name: Escuchar
+        env:
+          URL: ${{ inputs.url }}
+          DESDE: ${{ inputs.desde_min }}
+          HASTA: ${{ inputs.hasta_min }}
+        run: python clips/oidos.py "$URL" --desde "${DESDE:-0}" --hasta "${HASTA:-0}" | tee "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: oidos
+          path: out/oidos/*.md
+          retention-days: 14

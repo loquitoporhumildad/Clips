@@ -75,6 +75,7 @@ export const DataShort: React.FC<Props> = ({spec, lang}) => {
   const frame = useCurrentFrame();
   const t = theme(spec.theme);
   let from = 0;
+  const hayVoz = spec.scenes.some((s) => s.vozFile?.[lang]);
   const drift = interpolate(frame, [0, durationInFrames], [0, 30]);
   return (
     <AbsoluteFill style={{background: `linear-gradient(${160 + drift}deg, ${t.bg1}, ${t.bg2})`}}>
@@ -85,6 +86,7 @@ export const DataShort: React.FC<Props> = ({spec, lang}) => {
         const seq = (
           <Sequence key={i} from={from} durationInFrames={len}>
             <Bg s={s} dark={t.bg1} />
+            {s.vozFile?.[lang] && <Audio src={staticFile(`audio/${s.vozFile[lang]}`)} volume={1} />}
             {spec.scenes.length === 1 ? <SceneView s={s} t={t} lang={lang} /> : (
               <Cut>
                 <SceneView s={s} t={t} lang={lang} />
@@ -105,7 +107,7 @@ export const DataShort: React.FC<Props> = ({spec, lang}) => {
       {spec.music && (
         <Audio
           src={staticFile(`media/${spec.music}`)}
-          volume={(f) => 0.55 * Math.min(1, f / 10, (durationInFrames - f) / 20)}
+          volume={(f) => (hayVoz ? 0.22 : 0.55) * Math.min(1, f / 10, (durationInFrames - f) / 20)}
         />
       )}
     </AbsoluteFill>

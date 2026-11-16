@@ -1,7 +1,7 @@
 export type Lang = 'en' | 'es';
 export type T = Record<Lang, string>;
 
-type Bg = {bg?: string; bgStart?: number; cuts?: number[]; cutEvery?: number};
+type Bg = {bg?: string; bgStart?: number; cuts?: number[]; cutEvery?: number; voz?: T; vozFile?: Partial<Record<Lang, string>>};
 
 export type Scene = Bg & (
   | {type: 'hook'; seconds: number; kicker?: T; text: T}
