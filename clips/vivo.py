@@ -259,6 +259,46 @@ class Chat:
         return res
 
 
+# ---------- Contexto para el título ----------
+def chat_del_momento(pico, n=25):
+    """Mensajes del chat de 25 s antes a 10 s después del pico: lo que la gente reaccionó. Los más repetidos primero."""
+    for _ in range(3):
+        try:
+            copia = list(chat)
+            break
+        except RuntimeError:
+            copia = []
+    else:
+        copia = []
+    cuenta = {}
+    for t, m in copia:
+        if pico - 25 <= t <= pico + 10:
+            m = m.strip()[:80]
+            if m:
+                cuenta[m] = cuenta.get(m, 0) + 1
+    orden = sorted(cuenta, key=lambda m: -cuenta[m])[:n]
+    return ' | '.join(f'{m} (x{cuenta[m]})' if cuenta[m] > 1 else m for m in orden)
+
+
+_meta = {}
+
+
+def datos_directo():
+    """Título y categoría del directo (best-effort con streamlink; vacío si no se puede)."""
+    if 'listo' in _meta:
+        return _meta.get('txt', '')
+    _meta['listo'] = 1
+    if SIMULAR:
+        return ''
+    try:
+        r = subprocess.run(['streamlink', '--json', URL], capture_output=True, text=True, timeout=40)
+        md = (json.loads(r.stdout or '{}').get('metadata') or {})
+        _meta['txt'] = ' · '.join(str(md[k]) for k in ('author', 'category', 'title') if md.get(k))
+    except Exception:
+        _meta['txt'] = ''
+    return _meta['txt']
+
+
 # ---------- Corte ----------
 def cortar(pico, fuente, puntos, n):
     a, b = pico - ADELANTO, pico + POST
@@ -286,7 +326,8 @@ def cortar(pico, fuente, puntos, n):
         'titulo': (texto[:70] + '…') if len(texto) > 70 else (texto or f'Momento en vivo {hora}'),
         'descripcion': f'{URL} · en vivo {hora}',
         'notas': (f"Campaña: {CAMP or 'SIN CAMPAÑA: no publicar hasta confirmar permiso'}. EN VIVO {hora}, elegido por "
-                  f"{fuente} (fuerza {puntos:.1f}). Fuente: {URL}. Dice: \"{texto[:300]}\""),
+                  f"{fuente} (fuerza {puntos:.1f}). Fuente: {URL}. Directo: {datos_directo() or 'sin datos'}. "
+                  f"Dice: \"{texto[:300]}\". Chat en el momento: {chat_del_momento(pico) or 'sin chat'}"),
     }
     try:
         C.subir(clip)
