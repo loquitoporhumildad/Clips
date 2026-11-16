@@ -96,7 +96,7 @@ def gemini(texto: str, nombre: str, lang: str) -> np.ndarray:
                 ultimo = e
                 if isinstance(e, urllib.error.HTTPError) and e.code in (400, 403, 404):
                     break  # este modelo no sirve: probar el siguiente
-                time.sleep((25 if isinstance(e, urllib.error.HTTPError) and e.code == 429 else 4) * (intento + 1))
+                time.sleep((10 if isinstance(e, urllib.error.HTTPError) and e.code == 429 else 4) * (intento + 1))
     raise RuntimeError(f"Gemini TTS falló: {ultimo}")
 
 
@@ -210,19 +210,34 @@ def sintetizar_escena(texto: str, lang: str, voz: str, vel: float, extra: dict):
     return audio, palabras
 
 
-def elegir_voz(spec: dict, lang: str):
-    """Voz del guion > voz de su marca > voz del idioma. None = sin voz en ese idioma."""
-    if lang in spec.get("voices", {}):
-        return spec["voices"][lang]
+def elegir_voz(spec: dict, lang: str) -> list[str]:
+    """Voces a probar, en orden: la del guion > la de su marca > la del idioma.
+    En voces.json cada una puede ser una voz o una lista (si la primera falla, se usa la siguiente).
+    Lista vacía = sin voz en ese idioma."""
     marca = CFG.get("por_marca", {}).get(spec.get("brand", ""), {})
-    return marca[lang] if lang in marca else CFG["voces"].get(lang)
+    if lang in spec.get("voices", {}):
+        v = spec["voices"][lang]
+    elif lang in marca:
+        v = marca[lang]
+    else:
+        v = CFG["voces"].get(lang)
+    return [] if not v else [v] if isinstance(v, str) else list(v)
 
 
 def narrar(spec: dict, lang: str, out: Path):
-    voz = elegir_voz(spec, lang)
-    if not voz:
+    candidatas = elegir_voz(spec, lang)
+    if not candidatas:
         print(f"  {spec['id']} ({lang}): sin voz en este idioma", flush=True)
         return
+    for voz in candidatas:
+        try:
+            return narrar_con(spec, lang, out, voz)
+        except Exception as e:  # servicio caído o límite: probar la siguiente voz
+            print(f"  {spec['id']} ({lang}): {voz} falló ({str(e)[:120]}); probando la siguiente", flush=True)
+    print(f"  {spec['id']} ({lang}): ninguna voz funcionó; el video sale sin voz", flush=True)
+
+
+def narrar_con(spec: dict, lang: str, out: Path, voz: str):
     vel = CFG["velocidad"][lang]
     extra = spec.get("pronunciation", {}).get(lang, {})
     escenas = []
@@ -283,9 +298,20 @@ def muestras():
                 print("FALLÓ", lang, v, "->", str(e)[:200], flush=True)
 
 
+def prueba():
+    """Narra un guion corto por cada marca/idioma (para comprobar el flujo completo en Actions)."""
+    for brand, lang in (("gta", "en"), ("trending", "en"), ("gta", "es"), ("sports", "es")):
+        spec = {"id": f"prueba-{brand}", "brand": brand, "langs": [lang], "scenes": [
+            {"type": "hook", "seconds": 2, "narration": {"en": "In 3 days, GTA VI has to beat one rival.", "es": "En 3 días, GTA VI tiene que vencer a un solo rival."}},
+            {"type": "outro", "seconds": 2, "narration": {"en": "Does it break the record?", "es": "¿Rompe el récord?"}}]}
+        narrar(spec, lang, ROOT / "out" / "prueba")
+
+
 def main():
     if "--muestras" in sys.argv:
         return muestras()
+    if "--prueba" in sys.argv:
+        return prueba()
     fecha = next((a for a in sys.argv[1:] if re.fullmatch(r"\d{4}-\d{2}-\d{2}", a)), None) \
         or datetime.now(ZoneInfo("America/Panama")).strftime("%Y-%m-%d")
     carpeta = ROOT / "content" / fecha
