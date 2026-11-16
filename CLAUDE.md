@@ -82,6 +82,19 @@ Etapa 3: corre solo en GitHub Actions y avisa por Discord; publicación por
 Sin API paga hasta que sea rentable: las decisiones se toman en la sesión
 nocturna con Claude y quedan guardadas en el repo para producir al día siguiente.
 Una vez por semana, un video experimental distinto a propósito.
+
+### Guiones con voz (obligatorio en cada guion nuevo)
+Cada escena lleva "narration": {"en": "...", "es": "..."} (solo los idiomas del guion):
+lo que dice la voz, no lo que se lee en pantalla. La voz solo se activa si hay "narration".
+- Total del video: unas 50-60 palabras (18-25 s). Cada escena dura lo que dice el
+  guion o lo que tarda la voz, lo que sea mayor; frases cortas, una idea por escena.
+- Escribe como se habla: sin símbolos ($, %, #, emojis); los números de la voz
+  van en palabras si suenan raro ("one billion dollars"). Siglas raras: agrégalas en
+  clips/voces.json (pronunciacion) o en el guion con "pronunciation": {"en": {"XYZ": "x y z"}}.
+- Gancho en la primera frase (primeros 2 segundos). Cierre con la pregunta.
+- Música: la voz baja la música a un 16 %. "narrate": false apaga la voz de un guion.
+- La voz se elige en clips/voces.json (am_michael / em_alex por defecto); un guion
+  puede traer "voices": {"en": "am_adam"}.
 Di en cada sesión en qué etapa estamos y qué falta para la siguiente.
 
 ## Sistema técnico
@@ -94,6 +107,10 @@ Di en cada sesión en qué etapa estamos y qué falta para la siguiente.
   (clips_videos, clips_metrics, clips_trends, clips_bitacora) y bucket
   `clips-videos`. No tocar las tablas de NBA ni ningún otro proyecto.
   Borrar videos de más de 7 días; guardar métricas.
+- Voz narrada: Kokoro (gratis, en CPU) con clips/voz.py, que corre en el workflow
+  de render antes de Remotion. Voces y pronunciación de siglas en clips/voces.json.
+  Genera la voz por idioma, alarga cada escena si la voz dura más y pone subtítulos
+  palabra por palabra. `python clips/voz.py --muestras` deja muestras en out/voces/.
 - Audio: beat generado por código (remotion/audio.mjs). Fondos de video o
   imagen: archivos en remotion/public/media, campo "bg" de cada escena.
 - Vercel: página con login (Supabase Auth) y sección por persona: Clips de

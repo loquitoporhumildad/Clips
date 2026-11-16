@@ -77,6 +77,7 @@ const filesIn = (sub, re) => {
 };
 const hash = (str) => [...str].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7);
 
+const variants = new Map();
 for (const spec of specs) {
   // Fondos: si la marca tiene clips/imágenes, se reparten entre las escenas sin fondo.
   const pool = filesIn(spec.brand ?? '', /\.(mp4|webm|mov|jpe?g|png|webp)$/i);
@@ -94,7 +95,25 @@ for (const spec of specs) {
   if (spec.music && spec.music !== 'auto' && !fs.existsSync(path.join(media, spec.music))) delete spec.music;
   if ((!spec.music || spec.music === 'auto') && tracks.length && spec.music !== false) spec.music = tracks[hash(spec.id) % tracks.length];
   if (spec.music === 'auto' || spec.music === false) delete spec.music;
-  if (spec.audio !== false) makeAudio(spec, path.join(pub, 'audio', `${spec.id}.wav`), {drums: !spec.music && spec.beat !== false});
+  const drums = !spec.music && spec.beat !== false;
+  if (spec.audio !== false) makeAudio(spec, path.join(pub, 'audio', `${spec.id}.wav`), {drums});
+  // Voz narrada (la genera clips/voz.py): por idioma, con la duración de cada escena ajustada a la voz.
+  for (const lang of spec.langs) {
+    const jf = path.join(pub, 'voz', `${spec.id}-${lang}.json`);
+    if (spec.narrate === false || !fs.existsSync(jf) || !fs.existsSync(jf.replace(/\.json$/, '.wav'))) continue;
+    const v = JSON.parse(fs.readFileSync(jf, 'utf8'));
+    const sv = {
+      ...spec,
+      scenes: spec.scenes.map((s, i) => ({...s, seconds: v.seconds[i] ?? s.seconds})),
+      voiceTrack: {file: `voz/${spec.id}-${lang}.wav`, words: v.words},
+    };
+    if (spec.audio !== false) {
+      sv.audioFile = `audio/${spec.id}-${lang}.wav`;
+      makeAudio(sv, path.join(pub, sv.audioFile), {drums});
+    }
+    variants.set(`${spec.id}-${lang}`, sv);
+    console.log(`${spec.id} (${lang}): voz ${v.voice}, ${v.words.length} palabras`);
+  }
   console.log(`${spec.id}: música=${spec.music ?? 'beat propio'}, fondos=${spec.scenes.filter((s) => s.bg).length}/${spec.scenes.length}`);
 }
 
@@ -104,7 +123,7 @@ const serveUrl = await bundle({entryPoint: path.join(here, 'src/index.ts'), publ
 const done = [];
 for (const spec of specs) {
   for (const lang of spec.langs) {
-    const inputProps = {spec, lang};
+    const inputProps = {spec: variants.get(`${spec.id}-${lang}`) ?? spec, lang};
     const composition = await selectComposition({serveUrl, id: 'DataShort', inputProps, browserExecutable: CHROME_PATH});
     const file = path.join(outDir, `${spec.id}-${lang}.mp4`);
     console.log(`Renderizando ${spec.id} (${lang})…`);
