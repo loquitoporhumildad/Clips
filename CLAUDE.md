@@ -4,7 +4,7 @@
 Dos personas con el mismo perfil y los mismos roles: Juan (administra la
 infraestructura) y su socio. Panamá. Sabemos Python, SQL, Git, Supabase,
 GitHub Actions y desarrollo web. 2+ horas cada noche cada uno. PC sin
-gráfica dedicada. Sin PS5 ni Xbox. No ponemos cara ni voz.
+gráfica dedicada. Sin PS5 ni Xbox. No ponemos cara ni voz propia (la voz en off es de IA).
 Presupuesto: $0 además de Claude Pro (uno por persona); si algo pago vale
 mucho la pena, propónlo con números. Cobro por PayPal, cada uno a su nombre.
 Empezamos sin seguidores.
