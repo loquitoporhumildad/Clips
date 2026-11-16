@@ -51,6 +51,8 @@ DUR = C.DUR
 ADELANTO = C.ADELANTO
 POST = DUR - ADELANTO                                # segundos que se esperan después del pico
 SEG = 10
+# Sensibilidad del chat: LIVE_SENS=alta (por defecto, más clips, tú filtras) | media | baja (solo momentos muy claros)
+Z_MIN, F_MIN, VECES = {'alta': (2.2, 5, 2.0), 'media': (3.0, 8, 2.5), 'baja': (4.0, 14, 3.5)}.get(E('LIVE_SENS') or 'alta', (2.2, 5, 2.0))
 ENFRIAR = DUR * 2                                    # no repetir momento dentro de este margen
 AUDIO_DB = 9                                         # subida de volumen que cuenta como momento
 
@@ -251,7 +253,7 @@ class Chat:
             if len(self.hist) >= 6:
                 med = statistics.median(self.hist)
                 z = (f - med) / max(statistics.pstdev(self.hist), 1)
-                if z >= 3 and f >= 8 and f >= 2.5 * max(med, 1):
+                if z >= Z_MIN and f >= F_MIN and f >= VECES * max(med, 1):
                     res = (self.ultimo * 10 + 10, z)
             self.hist.append(f)
         while chat and chat[0][0] < time.time() - 900:
