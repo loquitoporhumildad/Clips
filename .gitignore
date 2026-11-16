@@ -5,3 +5,4 @@ remotion/public/audio/
 *.log
 web/dist/
 __pycache__/
+remotion/public/voz/

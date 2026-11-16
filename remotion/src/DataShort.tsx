@@ -7,6 +7,7 @@ import '@fontsource/inter/900.css';
 import {Props, Scene, tr} from './types';
 import {theme} from './themes';
 import {SceneView} from './scenes/Scenes';
+import {Captions} from './Captions';
 
 const isVideo = (f: string) => /\.(mp4|webm|mov)$/i.test(f);
 
@@ -101,11 +102,13 @@ export const DataShort: React.FC<Props> = ({spec, lang}) => {
         </div>
       )}
       <Grain />
-      {spec.audio !== false && <Audio src={staticFile(`audio/${spec.id}.wav`)} />}
+      {spec.audio !== false && <Audio src={staticFile(spec.audioFile ?? `audio/${spec.id}.wav`)} volume={spec.voiceTrack ? 0.45 : 1} />}
+      {spec.voiceTrack && <Audio src={staticFile(spec.voiceTrack.file)} />}
+      {spec.voiceTrack && <Captions words={spec.voiceTrack.words} t={t} />}
       {spec.music && (
         <Audio
           src={staticFile(`media/${spec.music}`)}
-          volume={(f) => 0.55 * Math.min(1, f / 10, (durationInFrames - f) / 20)}
+          volume={(f) => (spec.voiceTrack ? 0.16 : 0.55) * Math.min(1, f / 10, (durationInFrames - f) / 20)}
         />
       )}
     </AbsoluteFill>
