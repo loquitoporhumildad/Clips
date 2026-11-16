@@ -95,6 +95,12 @@ export const api = {
     const {data, error} = await sb.functions.invoke('vigilar', {body: {accion: 'ping'}});
     return error ? {ok: false, listos: [], cuota: 2000} : data;
   },
+  async descubrir() {
+    if (DEMO) return {twitch: {categoria: 'Grand Theft Auto VI', directos: [{canal: 'Ejemplo', url: 'https://www.twitch.tv/ejemplo', espectadores: 1200, titulo: 'GTA VI primer día', idioma: 'es'}]}, youtube: {directos: []}, kick: {directos: [], error: 'Kick: por ahora manual.'}};
+    const {data, error} = await sb.functions.invoke('descubrir', {body: {max: 10}});
+    if (error) throw new Error(error.message);
+    return data;
+  },
   async vigilar(cuerpo) {
     if (DEMO) return {ok: true, resultados: []};
     const {data, error} = await sb.functions.invoke('vigilar', {body: cuerpo});

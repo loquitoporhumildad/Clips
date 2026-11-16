@@ -417,6 +417,23 @@ function Directos({dueno, avisar}) {
   const [minutos, setMinutos] = useState(330);
   const [hasta, setHasta] = useState('');
   const [ocupado, setOcupado] = useState(false);
+  const [top, setTop] = useState(null);
+  const [buscando, setBuscando] = useState(false);
+  const buscarTop = async () => {
+    setBuscando(true);
+    try {
+      const r = await api.descubrir();
+      setTop(r);
+      // Marca los 2 con más espectadores de cada plataforma.
+      const dos = ['twitch', 'youtube'].flatMap((k) => (r[k]?.directos ?? []).slice(0, 2).map((d) => d.url));
+      if (dos.length) setLinks(dos.join('\n'));
+    } catch (e) { avisar(e.message); }
+    setBuscando(false);
+  };
+  const alternar = (url) => setLinks((t) => {
+    const l = t.split(/[\s,]+/).filter(Boolean);
+    return (l.includes(url) ? l.filter((x) => x !== url) : [...l, url]).join('\n');
+  });
   const cargar = useCallback(() => api.directos(quien).then(setLista).catch((e) => { avisar(e.message); setLista([]); }), [quien]);
   useEffect(() => { api.vigilarPing().then(setConexion); }, []);
   useEffect(() => { setLista(null); cargar(); const id = setInterval(cargar, 20000); return () => clearInterval(id); }, [cargar]);
@@ -460,6 +477,26 @@ function Directos({dueno, avisar}) {
           </label>
           <motion.button {...PRESION} className="pildora llena" disabled={ocupado || !conectado}>{ocupado ? 'Lanzando…' : 'Lanzar vigilante'}</motion.button>
         </form>
+      </motion.article>
+
+      <motion.article variants={sube} className="tarjeta">
+        <h3>Top de GTA VI en vivo</h3>
+        <p>Busca los directos con más espectadores de la categoría en Twitch y YouTube y marca los 2 primeros de cada uno.</p>
+        <motion.button {...PRESION} className="pildora" onClick={buscarTop} disabled={buscando}>{buscando ? 'Buscando…' : 'Buscar top ahora'}</motion.button>
+        {top && ['twitch', 'youtube', 'kick'].map((k) => (
+          <div key={k} className="top-red">
+            <b>{k === 'twitch' ? 'Twitch' : k === 'youtube' ? 'YouTube' : 'Kick'}</b>
+            {top[k]?.error && <p className="nota-chica">{top[k].error}</p>}
+            {(top[k]?.directos ?? []).map((d) => (
+              <label key={d.url} className="top-fila">
+                <input type="checkbox" checked={links.includes(d.url)} onChange={() => alternar(d.url)} />
+                <span className="top-nombre">{d.canal}</span>
+                <span className="top-num">{Number(d.espectadores).toLocaleString('es')}</span>
+              </label>
+            ))}
+            {!top[k]?.error && !(top[k]?.directos ?? []).length && <p className="nota-chica">Nadie en vivo en esta categoría ahora.</p>}
+          </div>
+        ))}
       </motion.article>
 
       <motion.article variants={sube} className="tarjeta">
