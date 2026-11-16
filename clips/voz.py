@@ -14,10 +14,15 @@ Un guion se narra si tiene "narrate": true o alguna escena con "narration"
 ({"en": "...", "es": "..."}). "narrate": false lo apaga. Las escenas sin
 "narration" usan un texto sacado de la propia escena (peor: mejor escribirlo).
 """
+import base64
 import json
 import os
 import re
+import subprocess
 import sys
+import tempfile
+import time
+import urllib.error
 import urllib.request
 from datetime import datetime
 from pathlib import Path
@@ -36,6 +41,9 @@ LEAD = 0.15  # silencio antes de la voz en cada escena
 TAIL = 0.30  # y después
 GAP = 0.18  # pausa entre frases
 KLANG = {"en": "en-us", "es": "es"}
+MODELOS_GEMINI = ["gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview", "gemini-2.5-flash-preview-tts"]
+_kokoro = None
+_gemini_ok = None  # el modelo de Gemini que sí respondió
 
 
 def modelo() -> Kokoro:
@@ -46,6 +54,75 @@ def modelo() -> Kokoro:
             print(f"Descargando {f}…", flush=True)
             urllib.request.urlretrieve(BASE + f, p)
     return Kokoro(str(MODEL_DIR / "kokoro-v1.0.onnx"), str(MODEL_DIR / "voices-v1.0.bin"))
+
+
+def kokoro() -> Kokoro:
+    global _kokoro
+    if _kokoro is None:
+        _kokoro = modelo()
+    return _kokoro
+
+
+def gemini(texto: str, nombre: str, lang: str) -> np.ndarray:
+    """Voz de Gemini TTS (usa GEMINI_API_KEY). Prueba los modelos en orden y reintenta."""
+    global _gemini_ok
+    key = os.environ["GEMINI_API_KEY"]
+    estilo = CFG.get("estilo", {}).get(lang, "")
+    ultimo = None
+    for m in ([_gemini_ok] if _gemini_ok else MODELOS_GEMINI):
+        if m.startswith("gemini-3.8"):
+            parte = {"text": texto, **({"speech_metadata": {"style": estilo}} if estilo else {})}
+        else:
+            parte = {"text": f"{estilo}: {texto}" if estilo else texto}
+        body = {"contents": [{"role": "user", "parts": [parte]}],
+                "generationConfig": {"responseModalities": ["AUDIO"],
+                                     "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": nombre}}}}}
+        req = urllib.request.Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent",
+            data=json.dumps(body).encode(), headers={"x-goog-api-key": key, "Content-Type": "application/json"})
+        for intento in range(3):
+            try:
+                with urllib.request.urlopen(req, timeout=120) as r:
+                    d = json.load(r)
+                inline = d["candidates"][0]["content"]["parts"][0]["inlineData"]
+                pcm = np.frombuffer(base64.b64decode(inline["data"]), dtype="<i2").astype(np.float32) / 32768
+                m_sr = re.search(r"rate=(\d+)", inline.get("mimeType", ""))
+                sr = int(m_sr.group(1)) if m_sr else SR
+                if sr != SR:  # remuestreo simple
+                    pcm = np.interp(np.arange(int(len(pcm) * SR / sr)) * sr / SR, np.arange(len(pcm)), pcm).astype(np.float32)
+                _gemini_ok = m
+                return pcm
+            except (urllib.error.HTTPError, KeyError, IndexError, urllib.error.URLError) as e:
+                ultimo = e
+                if isinstance(e, urllib.error.HTTPError) and e.code in (400, 403, 404):
+                    break  # este modelo no sirve: probar el siguiente
+                time.sleep(4 * (intento + 1))
+    raise RuntimeError(f"Gemini TTS falló: {ultimo}")
+
+
+def edge(texto: str, nombre: str, vel: float) -> np.ndarray:
+    """Voz neuronal de Microsoft Edge (paquete edge-tts, no oficial)."""
+    import asyncio
+
+    import edge_tts
+
+    with tempfile.TemporaryDirectory() as d:
+        f = Path(d) / "v.mp3"
+        asyncio.run(edge_tts.Communicate(texto, nombre, rate=f"{round((vel - 1) * 100):+d}%").save(str(f)))
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(f), "-f", "f32le", "-ac", "1", "-ar", str(SR), "-"],
+                             check=True, capture_output=True).stdout
+    return np.frombuffer(raw, dtype=np.float32).copy()
+
+
+def hablar(texto: str, voz: str, lang: str, vel: float) -> np.ndarray:
+    """voz = "am_michael" (Kokoro), "gemini:Kore" o "edge:es-PA-RobertoNeural"."""
+    if voz.startswith("gemini:"):
+        return gemini(texto, voz[7:], lang)
+    if voz.startswith("edge:"):
+        return edge(texto, voz[5:], vel)
+    audio, sr = kokoro().create(texto, voice=voz, speed=vel, lang=KLANG[lang])
+    assert sr == SR
+    return np.asarray(audio, dtype=np.float32)
 
 
 def tr(v, lang):
@@ -114,13 +191,11 @@ def silencio(seg: float) -> np.ndarray:
     return np.zeros(int(seg * SR), dtype=np.float32)
 
 
-def sintetizar_escena(k: Kokoro, texto: str, lang: str, voz: str, vel: float, extra: dict):
+def sintetizar_escena(texto: str, lang: str, voz: str, vel: float, extra: dict):
     """Devuelve (audio, palabras con tiempo relativo al inicio del audio de la escena)."""
     partes, palabras, t = [], [], 0.0
     for fr in frases(texto):
-        audio, sr = k.create(pronunciar(fr, lang, extra), voice=voz, speed=vel, lang=KLANG[lang])
-        assert sr == SR
-        audio = np.asarray(audio, dtype=np.float32)
+        audio = hablar(pronunciar(fr, lang, extra), voz, lang, vel)
         dur = len(audio) / SR
         ws = fr.split()
         pesos = [peso(w) for w in ws]
@@ -135,14 +210,25 @@ def sintetizar_escena(k: Kokoro, texto: str, lang: str, voz: str, vel: float, ex
     return audio, palabras
 
 
-def narrar(k: Kokoro, spec: dict, lang: str, out: Path):
-    voz = spec.get("voices", {}).get(lang, CFG["voces"][lang])
+def elegir_voz(spec: dict, lang: str):
+    """Voz del guion > voz de su marca > voz del idioma. None = sin voz en ese idioma."""
+    if lang in spec.get("voices", {}):
+        return spec["voices"][lang]
+    marca = CFG.get("por_marca", {}).get(spec.get("brand", ""), {})
+    return marca[lang] if lang in marca else CFG["voces"].get(lang)
+
+
+def narrar(spec: dict, lang: str, out: Path):
+    voz = elegir_voz(spec, lang)
+    if not voz:
+        print(f"  {spec['id']} ({lang}): sin voz en este idioma", flush=True)
+        return
     vel = CFG["velocidad"][lang]
     extra = spec.get("pronunciation", {}).get(lang, {})
     escenas = []
     for s in spec["scenes"]:
         texto = narracion(s, lang)
-        audio, palabras = sintetizar_escena(k, texto, lang, voz, vel, extra) if texto else (silencio(0), [])
+        audio, palabras = sintetizar_escena(texto, lang, voz, vel, extra) if texto else (silencio(0), [])
         dur = len(audio) / SR
         seconds = max(float(s["seconds"]), round(LEAD + dur + TAIL + 0.049, 1)) if texto else float(s["seconds"])
         escenas.append((audio, palabras, seconds))
@@ -171,19 +257,28 @@ def debe_narrar(spec: dict) -> bool:
 
 
 def muestras():
-    k = modelo()
     d = ROOT / "out" / "voces"
     d.mkdir(parents=True, exist_ok=True)
     texto = {
         "en": "In 3 days, GTA VI has to beat one rival: GTA V. It made one billion dollars in its first three days. Does the new one break the record?",
         "es": "En 3 días, GTA VI tiene que vencer a un solo rival: GTA V. Hizo mil millones de dólares en sus primeros tres días. ¿Rompe el récord el nuevo?",
     }
-    voces = {"en": ["am_michael", "am_adam", "am_eric", "af_heart"], "es": ["em_alex", "em_santa", "ef_dora"]}
+    voces = {
+        "en": ["am_michael", "af_heart"],
+        "es": ["em_alex", "gemini:Kore", "gemini:Puck", "gemini:Charon", "gemini:Orus",
+               "edge:es-PA-RobertoNeural", "edge:es-PA-MargaritaNeural", "edge:es-MX-JorgeNeural", "edge:es-MX-DaliaNeural",
+               "edge:es-US-AlonsoNeural"],
+    }
     for lang, lista in voces.items():
         for v in lista:
-            audio, _ = sintetizar_escena(k, texto[lang], lang, v, CFG["velocidad"][lang], {})
-            sf.write(d / f"{lang}-{v}.wav", audio, SR)
-            print("muestra", lang, v)
+            if v.startswith("gemini:") and not os.environ.get("GEMINI_API_KEY"):
+                continue
+            try:
+                audio, _ = sintetizar_escena(texto[lang], lang, v, CFG["velocidad"][lang], {})
+                sf.write(d / f"{lang}-{v.replace(':', '_')}.wav", audio, SR)
+                print("muestra", lang, v, flush=True)
+            except Exception as e:  # una voz que falla no tumba las demás
+                print("FALLÓ", lang, v, "->", str(e)[:200], flush=True)
 
 
 def main():
@@ -200,11 +295,10 @@ def main():
     if not specs:
         print("Ningún guion pide voz.")
         return
-    k = modelo()
     out = ROOT / "remotion" / "public" / "voz"
     for spec in specs:
         for lang in spec["langs"]:
-            narrar(k, spec, lang, out)
+            narrar(spec, lang, out)
 
 
 if __name__ == "__main__":

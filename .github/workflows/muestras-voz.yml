@@ -1,0 +1,45 @@
+name: Muestras de voz
+
+# Genera muestras de voces en español (Gemini y Edge) y las manda al canal de Discord.
+# Elige una y se pone en clips/voces.json.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  muestras:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: clips/requirements-voz.txt
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/kokoro
+          key: kokoro-v1.0
+      - run: pip install -q -r clips/requirements-voz.txt
+      - name: Generar muestras
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python clips/voz.py --muestras
+      - name: Mandar a Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          cd out/voces
+          ls -1
+          [ -z "$DISCORD_WEBHOOK" ] && exit 0
+          files=$(ls es-*.wav 2>/dev/null || true)
+          [ -z "$files" ] && { curl -sS -F "content=🎙️ No salió ninguna muestra en español: mira el log del workflow." "$DISCORD_WEBHOOK"; exit 0; }
+          set --; i=0; args=()
+          for f in $files; do args+=(-F "files[$i]=@$f;filename=$f"); i=$((i+1)); done
+          curl -sS -F "content=🎙️ Muestras de voz en español. El nombre del archivo es la voz (gemini_Kore, edge_es-PA-RobertoNeural, em_alex = la de antes)." "${args[@]}" "$DISCORD_WEBHOOK" > /dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: voces
+          path: out/voces/
+          retention-days: 7

@@ -1,6 +1,12 @@
 {
-  "voces": {"en": "am_michael", "es": "em_alex"},
-  "velocidad": {"en": 1.08, "es": 1.05},
+  "voces": {
+    "en": "am_michael",
+    "es": null
+  },
+  "velocidad": {
+    "en": 1.08,
+    "es": 1.05
+  },
   "pronunciacion": {
     "en": {
       "GTA VI": "G T A six",
@@ -20,5 +26,13 @@
       "PS5": "PlayStation 5",
       "IA": "i a"
     }
+  },
+  "por_marca": {
+    "trending": {
+      "en": "af_heart"
+    }
+  },
+  "estilo": {
+    "es": "Habla en español latinoamericano neutro, con energía y ritmo ágil, como un narrador de datos curiosos para redes sociales"
   }
 }
