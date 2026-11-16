@@ -18,6 +18,8 @@ const Icono = ({d, ...p}) => (
 const I = {
   videos: ['M4 6h16v12H4z', 'M10 9.5v5l4.5-2.5z'],
   pedidos: ['M12 15V4', 'M8 8l4-4 4 4', 'M5 15v4h14v-4'],
+  directos: ['M12 12m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0', 'M7.8 7.8a6 6 0 0 0 0 8.4', 'M16.2 7.8a6 6 0 0 1 0 8.4', 'M5 5a10 10 0 0 0 0 14', 'M19 5a10 10 0 0 1 0 14'],
+  como: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 'M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7', 'M12 17h.01'],
   rend: ['M5 19V10', 'M12 19V5', 'M19 19v-6'],
   sol: ['M12 4V2', 'M12 22v-2', 'M4 12H2', 'M22 12h-2', 'M6.3 6.3 4.9 4.9', 'M19.1 19.1l-1.4-1.4', 'M6.3 17.7l-1.4 1.4', 'M19.1 4.9l-1.4 1.4', 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z'],
   luna: ['M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z'],
@@ -401,10 +403,167 @@ function Entrada({avisar, alEntrar}) {
   );
 }
 
+const ESTADOS = {pendiente: ['Pendiente', 'pendiente'], lanzado: ['Lanzado', 'pendiente'], vigilando: ['Vigilando', 'listo'], terminado: ['Terminado', ''], error: ['Error', 'error']};
+const CUENTAS = [['Clip Vault', 'Con campaña (cobra)'], ['PeakClips', 'PeakClips (crecer)']];
+const TANDAS = [[120, '2 h'], [240, '4 h'], [330, '5 h 30']];
+
+function Directos({dueno, avisar}) {
+  const quien = dueno === 'todos' ? 'juan' : dueno;
+  const [conexion, setConexion] = useState(null);
+  const [lista, setLista] = useState(null);
+  const [links, setLinks] = useState('');
+  const [cuenta, setCuenta] = useState('Clip Vault');
+  const [campana, setCampana] = useState('');
+  const [minutos, setMinutos] = useState(330);
+  const [hasta, setHasta] = useState('');
+  const [ocupado, setOcupado] = useState(false);
+  const cargar = useCallback(() => api.directos(quien).then(setLista).catch((e) => { avisar(e.message); setLista([]); }), [quien]);
+  useEffect(() => { api.vigilarPing().then(setConexion); }, []);
+  useEffect(() => { setLista(null); cargar(); const id = setInterval(cargar, 20000); return () => clearInterval(id); }, [cargar]);
+
+  const mes = new Date().toISOString().slice(0, 7);
+  const cuota = conexion?.cuota ?? 2000;
+  const reservados = (lista ?? []).filter((r) => r.estado !== 'error' && r.created_at.startsWith(mes)).reduce((a, r) => a + r.minutos, 0);
+  const lleno = Math.min(100, Math.round((reservados / cuota) * 100));
+  const conectado = conexion?.listos?.includes(quien);
+
+  const lanzar = async (e) => {
+    e.preventDefault();
+    const urls = links.split(/[\s,]+/).filter(Boolean);
+    if (!urls.length) return avisar('Pega al menos un link del directo.');
+    if (cuenta === 'Clip Vault' && !campana.trim()) return avisar('Clip Vault necesita la campaña o el permiso.');
+    setOcupado(true);
+    const r = await api.vigilar({urls, owner: quien, cuenta, campana: campana.trim(), minutos, hasta_utc: hasta ? new Date(hasta).toISOString() : null});
+    setOcupado(false);
+    if (r.error) return avisar(r.error);
+    const malos = (r.resultados ?? []).filter((x) => x.error);
+    avisar(malos.length ? malos[0].error : urls.length === 1 ? 'Vigilante lanzado' : `${urls.length} vigilantes lanzados`);
+    setLinks('');
+    cargar();
+  };
+
+  return (
+    <motion.div variants={cascada} initial="oculto" animate="visible">
+      <motion.article variants={sube} className="tarjeta">
+        <span className={`sello ${conectado ? 'listo' : 'pendiente'}`}>{conexion === null ? 'Revisando…' : conectado ? 'GitHub conectado' : 'GitHub sin conectar'}</span>
+        <h3>Vigilar un directo</h3>
+        {conexion && !conectado && <p>Falta conectar GitHub para {quien === 'juan' ? 'Juan' : 'el socio'}. Los pasos están en la pestaña Cómo funciona.</p>}
+        <form onSubmit={lanzar}>
+          <textarea className="nota" rows={3} value={links} onChange={(e) => setLinks(e.target.value)} placeholder="Links de Twitch, Kick o YouTube, uno por línea. Puede ser antes de que empiece." />
+          <Selector id="cuenta" valor={cuenta} onCambio={setCuenta} opciones={CUENTAS} />
+          {cuenta === 'Clip Vault'
+            ? <input className="campo" value={campana} onChange={(e) => setCampana(e.target.value)} placeholder="Campaña o permiso (ej. Whop: nombre)" />
+            : <p className="nota-chica">PeakClips no cobra: sirve para ganar audiencia. Sin permiso del streamer puede haber reclamos de copyright.</p>}
+          <Selector id="tanda" valor={minutos} onCambio={setMinutos} opciones={TANDAS} />
+          <label className="etiqueta">Seguir vigilando hasta (opcional)
+            <input className="campo" type="datetime-local" value={hasta} onChange={(e) => setHasta(e.target.value)} />
+          </label>
+          <motion.button {...PRESION} className="pildora llena" disabled={ocupado || !conectado}>{ocupado ? 'Lanzando…' : 'Lanzar vigilante'}</motion.button>
+        </form>
+      </motion.article>
+
+      <motion.article variants={sube} className="tarjeta">
+        <h3>Minutos de GitHub este mes</h3>
+        <div className="medidor" role="img" aria-label={`${reservados} de ${cuota} minutos reservados`}><span style={{width: `${lleno}%`}} className={lleno > 85 ? 'alto' : ''} /></div>
+        <p>{reservados} de {cuota} reservados. Cada tanda de 5 h 30 gasta 330. Se reparte con el socio si él conecta su propio repo.</p>
+      </motion.article>
+
+      {lista === null ? null : !lista.length ? (
+        <Vacio>Todavía no has lanzado ningún directo.</Vacio>
+      ) : lista.map((r) => {
+        const [txt, cls] = ESTADOS[r.estado] ?? [r.estado, ''];
+        return (
+          <motion.article variants={sube} className="tarjeta" key={r.id}>
+            <span className={`sello ${cls}`}>{txt}</span> <span className="sello">{r.cuenta}</span>
+            <h3 className="enlace">{r.url.replace(/^https:\/\/(www\.)?/, '')}</h3>
+            <p>{r.clips} clips · {r.minutos_usados} de {r.minutos} min · {r.campana || 'sin campaña'}{r.detalle ? ` · ${r.detalle}` : ''}</p>
+          </motion.article>
+        );
+      })}
+    </motion.div>
+  );
+}
+
+const SECCIONES = [
+  ['Qué hace el sistema', [
+    'Cada noche Claude busca qué está funcionando y escribe los guiones del día siguiente.',
+    'GitHub convierte los guiones en videos con voz, música y subtítulos, y los sube aquí.',
+    'Tú descargas, subes a las tres redes y anotas las vistas. Claude aprende de eso.',
+  ]],
+  ['Clips de directos en vivo', [
+    'En Directos pegas el link de un stream, aunque no haya empezado. El vigilante espera.',
+    'Lee el chat y el audio. Cuando el chat explota o el streamer grita, corta unos 40 segundos después.',
+    'El clip sale vertical, con subtítulos palabra por palabra, y aparece en Videos y en Discord.',
+    'Twitch y YouTube leen el chat. En Kick solo usa el audio.',
+  ]],
+  ['Qué cobra y qué no', [
+    'Clip Vault cobra: solo con campaña o permiso. Las campañas pagan por vistas verificadas, sin seguidores.',
+    'PeakClips no cobra: son clips sin campaña para crecer. TikTok y YouTube no pagan por clips reposteados.',
+    'Cuando PeakClips tenga audiencia se usa para entrar a campañas.',
+  ]],
+  ['Prioridad: GTA VI', [
+    'Del 19 de noviembre durante dos semanas, GTA VI manda.',
+    'Seis guiones al día. Cada uno sale en inglés y en español, así que Juan publica los seis en inglés y el socio los mismos seis en español.',
+    'Primero los directos con campaña, después PeakClips, después los videos de datos.',
+  ]],
+  ['Dividir recursos con el socio', [
+    'Los videos y el panel son compartidos: no se duplica el trabajo.',
+    'Los minutos de GitHub son 2.000 gratis al mes por cuenta. Si el socio copia el repo (fork) a su cuenta, tiene sus propios 2.000.',
+    'Al lanzar un directo eliges de quién son los minutos con el selector de arriba.',
+  ]],
+];
+
+function Paso({n, titulo, hecho, children}) {
+  return (
+    <li className={`paso${hecho ? ' hecho' : ''}`}>
+      <span className="paso-n" aria-hidden="true">{hecho ? '✓' : n}</span>
+      <div><b>{titulo}</b><div className="apoyo">{children}</div></div>
+    </li>
+  );
+}
+
+function ComoFunciona() {
+  const [conexion, setConexion] = useState(null);
+  useEffect(() => { api.vigilarPing().then(setConexion); }, []);
+  const gh = conexion?.listos ?? [];
+  return (
+    <motion.div variants={cascada} initial="oculto" animate="visible">
+      <motion.article variants={sube} className="tarjeta">
+        <h3>Para que todo funcione</h3>
+        <ol className="pasos">
+          <Paso n="1" titulo="Token de Supabase" hecho={conexion?.ok}>
+            En supabase.com/dashboard/account/tokens crea uno y guárdalo en GitHub: Settings, Secrets, Actions, con el nombre SUPABASE_ACCESS_TOKEN. Luego corre el workflow "Supabase: aplicar".
+          </Paso>
+          <Paso n="2" titulo="Llave de GitHub para Juan" hecho={gh.includes('juan')}>
+            En GitHub: Settings, Developer settings, Fine-grained tokens. Solo el repo Clips y el permiso Actions: lectura y escritura. Guárdalo en el secreto GH_TARGETS, con este formato: {'{'}"juan":{'{'}"repo":"loquitoporhumildad/Clips","token":"..."{'}'}{'}'}.
+          </Paso>
+          <Paso n="3" titulo="Llave para el socio (opcional)" hecho={gh.includes('socio')}>
+            Copia el repo a su cuenta, crea su token y suma "socio" al mismo secreto. Así tiene sus propios minutos.
+          </Paso>
+          <Paso n="4" titulo="Cuentas PeakClips" hecho={false}>
+            Crea PeakClips en TikTok, Instagram y YouTube. Los clips en vivo llegan marcados con su cuenta.
+          </Paso>
+          <Paso n="5" titulo="Música libre de derechos" hecho={false}>
+            Sube unas 10 pistas en Pedidos. Los videos eligen una solos.
+          </Paso>
+        </ol>
+      </motion.article>
+      {SECCIONES.map(([t, lineas]) => (
+        <motion.article variants={sube} className="tarjeta" key={t}>
+          <h3>{t}</h3>
+          <ul className="lineas">{lineas.map((l) => <li key={l}>{l}</li>)}</ul>
+        </motion.article>
+      ))}
+    </motion.div>
+  );
+}
+
 const PESTANAS = [
   ['videos', 'Videos', 'Tus videos,', 'listos para subir'],
   ['pedidos', 'Pedidos', 'Lo que falta,', 'para los próximos'],
+  ['directos', 'Directos', 'Clips en vivo,', 'sin perderte nada'],
   ['rend', 'Vistas', 'Así va,', 'cada video'],
+  ['como', 'Guía', 'Cómo funciona,', 'paso a paso'],
 ];
 const DUENOS = [['juan', 'Juan'], ['socio', 'Socio'], ['todos', 'Los dos']];
 
@@ -460,7 +619,9 @@ export default function App() {
               <motion.main key={pestana + dueno} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} transition={{duration: 0.12}}>
                 {pestana === 'videos' && <Videos dueno={dueno} avisar={avisar} />}
                 {pestana === 'pedidos' && <Pedidos dueno={dueno} avisar={avisar} />}
+                {pestana === 'directos' && <Directos dueno={dueno} avisar={avisar} />}
                 {pestana === 'rend' && <Rendimiento dueno={dueno} avisar={avisar} />}
+                {pestana === 'como' && <ComoFunciona />}
               </motion.main>
             </AnimatePresence>
           </>

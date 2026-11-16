@@ -179,3 +179,19 @@ button { cursor: pointer; border: 0; background: none; padding: 0; -webkit-tap-h
 .buzon-archivo { margin-top: 10px; }
 .enviados { list-style: none; margin: 4px 0 0; padding: 0; font-size: 13.5px; color: var(--tinta-suave); }
 .enviados li { padding: 9px 0; border-top: 1px solid var(--borde); overflow-wrap: anywhere; }
+
+/* Directos y guía */
+.sello.error { background: var(--senal-suave); color: var(--senal); }
+.enlace { overflow-wrap: anywhere; }
+.nota-chica { margin: 0 0 10px; font-size: 13px; color: var(--tinta-suave); }
+.etiqueta { display: block; font-size: 13px; font-weight: 600; color: var(--tinta-suave); margin: 4px 0 12px; }
+.medidor { height: 10px; border-radius: 999px; background: var(--papel-hondo); overflow: hidden; margin-bottom: 10px; }
+.medidor span { display: block; height: 100%; background: var(--verde); border-radius: 999px; min-width: 4px; }
+.medidor span.alto { background: var(--senal); }
+.pasos { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.paso { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; }
+.paso-n { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--bruma); font-weight: 700; font-size: 14px; }
+.paso.hecho .paso-n { background: var(--verde-suave); color: var(--verde); }
+.paso b { display: block; margin-bottom: 2px; }
+.lineas { margin: 0; padding-left: 18px; display: grid; gap: 8px; color: var(--tinta-suave); font-size: 14px; }
+.menu button span { white-space: nowrap; }

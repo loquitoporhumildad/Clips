@@ -43,8 +43,7 @@ juegos). Nombres por confirmar según disponibilidad (primera opción = nombre p
    Links: Claude propone campañas cada noche y Juan también pega los suyos en
    el Buzón del panel (pestaña Pedidos → rama media-index, BUZON.md).
 
-4. Cuenta de crecimiento: clips en vivo SIN campaña (nombre por confirmar, sin "GTA";
-   ideas: Stream Moments, Peak Clips, Live Drop) — TikTok · Instagram · YouTube Shorts
+4. Cuenta de crecimiento: PeakClips (clips en vivo SIN campaña) — TikTok · Instagram · YouTube Shorts
    Objetivo: NO cobra; atrae gente y gana fama con clips de directos (Westcol, RDJavi,
    Danirep, AuronPlay, illojuan, Rubius y los de GTA VI). Cuando tenga audiencia
    (referencia: 10.000 seguidores y videos que pasen de 50.000 vistas), se usa para
@@ -163,8 +162,11 @@ Di en cada sesión en qué etapa estamos y qué falta para la siguiente.
   dispara o el streamer sube la voz, corta de 20 s antes a 15 s después, transcribe,
   pone subtítulos palabra por palabra en 9:16, lo sube al panel y avisa por Discord.
   Se puede lanzar ANTES de que empiece el stream (reintenta). Cada ejecución dura
-  5 h 30 min y se reencadena sola hasta `hasta_utc`. Corre en Actions con repo público
-  (minutos gratis). Entrada: `link` o `link|campaña`; sin campaña, los clips quedan
+  5 h 30 min y se reencadena sola hasta `hasta_utc`. Corre en Actions con el repo PRIVADO:
+  2.000 minutos gratis al mes por cuenta de GitHub (cada tanda de 5 h 30 gasta 330), así que
+  se lanza solo en directos que valgan la pena. El repo se hace público solo cuando se
+  acaben los 2.000 y haga falta (decisión de Juan, 16 nov). Si el socio copia (fork) el repo
+  a su cuenta, tiene sus propios 2.000 minutos: es la forma de dividir recursos. Entrada: `link` o `link|campaña`; sin campaña, los clips quedan
   marcados "no publicar".
 - **Streamers objetivo** (Juan, Clip Vault): Westcol, RDJavi, Danirep, AuronPlay,
   illojuan, Rubius. Regla para Clip Vault (la que cobra): solo con campaña o permiso.
@@ -181,6 +183,16 @@ Di en cada sesión en qué etapa estamos y qué falta para la siguiente.
   beat propio). En los videos que se perfilen virales, añadir al publicar una canción de
   moda desde la app de cada red. Claude anota en `notas` de cada guion la canción sugerida.
 
+## Panel: directos y guía (agregado 16 nov)
+La página tiene la pestaña **Directos** (pegar links, elegir cuenta Clip Vault o PeakClips,
+campaña, duración y hora límite; ve estado, clips y minutos de GitHub usados del mes) y la
+pestaña **Guía** (todo explicado y qué falta para que funcione). La página llama a la función
+`vigilar` de Supabase (supabase/functions/vigilar), que guarda la fila en `clips_vigilar` y lanza
+el workflow "Vigilar directo" en GitHub; el vigilante devuelve estado y clips a la misma fila.
+La función avisa si pasarías de 2.000 minutos al mes. Todo se instala con el workflow
+"Supabase: aplicar" y dos secretos de GitHub: `SUPABASE_ACCESS_TOKEN` y `GH_TARGETS`
+(token de GitHub por persona con permiso Actions; `socio` es opcional). Nada se pega por chat.
+
 ## Prioridad de trabajo (decidido 16 nov)
 1. Clips en vivo CON campaña o permiso (Clip Vault): es lo único que cobra desde el día uno.
 2. Cuenta de crecimiento con clips en vivo sin campaña: fama, no dinero.
@@ -190,8 +202,9 @@ campaña, y a la de crecimiento si no la hay.
 
 ## Plan GTA VI, 16-29 nov (2 semanas)
 Meta: muchos videos de GTA VI adictivos, con voz, música y cortes rápidos.
-- Volumen: **6 videos por día por socio** (Juan en inglés, el socio en español; el mismo
-  render sale en los dos idiomas). Se turnan los temas. Además siguen Why It's Trending y
+- Volumen: **6 videos por día por socio**. Son 6 guiones al día, no 12: cada guion sale en
+  inglés y en español, Juan publica los 6 en inglés y el socio los mismos 6 en español, y así
+  se divide el trabajo y el costo de render. Se turnan quién escribe cada guion. Además siguen Why It's Trending y
   deportes con datos, y los clips de campañas cuentan aparte.
 - Fórmulas (rotar, nunca el mismo molde dos veces seguidas): 1) dato imposible ("GTA V tardó
   3 días en superar mil millones"), 2) versus de récords, 3) cuenta regresiva/"lo que se

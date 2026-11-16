@@ -1,0 +1,52 @@
+name: "Supabase: aplicar"
+
+# Crea la tabla clips_vigilar y publica la función "vigilar" que conecta la página
+# con GitHub. Se corre una vez (y cada vez que cambien supabase/migrations o supabase/functions).
+# Secretos de GitHub necesarios (los pone Juan en Settings > Secrets > Actions):
+#   SUPABASE_ACCESS_TOKEN  token personal de Supabase (supabase.com/dashboard/account/tokens)
+#   GH_TARGETS             {"juan":{"repo":"loquitoporhumildad/Clips","token":"<PAT con Actions: read/write>"},
+#                           "socio":{"repo":"<usuario-del-socio>/Clips","token":"<su PAT>"}}  (socio es opcional)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['supabase/migrations/**', 'supabase/functions/**']
+
+env:
+  PROYECTO: gxipxajizzenankexarj
+
+jobs:
+  aplicar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Falta el token
+        if: env.SUPABASE_ACCESS_TOKEN == ''
+        run: echo "::error::Falta el secreto SUPABASE_ACCESS_TOKEN" && exit 1
+      - name: Aplicar migraciones (solo SQL idempotente)
+        run: |
+          for f in supabase/migrations/*.sql; do
+            echo "Aplicando $f"
+            curl -sS --fail-with-body -X POST "https://api.supabase.com/v1/projects/$PROYECTO/database/query" \
+              -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" -H "Content-Type: application/json" \
+              --data "$(jq -Rs '{query: .}' "$f")"
+            echo
+          done
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - name: Publicar la función vigilar
+        run: supabase functions deploy vigilar --project-ref "$PROYECTO"
+      - name: Cargar secretos de la función
+        env:
+          GH_TARGETS: ${{ secrets.GH_TARGETS }}
+        run: |
+          if [ -n "$GH_TARGETS" ]; then
+            supabase secrets set GH_TARGETS="$GH_TARGETS" --project-ref "$PROYECTO"
+          else
+            echo "::warning::Falta el secreto GH_TARGETS: la página no podrá lanzar directos todavía."
+          fi
