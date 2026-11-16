@@ -393,8 +393,11 @@ def main():
             try:
                 if fu.result():
                     hechos.append(fu.result())
+                    estado_panel(clips=len(hechos), minutos_usados=int((time.time() - t_inicio) / 60) + 1)
             except Exception as e:
                 log(f'  corte falló: {str(e)[:200]}')
+        if int(time.time() - t_inicio) % 300 < 6:      # cada ~5 min: minutos usados al día para la página
+            estado_panel(minutos_usados=int((time.time() - t_inicio) / 60) + 1)
     parar.set()
     estado_panel(clips=len(hechos), minutos_usados=int((time.time() - t_inicio) / 60) + 1)
     for p_ in (sl, ff):

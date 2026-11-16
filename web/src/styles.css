@@ -195,3 +195,9 @@ button { cursor: pointer; border: 0; background: none; padding: 0; -webkit-tap-h
 .paso b { display: block; margin-bottom: 2px; }
 .lineas { margin: 0; padding-left: 18px; display: grid; gap: 8px; color: var(--tinta-suave); font-size: 14px; }
 .menu button span { white-space: nowrap; }
+
+.top-red { margin-top: 14px; }
+.top-fila { display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: center; min-height: 44px; font-size: 14px; }
+.top-fila input { width: 18px; height: 18px; accent-color: var(--verde); }
+.top-nombre { overflow-wrap: anywhere; }
+.top-num { color: var(--tinta-suave); font-variant-numeric: tabular-nums; }
