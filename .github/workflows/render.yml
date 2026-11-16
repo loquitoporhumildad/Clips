@@ -50,6 +50,7 @@ jobs:
         env:
           RENDER_DATE: ${{ inputs.date }}
         run: |
+          sudo apt-get install -y -qq ffmpeg
           pip install -q -r clips/requirements-voz.txt
           python clips/voz.py $RENDER_DATE
       - name: Render

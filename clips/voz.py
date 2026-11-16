@@ -96,7 +96,7 @@ def gemini(texto: str, nombre: str, lang: str) -> np.ndarray:
                 ultimo = e
                 if isinstance(e, urllib.error.HTTPError) and e.code in (400, 403, 404):
                     break  # este modelo no sirve: probar el siguiente
-                time.sleep(4 * (intento + 1))
+                time.sleep((25 if isinstance(e, urllib.error.HTTPError) and e.code == 429 else 4) * (intento + 1))
     raise RuntimeError(f"Gemini TTS falló: {ultimo}")
 
 
@@ -277,6 +277,8 @@ def muestras():
                 audio, _ = sintetizar_escena(texto[lang], lang, v, CFG["velocidad"][lang], {})
                 sf.write(d / f"{lang}-{v.replace(':', '_')}.wav", audio, SR)
                 print("muestra", lang, v, flush=True)
+                if v.startswith("gemini:"):
+                    time.sleep(8)  # el plan gratis limita las peticiones por minuto
             except Exception as e:  # una voz que falla no tumba las demás
                 print("FALLÓ", lang, v, "->", str(e)[:200], flush=True)
 
