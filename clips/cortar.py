@@ -297,7 +297,7 @@ def subir(c):
     ruta = f"{hoy}/{c['archivo'].name}"
     http(f"{base}/storage/v1/object/clips-videos/{ruta}", c['archivo'].read_bytes(),
          {**auth, 'Content-Type': 'video/mp4', 'x-upsert': 'true'})
-    fila = {'day': hoy, 'spec_id': c['id'], 'brand': 'clips', 'lang': c['idioma'] or 'en', 'account': 'Clip Vault',
+    fila = {'day': hoy, 'spec_id': c['id'], 'brand': 'clips', 'lang': c['idioma'] or 'en', 'account': E('CLIP_CUENTA') or 'Clip Vault',
             'owner': OWNER, 'storage_path': ruta, 'title': c['titulo'], 'description': c['descripcion'],
             'hashtags': [], 'notes': c['notas']}
     http(f"{base}/rest/v1/clips_videos?on_conflict=day,spec_id,lang", json.dumps(fila).encode(),

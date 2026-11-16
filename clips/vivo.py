@@ -54,6 +54,24 @@ SEG = 10
 ENFRIAR = DUR * 2                                    # no repetir momento dentro de este margen
 AUDIO_DB = 9                                         # subida de volumen que cuenta como momento
 
+REGISTRO = E('LIVE_REGISTRO') or ''                  # fila de clips_vigilar (la crea la página)
+
+
+def estado_panel(**campos):
+    """Avisa a la página cómo va esta ejecución (estado, clips, minutos). Nunca tumba el vigilante."""
+    base, key = E('SUPABASE_URL'), E('SUPABASE_SERVICE_KEY')
+    if not (REGISTRO and base and key):
+        return
+    try:
+        import urllib.request
+        campos['actualizado'] = datetime.now(timezone.utc).isoformat()
+        req = urllib.request.Request(f"{base}/rest/v1/clips_vigilar?id=eq.{REGISTRO}", data=json.dumps(campos).encode(),
+                                     headers={'apikey': key, 'Authorization': f'Bearer {key}', 'Content-Type': 'application/json'}, method='PATCH')
+        urllib.request.urlopen(req, timeout=30).read()
+    except Exception as e:
+        print('no pude avisar al panel:', str(e)[:120], flush=True)
+
+
 live = C.raiz / 'out' / 'vivo' / 'seg'
 live.mkdir(parents=True, exist_ok=True)
 for f in live.glob('*.ts'):
@@ -295,6 +313,7 @@ def main():
         log('⚠️ Sin campaña ni permiso: los clips se guardan marcados "no publicar".')
     log(f'Vigilando {URL or SIMULAR} por {MINUTOS:.0f} min · chat: {arrancar_chat() or "solo audio"}')
     fin = t_inicio + MINUTOS * 60
+    estado_panel(estado='vigilando')
     oido, chat_det = Oido(), Chat()
     pool = ThreadPoolExecutor(max_workers=1)               # Whisper de a uno, sin frenar la grabación
     pendientes, hechos, futuros = [], [], []
@@ -336,6 +355,7 @@ def main():
             except Exception as e:
                 log(f'  corte falló: {str(e)[:200]}')
     parar.set()
+    estado_panel(clips=len(hechos), minutos_usados=int((time.time() - t_inicio) / 60) + 1)
     for p_ in (sl, ff):
         if p_ and p_.poll() is None:
             p_.terminate()
@@ -346,6 +366,8 @@ def main():
         except Exception as e:
             log(f'  corte falló: {str(e)[:200]}')
     (C.out / 'vivo.json').write_text(json.dumps([{**c, 'archivo': c['archivo'].name} for c in hechos], ensure_ascii=False, indent=2))
+    estado_panel(estado='terminado' if not (grabando and not SIMULAR) else 'vigilando', clips=len(hechos),
+                 minutos_usados=int((time.time() - t_inicio) / 60) + 1)
     log(f'Fin: {len(hechos)} clips en vivo. Chat leído: {"sí" if chat_vivo.is_set() else "no"}.')
     salida = E('GITHUB_OUTPUT')
     if salida:

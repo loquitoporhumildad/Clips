@@ -25,6 +25,17 @@ on:
       cantidad_max:
         description: 'Tope de clips por canal y ejecución'
         default: '60'
+      cuenta:
+        description: 'Cuenta que publica: Clip Vault (con campaña) o PeakClips (crecimiento)'
+        default: 'Clip Vault'
+      owner:
+        description: 'De quién son los clips y los minutos'
+        type: choice
+        options: [juan, socio]
+        default: juan
+      registro:
+        description: 'Id de la fila en clips_vigilar (lo pone la página; vacío si lo lanzas a mano)'
+        required: false
 
 permissions:
   contents: read
@@ -58,7 +69,9 @@ jobs:
           CLIP_CAMPANA: ${{ inputs.campana }}
           LIVE_MINUTOS: ${{ inputs.minutos }}
           LIVE_MAX: ${{ inputs.cantidad_max }}
-          CLIP_OWNER: juan
+          CLIP_OWNER: ${{ inputs.owner }}
+          CLIP_CUENTA: ${{ inputs.cuenta }}
+          LIVE_REGISTRO: ${{ inputs.registro }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
@@ -82,9 +95,12 @@ jobs:
           CAMPANA: ${{ inputs.campana }}
           MINUTOS: ${{ inputs.minutos }}
           MAXIMO: ${{ inputs.cantidad_max }}
+          CUENTA: ${{ inputs.cuenta }}
+          DUENO: ${{ inputs.owner }}
         run: |
           if [[ "$(date -u +%Y-%m-%dT%H:%M)" < "$HASTA" ]]; then
             gh workflow run vivo.yml -R "$GITHUB_REPOSITORY" \
               -f urls="$ENTRADA" -f campana="$CAMPANA" \
-              -f hasta_utc="$HASTA" -f minutos="$MINUTOS" -f cantidad_max="$MAXIMO"
+              -f hasta_utc="$HASTA" -f minutos="$MINUTOS" -f cantidad_max="$MAXIMO" \
+              -f cuenta="$CUENTA" -f owner="$DUENO" -f registro="${{ inputs.registro }}"
           fi

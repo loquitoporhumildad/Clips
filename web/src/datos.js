@@ -89,6 +89,28 @@ export const api = {
   async estadoPedido(id, status) {
     if (!DEMO) await sb.from('clips_requests').update({status}).eq('id', id);
   },
+  // Directos: la página llama a la función "vigilar" de Supabase, que lanza el workflow en GitHub.
+  async vigilarPing() {
+    if (DEMO) return {ok: true, listos: ['juan'], cuota: 2000};
+    const {data, error} = await sb.functions.invoke('vigilar', {body: {accion: 'ping'}});
+    return error ? {ok: false, listos: [], cuota: 2000} : data;
+  },
+  async vigilar(cuerpo) {
+    if (DEMO) return {ok: true, resultados: []};
+    const {data, error} = await sb.functions.invoke('vigilar', {body: cuerpo});
+    if (!error) return data;
+    let mensaje = error.message;
+    try { mensaje = (await error.context.json()).error || mensaje; } catch { /* sin detalle */ }
+    return {ok: false, error: mensaje};
+  },
+  async directos(dueno) {
+    if (DEMO) return [{id: 1, created_at: new Date().toISOString(), owner: 'juan', cuenta: 'Clip Vault', url: 'https://www.twitch.tv/ejemplo', campana: 'Whop: ejemplo', minutos: 330, estado: 'vigilando', clips: 3, minutos_usados: 120}];
+    let q = sb.from('clips_vigilar').select('*').order('id', {ascending: false}).limit(30);
+    if (dueno !== 'todos') q = q.eq('owner', dueno);
+    const {data, error} = await q;
+    if (error) throw error;
+    return data;
+  },
   async metricas() {
     if (DEMO) return muestra.metricas;
     const {data} = await sb.from('clips_metrics').select('*').order('captured_at', {ascending: false}).limit(500);
