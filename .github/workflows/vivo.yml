@@ -5,7 +5,7 @@ name: Vigilar directo
 # Una ejecución dura ~5 h 30 min (límite de 6 h de Actions). Si el directo sigue,
 # se vuelve a lanzar sola hasta pasar "hasta_utc". Puedes lanzarla ANTES de que
 # empiece el stream: reintenta hasta que salga al aire.
-# Con el repo público los minutos de Actions son gratis.
+# Repo privado: cuentan contra los 2.000 minutos gratis al mes.
 
 on:
   workflow_dispatch:
@@ -42,13 +42,27 @@ permissions:
   actions: write
 
 jobs:
+  preparar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    outputs:
+      entradas: ${{ steps.m.outputs.entradas }}
+    steps:
+      - id: m
+        env:
+          URLS: ${{ inputs.urls }}
+        run: |
+          # GitHub Actions no tiene replace(): armamos la lista JSON aquí.
+          echo "entradas=$(printf '%s' "$URLS" | tr -d ' ' | jq -R -c 'split(",") | map(select(length>0))')" >> "$GITHUB_OUTPUT"
+
   vigilar:
+    needs: preparar
     runs-on: ubuntu-24.04
     timeout-minutes: 355
     strategy:
       fail-fast: false
       matrix:
-        entrada: ${{ fromJSON(format('["{0}"]', replace(replace(inputs.urls, ' ', ''), ',', '","'))) }}
+        entrada: ${{ fromJSON(needs.preparar.outputs.entradas) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
