@@ -4,7 +4,7 @@
 Dos personas con el mismo perfil y los mismos roles: Juan (administra la
 infraestructura) y su socio. Panamá. Sabemos Python, SQL, Git, Supabase,
 GitHub Actions y desarrollo web. 2+ horas cada noche cada uno. PC sin
-gráfica dedicada. Sin PS5 ni Xbox. No ponemos cara ni voz.
+gráfica dedicada. Sin PS5 ni Xbox. No ponemos cara ni voz propia (la voz en off es de IA).
 Presupuesto: $0 además de Claude Pro (uno por persona); si algo pago vale
 mucho la pena, propónlo con números. Cobro por PayPal, cada uno a su nombre.
 Empezamos sin seguidores.
@@ -42,6 +42,18 @@ juegos). Nombres por confirmar según disponibilidad (primera opción = nombre p
    del audio → clips 9:16 con subtítulos en el panel. Siempre con campaña o permiso.
    Links: Claude propone campañas cada noche y Juan también pega los suyos en
    el Buzón del panel (pestaña Pedidos → rama media-index, BUZON.md).
+
+4. Cuenta de crecimiento: clips en vivo SIN campaña (nombre por confirmar, sin "GTA";
+   ideas: Stream Moments, Peak Clips, Live Drop) — TikTok · Instagram · YouTube Shorts
+   Objetivo: NO cobra; atrae gente y gana fama con clips de directos (Westcol, RDJavi,
+   Danirep, AuronPlay, illojuan, Rubius y los de GTA VI). Cuando tenga audiencia
+   (referencia: 10.000 seguidores y videos que pasen de 50.000 vistas), se usa para
+   campañas y programas que sí paguen. Es una cuenta aparte de Clip Vault: si recibe
+   un reclamo de copyright, no arrastra a la cuenta que cobra. Mitigar: clips cortos,
+   con subtítulos y crédito al streamer en la descripción, y bajar un clip si el
+   streamer lo pide. El riesgo no desaparece: sin permiso puede haber reclamos o baneo.
+   Aviso: los seguidores no se transfieren a otra cuenta; la fama sirve para entrar a
+   campañas con esa misma cuenta o para promocionar la cuenta que cobra.
 
 ### Socio — desde hoy (2 marcas, 6 cuentas)
 1. Gaming / GTA VI en español — Datos de Vice (alternativas: Leonida al Día, Mundo Abierto en Datos)
@@ -139,6 +151,61 @@ Di en cada sesión en qué etapa estamos y qué falta para la siguiente.
 - Gastos futuros del sistema a la mitad.
 - Si uno se va, se queda con sus cuentas; el sistema queda según lo acordado.
 
+## Oídos, directos en vivo y voz (agregado 16 nov)
+- **Oídos** (`clips/oidos.py`, workflow "Oídos"): Claude no oye el sonido, pero con esto
+  lee cualquier video o audio: gancho de los primeros 3 s, transcripción con tiempos,
+  momentos donde sube el sonido, silencios y ritmo (BPM). Úsalo para analizar videos
+  virales antes de copiar su gancho y para revisar el audio de nuestros propios videos.
+- **Vigilante en vivo** (`clips/vivo.py`, workflow "Vigilar directo"): entra a uno o
+  varios directos, graba en pedazos de 10 s, lee el chat (Twitch por IRC anónimo,
+  YouTube con chat-downloader; Kick y otros solo audio) y mide audio. Si el chat se
+  dispara o el streamer sube la voz, corta de 20 s antes a 15 s después, transcribe,
+  pone subtítulos palabra por palabra en 9:16, lo sube al panel y avisa por Discord.
+  Se puede lanzar ANTES de que empiece el stream (reintenta). Cada ejecución dura
+  5 h 30 min y se reencadena sola hasta `hasta_utc`. Corre en Actions con repo público
+  (minutos gratis). Entrada: `link` o `link|campaña`; sin campaña, los clips quedan
+  marcados "no publicar".
+- **Streamers objetivo** (Juan, Clip Vault): Westcol, RDJavi, Danirep, AuronPlay,
+  illojuan, Rubius. Regla para Clip Vault (la que cobra): solo con campaña o permiso.
+  La única excepción es la cuenta de crecimiento (decisión de Juan, riesgo asumido; al lanzar
+  el vigilante para ella se escribe "Crecimiento sin campaña" en el campo campaña). Cada noche buscar si alguno
+  abrió campaña (Whop/Vyro/Discord del streamer) y, si la hay, lanzar el vigilante en
+  sus directos y proponer los clips. Sin campaña ni permiso, los clips sirven para crecer
+  audiencia, no para cobrar: TikTok paga solo videos originales de más de 1 minuto con
+  10.000 seguidores y 100.000 vistas/30 días; YouTube puede quitar la monetización del
+  canal entero por contenido reutilizado; los bonos de Instagram son por invitación.
+- **Voz en off**: ya existe (Kokoro, ver "Guiones con voz" arriba y clips/voces.json). Frases cortas, gancho en el primer segundo, una idea por escena.
+- **Música (mezcla)**: base libre de derechos dentro del video (archivos en
+  `remotion/public/media/music/`, `render.mjs` elige una por video y la voz la baja; si no hay, usa el
+  beat propio). En los videos que se perfilen virales, añadir al publicar una canción de
+  moda desde la app de cada red. Claude anota en `notas` de cada guion la canción sugerida.
+
+## Prioridad de trabajo (decidido 16 nov)
+1. Clips en vivo CON campaña o permiso (Clip Vault): es lo único que cobra desde el día uno.
+2. Cuenta de crecimiento con clips en vivo sin campaña: fama, no dinero.
+3. Videos de datos con Remotion (GTA VI, tendencias, deportes).
+Cada directo se vigila una sola vez; el mismo clip sirve a la cuenta que cobra solo si hay
+campaña, y a la de crecimiento si no la hay.
+
+## Plan GTA VI, 16-29 nov (2 semanas)
+Meta: muchos videos de GTA VI adictivos, con voz, música y cortes rápidos.
+- Volumen: **6 videos por día por socio** (Juan en inglés, el socio en español; el mismo
+  render sale en los dos idiomas). Se turnan los temas. Además siguen Why It's Trending y
+  deportes con datos, y los clips de campañas cuentan aparte.
+- Fórmulas (rotar, nunca el mismo molde dos veces seguidas): 1) dato imposible ("GTA V tardó
+  3 días en superar mil millones"), 2) versus de récords, 3) cuenta regresiva/"lo que se
+  sabe", 4) mapa y comparaciones, 5) reacción de la comunidad con datos, 6) pregunta que
+  obliga a comentar ("¿GTA V o VI?").
+- Retención ("dopamina"): gancho en los primeros 1,5 s con una afirmación o número;
+  un cambio visual o de sonido cada 2-3 s; un golpe de audio en cada corte; la promesa del
+  final planteada al inicio ("espera al dato 3"); cierre que conecta con el inicio para que
+  el video se repita en bucle; subtítulos siempre; máximo 20-25 s.
+- Fechas: 16-18 previa (cuenta regresiva, récords de tráilers y preventas, comparaciones);
+  19 lanzamiento (directos en vivo: lanzar el vigilante el 18 por la noche con `hasta_utc`
+  del 20 mediodía; ventas, jugadores y primeras notas); 20-29 reseñas, récords, secretos de
+  la comunidad con datos, clips de streamers con campaña.
+- Medir: cada noche, qué video retuvo más y copiar su fórmula al día siguiente.
+
 ## Rutina obligatoria al iniciar cada sesión
 Sin que lo pidamos:
 1. Lee la bitácora (de los dos): qué funcionó y qué no ayer.
@@ -152,6 +219,8 @@ Sin que lo pidamos:
    lanzar el workflow "Cortar stream". Unirse a la campaña y enviar los links
    publicados lo hace Juan (es su cuenta de Whop).
    Leer el Buzón: rama media-index, BUZON.md (links y notas del panel).
+   Revisar si Westcol, RDJavi, Danirep, AuronPlay, illojuan o Rubius abrieron campaña
+   o programa de clips y, si hay directo en curso con permiso, lanzar "Vigilar directo".
 3. Propón al menos una mejora respecto a ayer y por qué.
 4. Herramientas: qué conector, API, repo, skill o librería serviría;
    cuáles activamos nosotros y cuáles creas tú.
@@ -167,7 +236,7 @@ Sin que lo pidamos:
 - Verifica con búsqueda tarifas, reglas y herramientas.
 - Automatiza con código antes que con apps pagas.
 - Respeta reglas de campaña y derechos de autor: solo contenido con
-  permiso o claramente original.
+  permiso o claramente original (excepción decidida por Juan: la cuenta de crecimiento).
 - Videos renderizados por nosotros, sin marca de agua de otras apps.
 - Sé honesto con lo que no puedes hacer y da la forma más corta de hacerlo.
 - Explica en 2-3 líneas el porqué de cada decisión.

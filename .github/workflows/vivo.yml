@@ -1,0 +1,90 @@
+name: Vigilar directo
+
+# Entra a uno o varios directos y corta los momentos apenas pasan (chat + audio).
+# Solo para streams con campaña abierta o permiso del streamer.
+# Una ejecución dura ~5 h 30 min (límite de 6 h de Actions). Si el directo sigue,
+# se vuelve a lanzar sola hasta pasar "hasta_utc". Puedes lanzarla ANTES de que
+# empiece el stream: reintenta hasta que salga al aire.
+# Con el repo público los minutos de Actions son gratis.
+
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: 'Links de los directos separados por coma. Opcional por canal: link|campaña'
+        required: true
+      campana:
+        description: 'Campaña o permiso por defecto (ej. "Whop: Westcol GTA VI")'
+        required: true
+      hasta_utc:
+        description: 'Dejar de reencadenar después de esta hora UTC (YYYY-MM-DDTHH:MM). Vacío = una sola ejecución'
+        required: false
+      minutos:
+        description: 'Minutos por ejecución'
+        default: '330'
+      cantidad_max:
+        description: 'Tope de clips por canal y ejecución'
+        default: '60'
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  vigilar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        entrada: ${{ fromJSON(format('["{0}"]', replace(replace(inputs.urls, ' ', ''), ',', '","'))) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: clips/requirements.txt
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-montserrat
+      - run: pip install -q -r clips/requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: whisper-base
+      - name: Vigilar
+        id: v
+        env:
+          LIVE_ENTRADA: ${{ matrix.entrada }}
+          CLIP_CAMPANA: ${{ inputs.campana }}
+          LIVE_MINUTOS: ${{ inputs.minutos }}
+          LIVE_MAX: ${{ inputs.cantidad_max }}
+          CLIP_OWNER: juan
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: python clips/vivo.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vivo-${{ strategy.job-index }}
+          path: |
+            out/clips/**/*.mp4
+            out/clips/**/vivo.json
+            !out/clips/tmp/**
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: Seguir si el directo sigue y no pasó la hora límite
+        if: steps.v.outputs.sigue == 'true' && inputs.hasta_utc != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HASTA: ${{ inputs.hasta_utc }}
+          ENTRADA: ${{ matrix.entrada }}
+          CAMPANA: ${{ inputs.campana }}
+          MINUTOS: ${{ inputs.minutos }}
+          MAXIMO: ${{ inputs.cantidad_max }}
+        run: |
+          if [[ "$(date -u +%Y-%m-%dT%H:%M)" < "$HASTA" ]]; then
+            gh workflow run vivo.yml -R "$GITHUB_REPOSITORY" \
+              -f urls="$ENTRADA" -f campana="$CAMPANA" \
+              -f hasta_utc="$HASTA" -f minutos="$MINUTOS" -f cantidad_max="$MAXIMO"
+          fi
