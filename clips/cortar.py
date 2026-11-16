@@ -76,13 +76,24 @@ def bajar_audio():
     if local:
         return Path(URL), {'title': Path(URL).stem, 'uploader': '', 'webpage_url': URL}
     info = json.loads(ytdlp('-J', URL).stdout)
+    dur = info.get('duration')
+    if dur:
+        print(f"El video dura {int(dur // 60)} min.", flush=True)
+        if DESDE and DESDE * 60 >= dur:
+            sys.exit(f"desde_min={DESDE} queda fuera: el video dura {int(dur // 60)} min.")
     destino = tmp / 'audio.%(ext)s'
     args = ['-f', 'bestaudio/audio_only/worst', '-o', str(destino)]
     if DESDE or HASTA:
         fin = hms(HASTA * 60) if HASTA else 'inf'
         args += ['--download-sections', f"*{hms(DESDE * 60)}-{fin}"]
     ytdlp(*args, URL)
-    return next(tmp.glob('audio.*')), info
+    audio = next(tmp.glob('audio.*'))
+    sonda = subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'a', '-show_entries', 'stream=codec_name',
+                            '-of', 'csv=p=0', str(audio)], capture_output=True, text=True)
+    if not sonda.stdout.strip():
+        sys.exit(f"Lo descargado no trae audio (tamaño {audio.stat().st_size} bytes). Puede ser un VOD solo para suscriptores, "
+                 f"borrado o silenciado, o un rango fuera del video ({int((dur or 0) // 60)} min). Prueba sin desde_min/hasta_min.")
+    return audio, info
 
 
 def volumen(audio):
