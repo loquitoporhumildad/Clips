@@ -1,7 +1,7 @@
 export type Lang = 'en' | 'es';
 export type T = Record<Lang, string>;
 
-type Bg = {bg?: string; bgStart?: number; cuts?: number[]; cutEvery?: number; voz?: T; vozFile?: Partial<Record<Lang, string>>};
+type Bg = {bg?: string; bgStart?: number; cuts?: number[]; cutEvery?: number; narration?: T};
 
 export type Scene = Bg & (
   | {type: 'hook'; seconds: number; kicker?: T; text: T}
@@ -12,6 +12,9 @@ export type Scene = Bg & (
   | {type: 'outro'; seconds: number; big: T; small: T; cta: T}
 );
 
+export type Word = {w: string; t0: number; t1: number; scene: number};
+export type VoiceTrack = {file: string; words: Word[]};
+
 export type VideoSpec = {
   id: string;
   theme: string;
@@ -19,6 +22,8 @@ export type VideoSpec = {
   audio?: boolean;
   music?: string;
   autoBg?: boolean;
+  audioFile?: string;
+  voiceTrack?: VoiceTrack;
   brand?: string;
   tag?: T | string;
   scenes: Scene[];

@@ -1,0 +1,38 @@
+{
+  "voces": {
+    "en": "am_michael",
+    "es": null
+  },
+  "velocidad": {
+    "en": 1.08,
+    "es": 1.05
+  },
+  "pronunciacion": {
+    "en": {
+      "GTA VI": "G T A six",
+      "GTA 6": "G T A six",
+      "GTA V": "G T A five",
+      "GB": "gigabytes",
+      "NBA": "N B A",
+      "PS5": "PlayStation 5",
+      "AI": "A I"
+    },
+    "es": {
+      "GTA VI": "ge te a seis",
+      "GTA 6": "ge te a seis",
+      "GTA V": "ge te a cinco",
+      "GB": "gigabytes",
+      "NBA": "ene be a",
+      "PS5": "PlayStation 5",
+      "IA": "i a"
+    }
+  },
+  "por_marca": {
+    "trending": {
+      "en": "af_heart"
+    }
+  },
+  "estilo": {
+    "es": "Habla en español latinoamericano neutro, con energía y ritmo ágil, como un narrador de datos curiosos para redes sociales"
+  }
+}
