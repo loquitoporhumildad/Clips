@@ -1,7 +1,11 @@
 {
   "voces": {
     "en": "am_michael",
-    "es": null
+    "es": [
+      "gemini:Orus",
+      "edge:es-PA-RobertoNeural",
+      "edge:es-MX-JorgeNeural"
+    ]
   },
   "velocidad": {
     "en": 1.08,
@@ -30,6 +34,19 @@
   "por_marca": {
     "trending": {
       "en": "af_heart"
+    },
+    "gta": {
+      "es": [
+        "edge:es-MX-JorgeNeural",
+        "edge:es-PA-RobertoNeural"
+      ]
+    },
+    "sports": {
+      "es": [
+        "edge:es-PA-RobertoNeural",
+        "gemini:Orus",
+        "edge:es-MX-JorgeNeural"
+      ]
     }
   },
   "estilo": {

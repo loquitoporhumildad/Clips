@@ -105,8 +105,9 @@ lo que dice la voz, no lo que se lee en pantalla. La voz solo se activa si hay "
   clips/voces.json (pronunciacion) o en el guion con "pronunciation": {"en": {"XYZ": "x y z"}}.
 - Gancho en la primera frase (primeros 2 segundos). Cierre con la pregunta.
 - Música: la voz baja la música a un 16 %. "narrate": false apaga la voz de un guion.
-- La voz se elige en clips/voces.json (am_michael / em_alex por defecto); un guion
-  puede traer "voices": {"en": "am_adam"}.
+- Voces en clips/voces.json, por marca. Inglés: am_michael (GTA) y af_heart (trending).
+  Español (Edge/Gemini; las de Kokoro suenan raro): GTA = es-MX-Jorge, deportes = es-PA-Roberto,
+  con respaldo si una falla. Un guion puede traer "voices": {"en": "af_heart"}.
 Di en cada sesión en qué etapa estamos y qué falta para la siguiente.
 
 ## Sistema técnico
