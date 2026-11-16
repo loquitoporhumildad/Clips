@@ -1,0 +1,128 @@
+{
+  "id": "nba-doncic-43",
+  "brand": "sports",
+  "theme": "sports",
+  "langs": [
+    "es"
+  ],
+  "beat": false,
+  "tag": {
+    "es": "NBA EN DATOS"
+  },
+  "accounts": {
+    "es": "La Pizarra Data"
+  },
+  "owners": {
+    "es": "socio"
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 2.6,
+      "kicker": {
+        "es": "NBA · ANOCHE"
+      },
+      "text": {
+        "es": "Luka Dončić metió 43 puntos. Y ya ni sorprende."
+      }
+    },
+    {
+      "type": "bars",
+      "seconds": 4.2,
+      "title": {
+        "es": "Puntos por partido antes de anoche"
+      },
+      "items": [
+        {
+          "label": "1. Luka Dončić (Lakers)",
+          "value": 38.6,
+          "highlight": true
+        },
+        {
+          "label": "2. Shai Gilgeous-Alexander (Thunder)",
+          "value": 30.5
+        }
+      ],
+      "source": "Basketball-Reference, 14 nov"
+    },
+    {
+      "type": "stat",
+      "seconds": 3.2,
+      "value": 43,
+      "suffix": {
+        "es": "PUNTOS"
+      },
+      "label": {
+        "es": "ante los Suns: 13 de 28 en tiros, 5 triples y 9 asistencias."
+      },
+      "source": "Field Level Media · Yahoo Sports"
+    },
+    {
+      "type": "stat",
+      "seconds": 2.8,
+      "value": 10,
+      "suffix": {
+        "es": "SEGUIDOS"
+      },
+      "label": {
+        "es": "partidos con 30 puntos o más."
+      }
+    },
+    {
+      "type": "stat",
+      "seconds": 2.8,
+      "value": 7,
+      "suffix": {
+        "es": "DE 12"
+      },
+      "label": {
+        "es": "partidos esta temporada con 40 puntos o más."
+      }
+    },
+    {
+      "type": "stat",
+      "seconds": 2.8,
+      "value": 8,
+      "suffix": {
+        "es": "VICTORIAS"
+      },
+      "label": {
+        "es": "seguidas de los Lakers, que van 12-2 tras ganar 131-123."
+      },
+      "source": "NBA.com"
+    },
+    {
+      "type": "outro",
+      "seconds": 3,
+      "big": {
+        "es": "38.6"
+      },
+      "small": {
+        "es": "¿MVP desde ya o es muy pronto?"
+      },
+      "cta": {
+        "es": "Síguenos · la NBA en datos"
+      }
+    }
+  ],
+  "meta": {
+    "es": {
+      "title": "Luka Dončić: 43 puntos y 10 partidos seguidos de 30 o más",
+      "description": "Promediaba 38.6 puntos antes de anoche, ocho más que el segundo. Metió 43 ante los Suns y los Lakers ya van 12-2. ¿MVP desde ya o es muy pronto?",
+      "hashtags": [
+        "#NBA",
+        "#LukaDoncic",
+        "#Lakers",
+        "#baloncesto",
+        "#NBAenEspañol"
+      ]
+    }
+  },
+  "notes": "Para el socio (La Pizarra Data). Publicar el 16 de noviembre, lo antes posible: el dato es del partido del 15. Música: en la app, instrumental sin letra a volumen bajo, tipo beat de hip-hop suave (busca \"hip hop instrumental\" o \"basketball beat\"). VIDEO EXPERIMENTAL DE LA SEMANA: abre con un ranking de barras (escena 'bars') justo después del gancho, en vez de la secuencia de números sola; comparar su retención con los de GTA. Sin fondo de video: no hay material con permiso de la NBA, va con degradado.",
+  "sources": [
+    "https://fieldlevelmedia.com/nba/luka-doncic-led-lakers-stop-suns-for-8th-straight-win/",
+    "https://sports.yahoo.com/nba/article/luka-doncic-scores-43-leading-lakers-over-suns-for-eighth-consecutive-win-tying-for-nbas-top-record-004316661.html",
+    "https://www.nba.com/watch/video/game-recap-lakers-131-suns-123-nov-15",
+    "https://www.basketball-reference.com/leagues/NBA_2027_leaders.html"
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "id": "gta-countdown-3",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": [
+    "en",
+    "es"
+  ],
+  "beat": false,
+  "tag": {
+    "en": "COUNTDOWN",
+    "es": "CUENTA REGRESIVA"
+  },
+  "accounts": {
+    "en": "Vice Data",
+    "es": "Datos de Vice"
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 2.6,
+      "kicker": {
+        "en": "3 DAYS",
+        "es": "3 DÍAS"
+      },
+      "text": {
+        "en": "In 3 days GTA VI has to beat one rival: GTA V.",
+        "es": "En 3 días GTA VI tiene que vencer a un solo rival: GTA V."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 10.0
+    },
+    {
+      "type": "stat",
+      "seconds": 3.2,
+      "value": 1000,
+      "prefix": "$",
+      "suffix": {
+        "en": "MILLION",
+        "es": "MILLONES"
+      },
+      "label": {
+        "en": "GTA V passed $1 billion in its first 3 days (2013).",
+        "es": "GTA V superó los mil millones de dólares en sus primeros 3 días (2013)."
+      },
+      "source": "Take-Two Interactive",
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 2.2
+    },
+    {
+      "type": "versus",
+      "seconds": 4.2,
+      "title": {
+        "en": "Millions of copies in the first 24 hours",
+        "es": "Millones de copias en las primeras 24 horas"
+      },
+      "decimals": 1,
+      "left": {
+        "label": {
+          "en": "GTA V (2013, Guinness)",
+          "es": "GTA V (2013, Guinness)"
+        },
+        "value": 11.2
+      },
+      "right": {
+        "label": {
+          "en": "GTA VI (analyst forecast)",
+          "es": "GTA VI (pronóstico de analistas)"
+        },
+        "value": 25.0
+      },
+      "note": {
+        "en": "Forecast, not a result: 25M+ on day one",
+        "es": "Es un pronóstico, no un resultado: más de 25 M el día uno"
+      },
+      "source": "Guinness World Records · Bloomberg"
+    },
+    {
+      "type": "stat",
+      "seconds": 3.2,
+      "value": 235,
+      "suffix": {
+        "en": "MILLION",
+        "es": "MILLONES"
+      },
+      "label": {
+        "en": "copies of GTA V sold to date. That's the bar.",
+        "es": "copias de GTA V vendidas hasta hoy. Esa es la vara."
+      },
+      "source": "Take-Two Interactive",
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 16.0
+    },
+    {
+      "type": "stat",
+      "seconds": 3.4,
+      "value": 212,
+      "suffix": "GB",
+      "label": {
+        "en": "Up to this much console storage. Pre-load is already live.",
+        "es": "Hasta esto ocupa en la consola. La predescarga ya está abierta."
+      },
+      "source": "Rockstar Games",
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 8.0
+    },
+    {
+      "type": "outro",
+      "seconds": 3,
+      "big": {
+        "en": "NOV 19",
+        "es": "19 NOV"
+      },
+      "small": {
+        "en": "Does it beat $1 billion in 3 days?",
+        "es": "¿Supera los mil millones en 3 días?"
+      },
+      "cta": {
+        "en": "Follow · 2 days tomorrow",
+        "es": "Síguenos · mañana faltan 2"
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "GTA VI vs GTA V: the record it has to beat in 3 days",
+      "description": "GTA V made $1 billion in 3 days. Analysts expect 25M+ copies of GTA VI on day one, and it needs up to 212 GB. 3 days to go. Does it break the record?",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6countdown",
+        "#gaming",
+        "#rockstargames"
+      ]
+    },
+    "es": {
+      "title": "GTA VI contra GTA V: el récord que tiene que romper en 3 días",
+      "description": "GTA V hizo mil millones de dólares en 3 días. Los analistas esperan más de 25 millones de copias de GTA VI el primer día, y ocupa hasta 212 GB. Faltan 3 días. ¿Rompe el récord?",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6español",
+        "#videojuegos",
+        "#gaming"
+      ]
+    }
+  },
+  "notes": "Publicar el 16 de noviembre. Música: en la app, synthwave instrumental sin letra a volumen bajo (10-15 %); busca \"synthwave instrumental\" o \"retrowave\" en los sonidos. El dato de 25 millones es un pronóstico de analistas (Bloomberg), no un resultado: si te preguntan, dilo así. Cierre con pregunta: responde los primeros comentarios.",
+  "sources": [
+    "https://gematsu.com/2013/09/grand-theft-auto-v-sales-surpass-1-billion-in-first-three-days",
+    "https://www.gamespot.com/news/guinness-claims-gtav-day-one-sales-total-112-million-copies-6415455",
+    "https://80.lv/articles/analysts-say-gta-6-could-sell-over-25m-copies-on-day-one-amid-terrifying-expectations",
+    "https://keengamer.com/articles/news/gta-6-pre-orders-reaching-unprecedented-levels-per-take-two-interactive-earnings-call",
+    "https://www.gfinityesports.com/article/gta-6-pre-load-times-download-size-confirmed-by-rockstar",
+    "https://www.ibtimes.co.uk/rockstar-games-reveals-gta-6-pre-load-details-212gb-file-size-map-leonida-download-plans-1830184"
+  ]
+}
