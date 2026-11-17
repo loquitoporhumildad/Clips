@@ -28,6 +28,7 @@ import statistics
 import subprocess
 import sys
 import threading
+import traceback
 import time
 from collections import deque
 from concurrent.futures import ThreadPoolExecutor
@@ -57,6 +58,16 @@ ENFRIAR = DUR * 2                                    # no repetir momento dentro
 AUDIO_DB = 9                                         # subida de volumen que cuenta como momento
 
 REGISTRO = E('LIVE_REGISTRO') or ''                  # fila de clips_vigilar (la crea la página)
+
+
+def sigue_despues():
+    """True si queda otra tanda encadenada (hay hora límite en el futuro)."""
+    h = (E('LIVE_HASTA') or '').strip()[:16]
+    try:
+        import datetime as _d
+        return _d.datetime.strptime(h, '%Y-%m-%dT%H:%M') > _d.datetime.utcnow()
+    except ValueError:
+        return False
 
 
 def estado_panel(**campos):
@@ -397,7 +408,7 @@ def main():
                     hechos.append(fu.result())
                     estado_panel(clips=len(hechos), minutos_usados=int((time.time() - t_inicio) / 60) + 1)
             except Exception as e:
-                log(f'  corte falló: {str(e)[:200]}')
+                log(f'  corte falló: {str(e)[:200]}\n{traceback.format_exc()[-900:]}')
         if int(time.time() - t_inicio) % 300 < 6:      # cada ~5 min: minutos usados al día para la página
             estado_panel(minutos_usados=int((time.time() - t_inicio) / 60) + 1)
     parar.set()
@@ -410,9 +421,9 @@ def main():
             if fu.result(timeout=300):
                 hechos.append(fu.result())
         except Exception as e:
-            log(f'  corte falló: {str(e)[:200]}')
+            log(f'  corte falló: {str(e)[:200]}\n{traceback.format_exc()[-900:]}')
     (C.out / 'vivo.json').write_text(json.dumps([{**c, 'archivo': c['archivo'].name} for c in hechos], ensure_ascii=False, indent=2))
-    estado_panel(estado='terminado' if not (grabando and not SIMULAR) else 'vigilando', clips=len(hechos),
+    estado_panel(estado='vigilando' if (grabando and not SIMULAR and sigue_despues()) else 'terminado', clips=len(hechos),
                  minutos_usados=int((time.time() - t_inicio) / 60) + 1)
     log(f'Fin: {len(hechos)} clips en vivo. Chat leído: {"sí" if chat_vivo.is_set() else "no"}.')
     salida = E('GITHUB_OUTPUT')

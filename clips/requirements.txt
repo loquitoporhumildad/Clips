@@ -3,3 +3,4 @@ faster-whisper
 chat-downloader
 streamlink
 numpy
+av>=14,<19
