@@ -162,13 +162,16 @@ Referencias analizadas con vidIQ: @pingucuriosso (curiosidades en 2D con luz y s
 - Datos como etiquetas sobre el dibujo con cifras que suben (regla, medidor, "DÍA 4", precio tachado).
 - Metáforas visuales literales; cambio visual cada 1-3 s; whoosh/pop en cada corte.
 - Subtítulos ARRIBA y centrados, 1-3 palabras, recuadro de color en la palabra clave.
-- Deportes: personaje "ficha" (ficha de casino con costuras de balón), `mascotType: "ficha"`.
-  Hay también bolo, robo, zorro, buho y dado en remotion/src/Mascot.tsx.
+- Deportes (cambio 16 nov noche): mismo estilo que curiosidades, sin personaje. Escenas `story` con
+  `stage: "court"` (aro, jugador, balones, marcador, trofeo) y etiquetas de datos. La mascota (ficha, bolo,
+  robo, zorro, buho, dado en remotion/src/Mascot.tsx) queda disponible pero ya no se usa por defecto.
+- En escenas `story` NO usar el campo `bg` (choca con el fondo de media); usar `stage`.
 - Tendencias y curiosidades: sin personaje; escena `story` (remotion/src/scenes/Story.tsx) que
   recrea lo que pasó con dibujos (cohete, satélite, reloj, alerta, explosión, palomita, cruz, Tierra).
   Cada tema nuevo suma dibujos a la librería.
-- Falta construir: etiquetas de datos animadas, subtítulos arriba, sonidos por corte y escenarios con luz
-  (mar, cuarto, espacio, ciudad, estadio).
+- Ya construido: etiquetas de datos (`badges`), subtítulos arriba con recuadro (`captionPos: "top"`), sonidos
+  pop/slide por pieza, escenarios `space` y `court`.
+- Falta: luz y sombras estilo @pingucuriosso, escenarios (mar, cuarto, ciudad, estadio), más dibujos por tema.
 
 ## Clips de streamers: decisiones técnicas (16 nov)
 - Diseño del clip: `CLIP_MODO=camara` (por defecto en vivo): detecta la cara con OpenCV y apila
@@ -181,6 +184,14 @@ Referencias analizadas con vidIQ: @pingucuriosso (curiosidades en 2D con luz y s
 - Secretos en Supabase (edge functions): GH_TARGETS, TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET, YOUTUBE_API_KEY.
 - Directos a vigilar: categoría GTA VI durante un mes (top de Twitch), luego se varía.
 - Calidad objetivo de Clip Vault y PeakClips: nivel de @gta6clips y similares (10/10).
+- Diseño de clip en vivo (decidido 16 nov noche): banda de título arriba (0-250 px), cámara del streamer
+  (1080x760), juego completo debajo y fondo borroso. SIN subtítulos automáticos (`LIVE_SUBS=1` los activa) y
+  SIN título automático: el título "de lo que pasa" lo escribe Juan en la pestaña Videos ("Poner título").
+  Cada clip guarda una copia `base_path` sin título; el workflow "Poner título" (clips/titulo.py) la usa y
+  reemplaza el video. Columnas `hook` y `base_path` en clips_videos. La función `vigilar` tiene `accion: "titulo"`.
+  Los clips hechos con el diseño viejo no se pueden rehacer: el stream en bruto se borra a los 20 min.
+- El workflow "Supabase: aplicar" no corre sin el secreto SUPABASE_ACCESS_TOKEN; mientras falte, las funciones
+  se publican desde la sesión con el conector de Supabase.
 - Pendiente: gancho escrito en los primeros 3 s, crédito del streamer en pantalla, activación automática
   al empezar el stream, clips hechos por espectadores en Twitch como señal extra.
 
