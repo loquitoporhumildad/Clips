@@ -1,7 +1,7 @@
 export type Lang = 'en' | 'es';
 export type T = Record<Lang, string>;
 
-type Bg = {bg?: string; bgStart?: number; cuts?: number[]; cutEvery?: number; narration?: T};
+type Bg = {mood?: 'hype' | 'shock' | 'think' | 'smile'; bg?: string; bgStart?: number; cuts?: number[]; cutEvery?: number; narration?: T};
 
 export type Scene = Bg & (
   | {type: 'hook'; seconds: number; kicker?: T; text: T}
@@ -25,6 +25,8 @@ export type VideoSpec = {
   audioFile?: string;
   voiceTrack?: VoiceTrack;
   brand?: string;
+  deco?: 'ball' | 'star' | 'dots';
+  mascot?: boolean;
   tag?: T | string;
   scenes: Scene[];
 };

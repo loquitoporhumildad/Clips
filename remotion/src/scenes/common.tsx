@@ -23,7 +23,7 @@ export const Source: React.FC<{text?: string; t: Theme}> = ({text, t}) => {
   if (!text) return null;
   const o = interpolate(frame, [15, 30], [0, 0.8], {extrapolateRight: 'clamp'});
   return (
-    <div style={{position: 'absolute', bottom: 440, left: 80, right: 160, fontFamily: BODY, fontSize: 30, color: t.muted, opacity: o}}>
+    <div style={{marginTop: 28, fontFamily: BODY, fontSize: 30, color: t.muted, opacity: o}}>
       {text}
     </div>
   );

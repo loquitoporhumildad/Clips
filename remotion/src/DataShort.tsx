@@ -8,6 +8,9 @@ import {Props, Scene, tr} from './types';
 import {theme} from './themes';
 import {SceneView} from './scenes/Scenes';
 import {Captions} from './Captions';
+import {Floaters, Mascot, Mood} from './Mascot';
+
+const MOOD: Record<string, Mood> = {hook: 'shock', stat: 'hype', bars: 'think', versus: 'think', progress: 'hype', outro: 'smile'};
 
 const isVideo = (f: string) => /\.(mp4|webm|mov)$/i.test(f);
 
@@ -81,11 +84,17 @@ export const DataShort: React.FC<Props> = ({spec, lang}) => {
     <AbsoluteFill style={{background: `linear-gradient(${160 + drift}deg, ${t.bg1}, ${t.bg2})`}}>
       {/* barra de progreso: ayuda a la retención */}
       <div style={{position: 'absolute', top: 0, left: 0, height: 12, width: `${(frame / durationInFrames) * 100}%`, background: t.accent}} />
+      <Floaters t={t} kind={spec.deco ?? 'dots'} />
       {spec.scenes.map((s, i) => {
         const len = Math.round(s.seconds * fps);
         const seq = (
           <Sequence key={i} from={from} durationInFrames={len}>
             <Bg s={s} dark={t.bg1} />
+            {spec.mascot !== false && (
+              <div style={{position: 'absolute', right: 40, bottom: 380}}>
+                <Mascot mood={s.mood ?? MOOD[s.type]} t={t} />
+              </div>
+            )}
             {spec.scenes.length === 1 ? <SceneView s={s} t={t} lang={lang} /> : (
               <Cut>
                 <SceneView s={s} t={t} lang={lang} />

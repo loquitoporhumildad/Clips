@@ -23,7 +23,10 @@
         "es": "NBA · ANOCHE"
       },
       "text": {
-        "es": "Luka Dončić metió 43 puntos. Y ya ni sorprende."
+        "es": "Metió 43 anoche. Y no es lo más loco de su temporada."
+      },
+      "narration": {
+        "es": "Luka Dončić metió cuarenta y tres puntos anoche. Y ni siquiera es lo más loco de su temporada."
       }
     },
     {
@@ -43,7 +46,10 @@
           "value": 30.5
         }
       ],
-      "source": "Basketball-Reference, 14 nov"
+      "source": "Basketball-Reference, 14 nov",
+      "narration": {
+        "es": "Ya promediaba treinta y ocho punto seis por partido. Ocho más que el segundo. Espera al tercer dato."
+      }
     },
     {
       "type": "stat",
@@ -55,7 +61,10 @@
       "label": {
         "es": "ante los Suns: 13 de 28 en tiros, 5 triples y 9 asistencias."
       },
-      "source": "Field Level Media · Yahoo Sports"
+      "source": "Field Level Media · Yahoo Sports",
+      "narration": {
+        "es": "Ante los Suns: cinco triples y nueve asistencias."
+      }
     },
     {
       "type": "stat",
@@ -66,6 +75,9 @@
       },
       "label": {
         "es": "partidos con 30 puntos o más."
+      },
+      "narration": {
+        "es": "Diez partidos seguidos con treinta puntos o más."
       }
     },
     {
@@ -76,7 +88,10 @@
         "es": "DE 12"
       },
       "label": {
-        "es": "partidos esta temporada con 40 puntos o más."
+        "es": "partidos con 40 puntos o más. Ese era el dato 3."
+      },
+      "narration": {
+        "es": "Y siete de doce partidos con cuarenta o más. Ese es el tercer dato."
       }
     },
     {
@@ -89,19 +104,25 @@
       "label": {
         "es": "seguidas de los Lakers, que van 12-2 tras ganar 131-123."
       },
-      "source": "NBA.com"
+      "source": "NBA.com",
+      "narration": {
+        "es": "Los Lakers ya llevan ocho victorias seguidas."
+      }
     },
     {
       "type": "outro",
       "seconds": 3,
       "big": {
-        "es": "38.6"
+        "es": "43"
       },
       "small": {
         "es": "¿MVP desde ya o es muy pronto?"
       },
       "cta": {
         "es": "Síguenos · la NBA en datos"
+      },
+      "narration": {
+        "es": "Cuarenta y tres anoche. Entonces dime: ¿MVP desde ya, o es muy pronto?"
       }
     }
   ],
@@ -124,5 +145,7 @@
     "https://sports.yahoo.com/nba/article/luka-doncic-scores-43-leading-lakers-over-suns-for-eighth-consecutive-win-tying-for-nbas-top-record-004316661.html",
     "https://www.nba.com/watch/video/game-recap-lakers-131-suns-123-nov-15",
     "https://www.basketball-reference.com/leagues/NBA_2027_leaders.html"
-  ]
+  ],
+  "deco": "ball",
+  "narrate": true
 }
