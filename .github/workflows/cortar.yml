@@ -19,10 +19,15 @@ on:
         description: 'Segundos por clip'
         default: '35'
       modo:
-        description: 'recorte = centro de la pantalla · relleno = video completo con fondo borroso'
+        description: 'camara = streamer arriba y juego abajo con fondo borroso · relleno = video completo con fondo borroso · recorte = centro'
         type: choice
-        options: [recorte, relleno]
-        default: recorte
+        options: [camara, relleno, recorte]
+        default: camara
+      cuenta:
+        description: 'Cuenta que publica'
+        type: choice
+        options: [PeakClips, Clip Vault]
+        default: PeakClips
       desde_min:
         description: 'Buscar desde este minuto del stream (vacío = inicio)'
         required: false
@@ -68,9 +73,19 @@ jobs:
             printf '%s' "$YTDLP_COOKIES" > "$RUNNER_TEMP/cookies.txt"
             echo "YTDLP_COOKIES_FILE=$RUNNER_TEMP/cookies.txt" >> "$GITHUB_ENV"
           fi
+      - name: Si el link es un canal de Twitch, usar su VOD más reciente
+        run: |
+          U="${{ inputs.url }}"
+          if [[ "$U" =~ ^https://(www\.)?twitch\.tv/[A-Za-z0-9_]+/?$ ]]; then
+            CANAL="${U%/}"
+            V=$(yt-dlp --flat-playlist -I 1 --print webpage_url "$CANAL/videos?filter=archives&sort=time" | head -1)
+            echo "VOD elegido: $V"
+            echo "CLIP_URL_REAL=$V" >> "$GITHUB_ENV"
+          fi
       - name: Cortar
         env:
           CLIP_URL: ${{ inputs.url }}
+          CLIP_CUENTA: ${{ inputs.cuenta }}
           CLIP_CAMPANA: ${{ inputs.campana }}
           CLIP_CANTIDAD: ${{ inputs.cantidad }}
           CLIP_DURACION: ${{ inputs.duracion }}
@@ -82,7 +97,9 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        run: python clips/cortar.py
+        run: |
+          [ -n "$CLIP_URL_REAL" ] && export CLIP_URL="$CLIP_URL_REAL"
+          python clips/cortar.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
