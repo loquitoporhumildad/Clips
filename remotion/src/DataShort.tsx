@@ -84,7 +84,7 @@ export const DataShort: React.FC<Props> = ({spec, lang}) => {
     <AbsoluteFill style={{background: `linear-gradient(${160 + drift}deg, ${t.bg1}, ${t.bg2})`}}>
       {/* barra de progreso: ayuda a la retención */}
       <div style={{position: 'absolute', top: 0, left: 0, height: 12, width: `${(frame / durationInFrames) * 100}%`, background: t.accent}} />
-      <Floaters t={t} kind={spec.deco ?? 'dots'} />
+      {spec.deco !== 'none' && <Floaters t={t} kind={spec.deco ?? 'dots'} />}
       {spec.scenes.map((s, i) => {
         const len = Math.round(s.seconds * fps);
         const seq = (

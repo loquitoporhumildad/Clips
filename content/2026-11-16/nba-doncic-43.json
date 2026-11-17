@@ -147,5 +147,6 @@
     "https://www.basketball-reference.com/leagues/NBA_2027_leaders.html"
   ],
   "deco": "ball",
-  "narrate": true
+  "narrate": true,
+  "mascotType": "ficha"
 }

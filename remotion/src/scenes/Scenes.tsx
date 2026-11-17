@@ -3,6 +3,7 @@ import {AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig} from 'remoti
 import {Lang, Scene, tr} from '../types';
 import {Theme} from '../themes';
 import {BODY, HEAD, Rise, Source, fmt, useEnter} from './common';
+import {StoryScene} from './Story';
 
 // Zona segura: TikTok/Reels tapan ~380px abajo y ~150px a la derecha.
 const Frame: React.FC<{children: React.ReactNode}> = ({children}) => {
@@ -172,6 +173,8 @@ export const SceneView: React.FC<{s: Scene; t: Theme; lang: Lang}> = ({s, t, lan
       return <Versus s={s} t={t} lang={lang} />;
     case 'progress':
       return <Progress s={s} t={t} lang={lang} />;
+    case 'story':
+      return <StoryScene s={s} t={t} lang={lang} />;
     case 'outro':
       return <Outro s={s} t={t} lang={lang} />;
   }
