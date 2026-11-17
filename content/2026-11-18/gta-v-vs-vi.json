@@ -1,0 +1,138 @@
+{
+  "id": "gta-v-vs-vi",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": [
+    "en",
+    "es"
+  ],
+  "beat": false,
+  "tag": {
+    "en": "V VS VI",
+    "es": "V CONTRA VI"
+  },
+  "accounts": {
+    "en": "Vice Data",
+    "es": "Datos de Vice"
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 3.2,
+      "kicker": {
+        "en": "13 YEARS",
+        "es": "13 AÑOS"
+      },
+      "text": {
+        "en": "13 years of waiting. Tomorrow it ends.",
+        "es": "13 años de espera. Mañana termina."
+      },
+      "narration": {
+        "en": "Thirteen years of waiting. Tomorrow it ends.",
+        "es": "Trece años de espera. Mañana termina."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 10.0
+    },
+    {
+      "type": "versus",
+      "seconds": 5.0,
+      "title": {
+        "en": "Years between each GTA",
+        "es": "Años entre cada GTA"
+      },
+      "left": {
+        "label": {
+          "en": "GTA IV to V",
+          "es": "De GTA IV a V"
+        },
+        "value": 5
+      },
+      "right": {
+        "label": {
+          "en": "GTA V to VI",
+          "es": "De GTA V a VI"
+        },
+        "value": 13
+      },
+      "note": {
+        "en": "2008 to 2013 vs 2013 to 2026",
+        "es": "2008 a 2013 contra 2013 a 2026"
+      },
+      "source": "Rockstar Games",
+      "narration": {
+        "en": "From GTA four to five, five years. From five to six, thirteen.",
+        "es": "De GTA cuatro a cinco, cinco años. De cinco a seis, trece."
+      }
+    },
+    {
+      "type": "stat",
+      "seconds": 4.2,
+      "value": 235,
+      "suffix": {
+        "en": "MILLION",
+        "es": "MILLONES"
+      },
+      "label": {
+        "en": "copies of GTA V sold. That's the bar GTA VI faces.",
+        "es": "copias de GTA V vendidas. Esa es la vara de GTA VI."
+      },
+      "narration": {
+        "en": "GTA V sold two hundred thirty five million copies. That is the bar.",
+        "es": "GTA V vendió doscientos treinta y cinco millones de copias. Esa es la vara."
+      },
+      "source": "Take-Two Interactive",
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 16.0
+    },
+    {
+      "type": "outro",
+      "seconds": 3.4,
+      "big": {
+        "en": "V or VI?",
+        "es": "¿V o VI?"
+      },
+      "small": {
+        "en": "Which one wins in your book?",
+        "es": "¿Cuál gana para ti?"
+      },
+      "cta": {
+        "en": "Follow · launch is tomorrow",
+        "es": "Síguenos · el lanzamiento es mañana"
+      },
+      "narration": {
+        "en": "Thirteen years later. GTA five or GTA six?",
+        "es": "Trece años después. ¿GTA cinco o GTA seis?"
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "GTA V vs GTA VI: 13 years of waiting",
+      "description": "5 years between GTA IV and V. 13 between V and VI. GTA V sold 235 million copies. GTA V or GTA VI?",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6countdown",
+        "#gaming",
+        "#rockstargames"
+      ]
+    },
+    "es": {
+      "title": "GTA V contra GTA VI: 13 años de espera",
+      "description": "5 años entre GTA IV y V. 13 entre V y VI. GTA V vendió 235 millones de copias. ¿GTA V o GTA VI?",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6español",
+        "#videojuegos",
+        "#gaming"
+      ]
+    }
+  },
+  "notes": "Publicar el 18 de noviembre. Años: GTA IV salió el 29 abr 2008, GTA V el 17 sep 2013 y GTA VI sale el 19 nov 2026 (5 y 13 años, redondeados). La cifra de 235 millones es la de Take-Two usada en guiones anteriores; si hay una cifra más nueva en el reporte de resultados del 9 nov, actualízala. Cierre con pregunta que obliga a comentar.",
+  "sources": [
+    "https://gematsu.com/2013/09/grand-theft-auto-v-sales-surpass-1-billion-in-first-three-days",
+    "https://forbes.com/sites/erikkain/2026/11/16/gta-6-release-date-time-ps5-xbox-series-x-download-size-day-one-update"
+  ]
+}

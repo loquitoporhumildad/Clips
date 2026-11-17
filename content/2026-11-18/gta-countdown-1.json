@@ -1,0 +1,145 @@
+{
+  "id": "gta-countdown-1",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": [
+    "en",
+    "es"
+  ],
+  "beat": false,
+  "tag": {
+    "en": "COUNTDOWN",
+    "es": "CUENTA REGRESIVA"
+  },
+  "accounts": {
+    "en": "Vice Data",
+    "es": "Datos de Vice"
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 3.6,
+      "kicker": {
+        "en": "1 DAY",
+        "es": "1 DÍA"
+      },
+      "text": {
+        "en": "Tomorrow at midnight, GTA VI unlocks in your time zone.",
+        "es": "Mañana a medianoche, GTA VI se abre en tu hora."
+      },
+      "narration": {
+        "en": "One day left. Tomorrow at midnight, in your time zone, GTA VI goes live.",
+        "es": "Falta un día. Mañana a medianoche, en tu hora, sale GTA VI."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 10.0
+    },
+    {
+      "type": "stat",
+      "seconds": 4.2,
+      "value": 212,
+      "suffix": "GB",
+      "label": {
+        "en": "Up to this much console storage. Pre-load is open.",
+        "es": "Hasta esto ocupa en la consola. La predescarga está abierta."
+      },
+      "narration": {
+        "en": "It takes up to two hundred twelve gigabytes. If you haven't downloaded it, today is the day.",
+        "es": "Ocupa hasta doscientos doce gigabytes. Si no lo has descargado, hoy es el día."
+      },
+      "source": "Rockstar Games",
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 2.2
+    },
+    {
+      "type": "stat",
+      "seconds": 3.6,
+      "value": 1080,
+      "suffix": {
+        "en": "DAYS",
+        "es": "DÍAS"
+      },
+      "label": {
+        "en": "days since the first trailer.",
+        "es": "días desde el primer tráiler."
+      },
+      "narration": {
+        "en": "One thousand eighty days since the first trailer.",
+        "es": "Han pasado mil ochenta días desde el primer tráiler."
+      },
+      "source": "Rockstar Games",
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 8.0
+    },
+    {
+      "type": "stat",
+      "seconds": 4.4,
+      "value": 1000,
+      "prefix": "$",
+      "suffix": {
+        "en": "MILLION",
+        "es": "MILLONES"
+      },
+      "label": {
+        "en": "GTA V made $1 billion in 3 days. That's the record to chase.",
+        "es": "GTA V hizo mil millones de dólares en 3 días. Ese es el récord."
+      },
+      "narration": {
+        "en": "GTA V made one billion dollars in three days. That is the record it chases.",
+        "es": "GTA V hizo mil millones de dólares en tres días. Ese es el récord que persigue."
+      },
+      "source": "Take-Two Interactive",
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 16.0
+    },
+    {
+      "type": "outro",
+      "seconds": 3.2,
+      "big": {
+        "en": "NOV 19",
+        "es": "19 NOV"
+      },
+      "small": {
+        "en": "Where will you be at midnight?",
+        "es": "¿Dónde vas a estar a medianoche?"
+      },
+      "cta": {
+        "en": "Follow · tomorrow GTA VI is out",
+        "es": "Síguenos · mañana GTA VI ya salió"
+      },
+      "narration": {
+        "en": "Tomorrow, midnight. Where will you be?",
+        "es": "Mañana, medianoche. ¿Dónde vas a estar?"
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "1 day left for GTA VI: what you need to know",
+      "description": "GTA VI unlocks tomorrow at midnight local time on PS5 and Xbox Series X|S. Up to 212 GB. Where will you be?",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6countdown",
+        "#gaming",
+        "#rockstargames"
+      ]
+    },
+    "es": {
+      "title": "Falta 1 día para GTA VI: lo que debes saber",
+      "description": "GTA VI se abre mañana a medianoche, hora local, en PS5 y Xbox Series X|S. Ocupa hasta 212 GB. ¿Dónde vas a estar?",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6español",
+        "#videojuegos",
+        "#gaming"
+      ]
+    }
+  },
+  "notes": "Publicar el 18 de noviembre. Música: en la app, synthwave o pop acelerado en tendencia a volumen bajo (10-15 %). Hora de apertura: Rockstar dijo medianoche local según Forbes (16 nov); si tu tienda muestra otra hora, no la menciones. Los 1080 días cuentan desde el primer tráiler (5 dic 2023) hasta el 19 nov 2026.",
+  "sources": [
+    "https://forbes.com/sites/erikkain/2026/11/16/gta-6-release-date-time-ps5-xbox-series-x-download-size-day-one-update",
+    "https://gematsu.com/2013/09/grand-theft-auto-v-sales-surpass-1-billion-in-first-three-days"
+  ]
+}
