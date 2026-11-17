@@ -9,7 +9,7 @@ export type Scene = Bg & (
   | {type: 'bars'; seconds: number; title: T; unit?: T | string; items: {label: T | string; value: number; highlight?: boolean}[]; source?: string}
   | {type: 'versus'; seconds: number; title: T; left: {label: T; value: number}; right: {label: T; value: number}; prefix?: string; decimals?: number; note?: T; source?: string}
   | {type: 'progress'; seconds: number; kicker: T; value: number; unit: T; percent: number; label: T; footer?: T}
-  | {type: 'story'; seconds: number; caption: T; sky?: boolean; badges?: {kind: 'num' | 'day' | 'price'; x: number; y: number; label?: T; value?: number; to?: number; unit?: string; decimals?: number; d?: number; color?: string}[]; count?: {value: number; suffix: T}; items: {s: string; x: number; y: number; size: number; m?: 'pop' | 'rise' | 'fall' | 'shake' | 'float' | 'slideL' | 'slideR' | 'blink' | 'none'; d?: number; r?: number; grid?: [number, number]; stagger?: number; alt?: Record<number, string>}[]}
+  | {type: 'story'; seconds: number; caption: T; sky?: boolean; stage?: 'space' | 'court'; badges?: {kind: 'num' | 'day' | 'price'; x: number; y: number; label?: T; value?: number; to?: number; unit?: string; decimals?: number; d?: number; color?: string}[]; count?: {value: number; suffix: T}; items: {s: string; x: number; y: number; size: number; m?: 'pop' | 'rise' | 'fall' | 'shake' | 'float' | 'slideL' | 'slideR' | 'blink' | 'arc' | 'none'; txt?: string; d?: number; r?: number; grid?: [number, number]; stagger?: number; alt?: Record<number, string>}[]}
   | {type: 'outro'; seconds: number; big: T; small: T; cta: T}
 );
 
