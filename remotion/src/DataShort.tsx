@@ -9,6 +9,7 @@ import {theme} from './themes';
 import {SceneView} from './scenes/Scenes';
 import {Captions} from './Captions';
 import {Floaters, Mascot, Mood} from './Mascot';
+import {TopCaptions} from './scenes/common';
 
 const MOOD: Record<string, Mood> = {hook: 'shock', stat: 'hype', bars: 'think', versus: 'think', progress: 'hype', outro: 'smile'};
 
@@ -95,9 +96,9 @@ export const DataShort: React.FC<Props> = ({spec, lang}) => {
                 <Mascot mood={s.mood ?? MOOD[s.type]} t={t} variant={spec.mascotType} />
               </div>
             )}
-            {spec.scenes.length === 1 ? <SceneView s={s} t={t} lang={lang} /> : (
+            {spec.scenes.length === 1 ? <TopCaptions.Provider value={spec.captionPos === 'top' && Boolean(spec.voiceTrack)}><SceneView s={s} t={t} lang={lang} /></TopCaptions.Provider> : (
               <Cut>
-                <SceneView s={s} t={t} lang={lang} />
+                <TopCaptions.Provider value={spec.captionPos === 'top' && Boolean(spec.voiceTrack)}><SceneView s={s} t={t} lang={lang} /></TopCaptions.Provider>
               </Cut>
             )}
           </Sequence>
@@ -113,7 +114,7 @@ export const DataShort: React.FC<Props> = ({spec, lang}) => {
       <Grain />
       {spec.audio !== false && <Audio src={staticFile(spec.audioFile ?? `audio/${spec.id}.wav`)} volume={spec.voiceTrack ? 0.45 : 1} />}
       {spec.voiceTrack && <Audio src={staticFile(spec.voiceTrack.file)} />}
-      {spec.voiceTrack && <Captions words={spec.voiceTrack.words} t={t} />}
+      {spec.voiceTrack && <Captions words={spec.voiceTrack.words} t={t} pos={spec.captionPos} />}
       {spec.music && (
         <Audio
           src={staticFile(`media/${spec.music}`)}

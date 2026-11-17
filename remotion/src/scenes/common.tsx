@@ -31,3 +31,6 @@ export const Source: React.FC<{text?: string; t: Theme}> = ({text, t}) => {
 
 export const fmt = (n: number, decimals = 0) =>
   n.toLocaleString('en-US', {minimumFractionDigits: decimals, maximumFractionDigits: decimals});
+
+// true cuando la voz ya pone los subtítulos arriba: la escena no repite el texto en una tarjeta.
+export const TopCaptions = React.createContext(false);

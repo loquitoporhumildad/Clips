@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Lang, Scene, tr} from '../types';
 import {Theme} from '../themes';
-import {BODY, HEAD, fmt} from './common';
+import {BODY, HEAD, TopCaptions, fmt} from './common';
 
 // Escena "story": recrea lo que pasó con dibujos planos que se mueven.
 // Cada item es un dibujo (sprite) con un movimiento; se combinan como piezas de teatro.
@@ -132,9 +132,44 @@ const Sky: React.FC<{t: Theme}> = ({t}) => {
   );
 };
 
+const Badge: React.FC<{b: NonNullable<Story['badges']>[number]; t: Theme; lang: Lang}> = ({b, t, lang}) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const f = Math.max(0, frame - (b.d ?? 0));
+  const pop = spring({frame: f, fps, config: {damping: 11, stiffness: 150}});
+  const k = interpolate(f, [0, 28], [0, 1], {extrapolateRight: 'clamp', easing: (x) => 1 - Math.pow(1 - x, 3)});
+  const color = b.color ?? t.accent;
+  let body: React.ReactNode;
+  if (b.kind === 'day') {
+    body = b.value === undefined ? <>{tr(b.label, lang)}</> : <>{tr(b.label, lang) || 'DAY'} {Math.max(1, Math.round(b.value * k))}</>;
+  } else if (b.kind === 'price') {
+    const to = b.to ?? 0;
+    const cut = interpolate(f, [18, 30], [0, 100], {extrapolateRight: 'clamp', extrapolateLeft: 'clamp'});
+    body = (
+      <span style={{display: 'inline-flex', gap: 24, alignItems: 'center'}}>
+        <span style={{position: 'relative', opacity: 0.8}}>
+          {b.unit ?? ''}{fmt(b.value ?? 0, b.decimals ?? 0)}
+          <span style={{position: 'absolute', left: 0, top: '52%', height: 8, width: `${cut}%`, background: '#ff3b3b', borderRadius: 4}} />
+        </span>
+        <span style={{opacity: f > 26 ? 1 : 0}}>{b.unit ?? ''}{fmt(to, b.decimals ?? 0)}</span>
+      </span>
+    );
+  } else {
+    body = <>{b.unit?.startsWith('$') || b.unit === '€' ? b.unit : ''}{fmt((b.value ?? 0) * k, b.decimals ?? 0)}{b.unit && !(b.unit.startsWith('$') || b.unit === '€') ? ` ${b.unit}` : ''}</>;
+  }
+  return (
+    <div style={{position: 'absolute', left: `${b.x}%`, top: `${b.y}%`, transform: `translate(-50%, -50%) scale(${pop})`, opacity: Math.min(1, pop * 2)}}>
+      <div style={{padding: '14px 34px', borderRadius: 999, background: color, border: `5px solid ${K}`, boxShadow: '0 10px 0 rgba(0,0,0,0.35)', fontFamily: HEAD, fontSize: 84, lineHeight: 1.05, color: '#fff', whiteSpace: 'nowrap', WebkitTextStroke: `2px ${K}`, paintOrder: 'stroke fill', fontVariantNumeric: 'tabular-nums'}}>
+        {body}
+      </div>
+    </div>
+  );
+};
+
 export const StoryScene: React.FC<{s: Story; t: Theme; lang: Lang}> = ({s, t, lang}) => {
   const frame = useCurrentFrame();
   const pop = spring({frame, fps: 30, config: {damping: 13, stiffness: 140}});
+  const hide = React.useContext(TopCaptions);
   const v = s.count ? interpolate(frame, [0, 30], [0, s.count.value], {extrapolateRight: 'clamp'}) : 0;
   return (
     <AbsoluteFill>
@@ -150,7 +185,8 @@ export const StoryScene: React.FC<{s: Story; t: Theme; lang: Lang}> = ({s, t, la
           });
         })}
       </AbsoluteFill>
-      <AbsoluteFill style={{padding: '270px 40px 0 40px', alignItems: 'center'}}>
+      {(s.badges ?? []).map((b, i) => <Badge key={i} b={b} t={t} lang={lang} />)}
+      {!hide && <AbsoluteFill style={{padding: '270px 40px 0 40px', alignItems: 'center'}}>
         <div style={{maxWidth: 960, padding: '26px 44px', borderRadius: 40, background: 'rgba(8,8,16,0.72)', border: '3px solid rgba(255,255,255,0.18)', boxShadow: '0 14px 0 rgba(0,0,0,0.3)', textAlign: 'center', transform: `scale(${0.9 + 0.1 * pop})`, opacity: pop}}>
           {s.count && (
             <div style={{fontFamily: HEAD, fontSize: 170, lineHeight: 1, color: t.accent, fontVariantNumeric: 'tabular-nums'}}>
@@ -159,7 +195,7 @@ export const StoryScene: React.FC<{s: Story; t: Theme; lang: Lang}> = ({s, t, la
           )}
           <div style={{fontFamily: BODY, fontWeight: 900, fontSize: s.count ? 50 : 64, lineHeight: 1.1, color: '#fff'}}>{tr(s.caption, lang)}</div>
         </div>
-      </AbsoluteFill>
+      </AbsoluteFill>}
     </AbsoluteFill>
   );
 };

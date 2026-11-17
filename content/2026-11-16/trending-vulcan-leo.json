@@ -98,7 +98,18 @@
       ],
       "narration": {
         "en": "Ten minutes into the flight, the rocket failed."
-      }
+      },
+      "badges": [
+        {
+          "kind": "num",
+          "x": 27,
+          "y": 76,
+          "value": 10,
+          "unit": "min",
+          "d": 6,
+          "color": "#e63946"
+        }
+      ]
     },
     {
       "type": "story",
@@ -141,7 +152,19 @@
       ],
       "narration": {
         "en": "It was the first total failure for United Launch Alliance."
-      }
+      },
+      "badges": [
+        {
+          "kind": "day",
+          "x": 50,
+          "y": 84,
+          "label": {
+            "en": "FIRST TOTAL FAILURE"
+          },
+          "d": 14,
+          "color": "#e63946"
+        }
+      ]
     },
     {
       "type": "story",
@@ -181,7 +204,18 @@
       ],
       "narration": {
         "en": "And Vulcan had flown just five times."
-      }
+      },
+      "badges": [
+        {
+          "kind": "num",
+          "x": 50,
+          "y": 80,
+          "value": 5,
+          "unit": "flights",
+          "d": 20,
+          "color": "#3a86ff"
+        }
+      ]
     },
     {
       "type": "versus",
@@ -246,5 +280,6 @@
   ],
   "mascot": false,
   "deco": "none",
-  "narrate": true
+  "narrate": true,
+  "captionPos": "top"
 }
