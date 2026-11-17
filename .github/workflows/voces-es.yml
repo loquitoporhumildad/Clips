@@ -1,0 +1,54 @@
+name: Voces en español
+
+# Genera una muestra de cada voz en español (mujeres y hombres; Edge y Gemini) y las manda al Discord,
+# en tandas de 10, con el nombre de la voz en el archivo. Elige y se pone en clips/voces.json.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  voces:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: clips/requirements-voz.txt
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/kokoro
+          key: kokoro-v1.0
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: pip install -q -r clips/requirements-voz.txt
+      - name: Generar muestras
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python clips/voz.py --muestras-es
+      - name: Pasar a mp3 y mandar a Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          cd out/voces_es
+          for f in *.wav; do ffmpeg -loglevel error -y -i "$f" -b:a 96k "${f%.wav}.mp3"; done
+          ls -1 *.mp3 | wc -l
+          [ -z "$DISCORD_WEBHOOK" ] && { echo "sin webhook"; exit 0; }
+          enviar() {  # $1 = prefijo (M/H), $2 = título
+            mapfile -t todos < <(ls "$1"_*.mp3 2>/dev/null)
+            total=${#todos[@]}; [ "$total" -eq 0 ] && return
+            for ((ini=0; ini<total; ini+=10)); do
+              args=(); i=0
+              for f in "${todos[@]:ini:10}"; do args+=(-F "files[$i]=@$f;filename=$f"); i=$((i+1)); done
+              curl -sS -F "content=🎙️ $2 (${ini}-$((ini+i)) de $total). El nombre del archivo es la voz." "${args[@]}" "$DISCORD_WEBHOOK" > /dev/null
+              sleep 2
+            done
+          }
+          enviar M "Voces de MUJER en español"
+          enviar H "Voces de HOMBRE en español"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: voces-es
+          path: out/voces_es/*.mp3
+          retention-days: 7

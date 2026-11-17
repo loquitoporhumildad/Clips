@@ -298,6 +298,33 @@ def muestras():
                 print("FALLÓ", lang, v, "->", str(e)[:200], flush=True)
 
 
+def muestras_es():
+    """Una muestra de CADA voz en español de Edge (mujeres y hombres) y de varias de Gemini.
+    Archivos: out/voces_es/M_nombre.wav / H_nombre.wav (M = mujer, H = hombre)."""
+    import asyncio
+    import edge_tts
+    d = ROOT / "out" / "voces_es"
+    d.mkdir(parents=True, exist_ok=True)
+    texto = ("Anoche pasó algo que casi nadie vio venir. Cuarenta y tres puntos, diez partidos seguidos, "
+             "y un récord que parecía imposible. ¿Y tú? ¿Lo viste en directo?")
+    lista = asyncio.run(edge_tts.list_voices())
+    voces = [(v["ShortName"], "M" if v["Gender"] == "Female" else "H") for v in lista if v["Locale"].lower().startswith("es-")]
+    voces += [(f"gemini_{n}", g) for n, g in (("Kore", "M"), ("Zephyr", "M"), ("Leda", "M"), ("Aoede", "M"), ("Sulafat", "M"),
+                                              ("Puck", "H"), ("Charon", "H"), ("Fenrir", "H"), ("Orus", "H"), ("Algieba", "H"))]
+    for nombre, genero in voces:
+        v = ("gemini:" + nombre[7:]) if nombre.startswith("gemini_") else ("edge:" + nombre)
+        if v.startswith("gemini:") and not os.environ.get("GEMINI_API_KEY"):
+            continue
+        try:
+            audio, _ = sintetizar_escena(texto, "es", v, CFG["velocidad"]["es"], {})
+            sf.write(d / f"{genero}_{nombre}.wav", audio, SR)
+            print("muestra", genero, nombre, flush=True)
+            if v.startswith("gemini:"):
+                time.sleep(8)
+        except Exception as e:
+            print("FALLÓ", nombre, "->", str(e)[:160], flush=True)
+
+
 def prueba():
     """Narra un guion corto por cada marca/idioma (para comprobar el flujo completo en Actions)."""
     for brand, lang in (("gta", "en"), ("trending", "en"), ("gta", "es"), ("sports", "es")):
@@ -308,6 +335,8 @@ def prueba():
 
 
 def main():
+    if "--muestras-es" in sys.argv:
+        return muestras_es()
     if "--muestras" in sys.argv:
         return muestras()
     if "--prueba" in sys.argv:
