@@ -1,0 +1,140 @@
+{
+  "id": "gta-hoy-sale",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": [
+    "en",
+    "es"
+  ],
+  "beat": false,
+  "tag": {
+    "en": "TODAY",
+    "es": "HOY"
+  },
+  "accounts": {
+    "en": "Vice Data",
+    "es": "Datos de Vice"
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 3.4,
+      "kicker": {
+        "en": "TODAY",
+        "es": "HOY"
+      },
+      "text": {
+        "en": "GTA VI is here. What you need to know.",
+        "es": "GTA VI ya llegó. Lo que debes saber."
+      },
+      "narration": {
+        "en": "GTA VI is here. Here is what you need to know.",
+        "es": "GTA VI ya llegó. Esto es lo que debes saber."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 10.0
+    },
+    {
+      "type": "stat",
+      "seconds": 3.8,
+      "value": 212,
+      "suffix": "GB",
+      "label": {
+        "en": "Up to this much console storage. Install it before you play.",
+        "es": "Hasta esto ocupa en la consola. Instálalo antes de jugar."
+      },
+      "narration": {
+        "en": "It takes up to two hundred twelve gigabytes of storage.",
+        "es": "Ocupa hasta doscientos doce gigabytes de almacenamiento."
+      },
+      "source": "Rockstar Games",
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 2.2
+    },
+    {
+      "type": "hook",
+      "seconds": 3.6,
+      "kicker": {
+        "en": "STORY ONLY",
+        "es": "SOLO HISTORIA"
+      },
+      "text": {
+        "en": "No online mode yet. Only the story.",
+        "es": "Sin modo en línea por ahora. Solo la historia."
+      },
+      "narration": {
+        "en": "Today it is only the story. No online mode yet.",
+        "es": "Hoy es solo la historia. Aún no hay modo en línea."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 8.0
+    },
+    {
+      "type": "hook",
+      "seconds": 3.6,
+      "kicker": {
+        "en": "PLATFORMS",
+        "es": "PLATAFORMAS"
+      },
+      "text": {
+        "en": "PS5 and Xbox Series X|S. No PC yet.",
+        "es": "PS5 y Xbox Series X|S. Aún sin PC."
+      },
+      "narration": {
+        "en": "PlayStation five and Xbox Series X S. No PC yet.",
+        "es": "PlayStation cinco y Xbox Series X S. Aún sin PC."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 16.0
+    },
+    {
+      "type": "outro",
+      "seconds": 3.2,
+      "big": {
+        "en": "NOV 19",
+        "es": "19 NOV"
+      },
+      "small": {
+        "en": "Are you already playing?",
+        "es": "¿Ya lo estás jugando?"
+      },
+      "cta": {
+        "en": "Follow · records and secrets all week",
+        "es": "Síguenos · récords y secretos toda la semana"
+      },
+      "narration": {
+        "en": "Vice City is open. Are you already playing?",
+        "es": "Vice City está abierta. ¿Ya lo estás jugando?"
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "GTA VI is out: what you need to know on day one",
+      "description": "GTA VI is out on PS5 and Xbox Series X|S. Up to 212 GB, story only, no online mode yet. Are you playing?",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6countdown",
+        "#gaming",
+        "#rockstargames"
+      ]
+    },
+    "es": {
+      "title": "GTA VI ya salió: lo que debes saber el día uno",
+      "description": "GTA VI ya está en PS5 y Xbox Series X|S. Ocupa hasta 212 GB, solo historia y sin modo en línea por ahora. ¿Ya lo juegas?",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6español",
+        "#videojuegos",
+        "#gaming"
+      ]
+    }
+  },
+  "notes": "Publicar el 19 de noviembre por la mañana. ANTES de publicar confirma que el juego ya está disponible (Rockstar dijo medianoche local según Forbes, 16 nov); si hubo retraso o cambio, no lo subas. Verifica también que Rockstar no haya anunciado modo en línea o PC ese día.",
+  "sources": [
+    "https://forbes.com/sites/erikkain/2026/11/16/gta-6-release-date-time-ps5-xbox-series-x-download-size-day-one-update",
+    "https://tech.yahoo.com/gaming/article/gta-6-preload-date-is-confirmed--plus-everything-you-need-to-know-about-the-most-anticipated-game-of-the-year-152314768.html"
+  ]
+}

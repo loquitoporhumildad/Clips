@@ -1,0 +1,139 @@
+{
+  "id": "gta-mapa-doble",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": [
+    "en",
+    "es"
+  ],
+  "beat": false,
+  "tag": {
+    "en": "THE MAP",
+    "es": "EL MAPA"
+  },
+  "accounts": {
+    "en": "Vice Data",
+    "es": "Datos de Vice"
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 4.2,
+      "kicker": {
+        "en": "THE MAP",
+        "es": "EL MAPA"
+      },
+      "text": {
+        "en": "Rockstar says GTA VI's map is twice the size of GTA V's.",
+        "es": "Rockstar dice que el mapa de GTA VI es el doble que el de GTA V."
+      },
+      "narration": {
+        "en": "Rockstar confirms GTA VI's map is twice as big as GTA V's.",
+        "es": "Rockstar confirma que el mapa de GTA VI es el doble de grande que el de GTA V."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 2.4
+    },
+    {
+      "type": "versus",
+      "seconds": 4.6,
+      "title": {
+        "en": "Map size (relative)",
+        "es": "Tamaño del mapa (relativo)"
+      },
+      "left": {
+        "label": {
+          "en": "GTA V",
+          "es": "GTA V"
+        },
+        "value": 1
+      },
+      "right": {
+        "label": {
+          "en": "GTA VI",
+          "es": "GTA VI"
+        },
+        "value": 2
+      },
+      "note": {
+        "en": "Per Rockstar: roughly twice the size",
+        "es": "Según Rockstar: aproximadamente el doble"
+      },
+      "source": "Rockstar Games · Game Informer",
+      "narration": {
+        "en": "GTA five measures one. GTA six, two.",
+        "es": "El mapa de GTA cinco mide uno. El de GTA seis, dos."
+      }
+    },
+    {
+      "type": "stat",
+      "seconds": 4.2,
+      "value": 6,
+      "suffix": {
+        "en": "REGIONS",
+        "es": "REGIONES"
+      },
+      "label": {
+        "en": "regions of Leonida shown in the trailers.",
+        "es": "regiones de Leonida mostradas en los tráilers."
+      },
+      "narration": {
+        "en": "Leonida has six regions, from Vice City to the Grassrivers swamps.",
+        "es": "Leonida tiene seis regiones, desde Vice City hasta los pantanos de Grassrivers."
+      },
+      "source": "Tráilers de Rockstar Games",
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 8.0
+    },
+    {
+      "type": "outro",
+      "seconds": 3.2,
+      "big": {
+        "en": "NOV 19",
+        "es": "19 NOV"
+      },
+      "small": {
+        "en": "Which region do you explore first?",
+        "es": "¿Qué región exploras primero?"
+      },
+      "cta": {
+        "en": "Follow · tomorrow you can explore it",
+        "es": "Síguenos · mañana ya lo recorres"
+      },
+      "narration": {
+        "en": "Tomorrow you explore it. Which region first?",
+        "es": "Mañana lo recorres. ¿Qué región visitas primero?"
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "GTA VI's map is twice the size of GTA V's",
+      "description": "Rockstar says Leonida is roughly twice as big as GTA V's map, with six regions from Vice City to the Grassrivers swamps. Where do you go first?",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6countdown",
+        "#gaming",
+        "#rockstargames"
+      ]
+    },
+    "es": {
+      "title": "El mapa de GTA VI es el doble que el de GTA V",
+      "description": "Rockstar dice que Leonida es aproximadamente el doble de grande que el mapa de GTA V, con seis regiones desde Vice City hasta los pantanos de Grassrivers. ¿A dónde vas primero?",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6español",
+        "#videojuegos",
+        "#gaming"
+      ]
+    }
+  },
+  "notes": "Publicar el 18 de noviembre. El doble es una comparación de Rockstar (Aaron Garbut, Game Informer), no una medida exacta en kilómetros: no pongas cifras de km², hay estimaciones de fans que varían. Seis regiones: Vice City, Leonida Keys, Grassrivers, Port Gellhorn, Ambrosia y Mount Kalaga, según lo mostrado en los tráilers. Cierre con pregunta.",
+  "sources": [
+    "https://www.kitguru.net/?p=747882",
+    "https://www.genbeta.com/actualidad/rockstar-confirma-tamano-mapa-gta-6-superficie-total-vice-city-alrededores-casi-grande-como-mapas-gta-iv-gta-v-rdr-2-juntos",
+    "https://www.gtabase.com/articles/gta-6/how-big-is-the-gta-6-map-size-compared-to-other-games"
+  ]
+}

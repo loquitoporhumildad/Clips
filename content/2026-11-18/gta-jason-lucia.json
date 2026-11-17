@@ -1,0 +1,124 @@
+{
+  "id": "gta-jason-lucia",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": [
+    "en",
+    "es"
+  ],
+  "beat": false,
+  "tag": {
+    "en": "JASON OR LUCIA",
+    "es": "JASON O LUCIA"
+  },
+  "accounts": {
+    "en": "Vice Data",
+    "es": "Datos de Vice"
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 3.6,
+      "kicker": {
+        "en": "CHOOSE",
+        "es": "ELIGE"
+      },
+      "text": {
+        "en": "Jason or Lucia: who do you stick with?",
+        "es": "Jason o Lucia: ¿con quién te quedas?"
+      },
+      "narration": {
+        "en": "Tomorrow you meet Jason and Lucia. Who do you pick?",
+        "es": "Mañana conoces a Jason y a Lucia. ¿Con cuál te quedas?"
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 10.0
+    },
+    {
+      "type": "stat",
+      "seconds": 4.0,
+      "value": 2,
+      "suffix": {
+        "en": "LEADS",
+        "es": "PROTAGONISTAS"
+      },
+      "label": {
+        "en": "protagonists: a criminal duo in Leonida.",
+        "es": "protagonistas: una pareja de criminales en Leonida."
+      },
+      "narration": {
+        "en": "Two protagonists, a criminal duo in Leonida.",
+        "es": "Son dos protagonistas, una pareja de criminales en Leonida."
+      },
+      "source": "Rockstar Games",
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 2.4
+    },
+    {
+      "type": "hook",
+      "seconds": 3.6,
+      "kicker": {
+        "en": "COMMENT",
+        "es": "COMENTA"
+      },
+      "text": {
+        "en": "Type 1 for Jason or 2 for Lucia.",
+        "es": "Escribe 1 para Jason o 2 para Lucia."
+      },
+      "narration": {
+        "en": "Type one for Jason, or two for Lucia.",
+        "es": "Escribe uno para Jason, o dos para Lucia."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 16.0
+    },
+    {
+      "type": "outro",
+      "seconds": 3.2,
+      "big": {
+        "en": "1 or 2",
+        "es": "1 o 2"
+      },
+      "small": {
+        "en": "You choose in the comments.",
+        "es": "Tú eliges en los comentarios."
+      },
+      "cta": {
+        "en": "Follow · tomorrow you play the story",
+        "es": "Síguenos · mañana juegas la historia"
+      },
+      "narration": {
+        "en": "Tomorrow you play the story. One or two?",
+        "es": "Mañana juegas la historia. ¿Uno o dos?"
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "Jason or Lucia: who are you picking in GTA VI?",
+      "description": "GTA VI stars Jason and Lucia, a criminal duo in Leonida. Type 1 for Jason, 2 for Lucia.",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6countdown",
+        "#gaming",
+        "#rockstargames"
+      ]
+    },
+    "es": {
+      "title": "Jason o Lucia: ¿con quién te quedas en GTA VI?",
+      "description": "GTA VI tiene como protagonistas a Jason y Lucia, una pareja de criminales en Leonida. Escribe 1 para Jason o 2 para Lucia.",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6español",
+        "#videojuegos",
+        "#gaming"
+      ]
+    }
+  },
+  "notes": "Publicar el 18 de noviembre. Video de comentarios: responde a quien escriba 1 o 2 en la primera hora para empujar el alcance. No afirmes que se puede cambiar de personaje a voluntad: Rockstar no lo ha detallado.",
+  "sources": [
+    "https://forbes.com/sites/erikkain/2026/11/16/gta-6-release-date-time-ps5-xbox-series-x-download-size-day-one-update"
+  ]
+}
