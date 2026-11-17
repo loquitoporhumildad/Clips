@@ -17,113 +17,354 @@
   },
   "scenes": [
     {
-      "type": "hook",
-      "seconds": 2.6,
-      "kicker": {
-        "es": "NBA · ANOCHE"
-      },
-      "text": {
+      "type": "story",
+      "seconds": 3,
+      "caption": {
         "es": "Metió 43 anoche. Y no es lo más loco de su temporada."
-      },
-      "narration": {
-        "es": "Luka Dončić metió cuarenta y tres puntos anoche. Y ni siquiera es lo más loco de su temporada."
-      }
-    },
-    {
-      "type": "bars",
-      "seconds": 4.2,
-      "title": {
-        "es": "Puntos por partido antes de anoche"
       },
       "items": [
         {
-          "label": "1. Luka Dončić (Lakers)",
-          "value": 38.6,
-          "highlight": true
+          "s": "hoop",
+          "x": 72,
+          "y": 36,
+          "size": 430,
+          "m": "pop"
         },
         {
-          "label": "2. Shai Gilgeous-Alexander (Thunder)",
-          "value": 30.5
+          "s": "player",
+          "x": 26,
+          "y": 64,
+          "size": 470,
+          "m": "pop",
+          "d": 2,
+          "txt": "77"
+        },
+        {
+          "s": "ball",
+          "x": 72,
+          "y": 41,
+          "size": 110,
+          "m": "arc",
+          "d": 8
         }
       ],
-      "source": "Basketball-Reference, 14 nov",
+      "badges": [
+        {
+          "kind": "num",
+          "x": 50,
+          "y": 84,
+          "value": 43,
+          "unit": "puntos",
+          "d": 18,
+          "color": "#e63946"
+        }
+      ],
+      "narration": {
+        "es": "Luka Dončić metió cuarenta y tres puntos anoche. Y ni siquiera es lo más loco de su temporada."
+      },
+      "stage": "court"
+    },
+    {
+      "type": "story",
+      "seconds": 4,
+      "caption": {
+        "es": "Ya promediaba 38.6 puntos por partido."
+      },
+      "items": [
+        {
+          "s": "flame",
+          "x": 30,
+          "y": 52,
+          "size": 330,
+          "m": "float"
+        },
+        {
+          "s": "player",
+          "x": 30,
+          "y": 56,
+          "size": 300,
+          "m": "pop",
+          "d": 4,
+          "txt": "77"
+        },
+        {
+          "s": "player",
+          "x": 72,
+          "y": 60,
+          "size": 220,
+          "m": "slideR",
+          "d": 14,
+          "txt": "2"
+        }
+      ],
+      "badges": [
+        {
+          "kind": "num",
+          "x": 30,
+          "y": 80,
+          "label": {
+            "es": "LUKA"
+          },
+          "value": 38.6,
+          "decimals": 1,
+          "d": 10,
+          "color": "#e63946"
+        },
+        {
+          "kind": "num",
+          "x": 72,
+          "y": 80,
+          "label": {
+            "es": "2.º"
+          },
+          "value": 30.5,
+          "decimals": 1,
+          "d": 22,
+          "color": "#3a86ff"
+        }
+      ],
       "narration": {
         "es": "Ya promediaba treinta y ocho punto seis por partido. Ocho más que el segundo. Espera al tercer dato."
-      }
+      },
+      "stage": "court"
     },
     {
-      "type": "stat",
-      "seconds": 3.2,
-      "value": 43,
-      "suffix": {
-        "es": "PUNTOS"
+      "type": "story",
+      "seconds": 3,
+      "caption": {
+        "es": "Ante los Suns: 5 triples y 9 asistencias."
       },
-      "label": {
-        "es": "ante los Suns: 13 de 28 en tiros, 5 triples y 9 asistencias."
-      },
-      "source": "Field Level Media · Yahoo Sports",
+      "items": [
+        {
+          "s": "hoop",
+          "x": 50,
+          "y": 34,
+          "size": 400,
+          "m": "pop"
+        },
+        {
+          "s": "ball",
+          "x": 50,
+          "y": 39,
+          "size": 96,
+          "m": "arc",
+          "d": 6
+        },
+        {
+          "s": "ball",
+          "x": 50,
+          "y": 39,
+          "size": 96,
+          "m": "arc",
+          "d": 16
+        },
+        {
+          "s": "ball",
+          "x": 50,
+          "y": 39,
+          "size": 96,
+          "m": "arc",
+          "d": 26
+        },
+        {
+          "s": "ball",
+          "x": 50,
+          "y": 39,
+          "size": 96,
+          "m": "arc",
+          "d": 36
+        },
+        {
+          "s": "ball",
+          "x": 50,
+          "y": 39,
+          "size": 96,
+          "m": "arc",
+          "d": 46
+        }
+      ],
+      "badges": [
+        {
+          "kind": "num",
+          "x": 30,
+          "y": 80,
+          "value": 5,
+          "unit": "triples",
+          "d": 12,
+          "color": "#e63946"
+        },
+        {
+          "kind": "num",
+          "x": 72,
+          "y": 80,
+          "value": 9,
+          "unit": "asistencias",
+          "d": 30,
+          "color": "#3a86ff"
+        }
+      ],
       "narration": {
         "es": "Ante los Suns: cinco triples y nueve asistencias."
-      }
+      },
+      "stage": "court"
     },
     {
-      "type": "stat",
-      "seconds": 2.8,
-      "value": 10,
-      "suffix": {
-        "es": "SEGUIDOS"
+      "type": "story",
+      "seconds": 3,
+      "caption": {
+        "es": "10 partidos seguidos con 30 o más."
       },
-      "label": {
-        "es": "partidos con 30 puntos o más."
-      },
+      "items": [
+        {
+          "s": "check",
+          "x": 50,
+          "y": 46,
+          "size": 84,
+          "grid": [
+            5,
+            2
+          ],
+          "stagger": 4,
+          "m": "pop"
+        }
+      ],
+      "badges": [
+        {
+          "kind": "num",
+          "x": 50,
+          "y": 74,
+          "value": 10,
+          "unit": "seguidos",
+          "d": 18,
+          "color": "#2ecc71"
+        }
+      ],
       "narration": {
         "es": "Diez partidos seguidos con treinta puntos o más."
-      }
+      },
+      "stage": "court"
     },
     {
-      "type": "stat",
-      "seconds": 2.8,
-      "value": 7,
-      "suffix": {
-        "es": "DE 12"
+      "type": "story",
+      "seconds": 3.2,
+      "caption": {
+        "es": "7 de 12 con 40 puntos o más. Ese era el dato 3."
       },
-      "label": {
-        "es": "partidos con 40 puntos o más. Ese era el dato 3."
-      },
+      "items": [
+        {
+          "s": "flame",
+          "x": 50,
+          "y": 46,
+          "size": 110,
+          "grid": [
+            6,
+            2
+          ],
+          "stagger": 3,
+          "m": "pop",
+          "alt": {
+            "7": "dot",
+            "8": "dot",
+            "9": "dot",
+            "10": "dot",
+            "11": "dot"
+          }
+        }
+      ],
+      "badges": [
+        {
+          "kind": "num",
+          "x": 50,
+          "y": 76,
+          "value": 7,
+          "unit": "de 12 partidos",
+          "d": 24,
+          "color": "#e63946"
+        }
+      ],
       "narration": {
         "es": "Y siete de doce partidos con cuarenta o más. Ese es el tercer dato."
-      }
+      },
+      "stage": "court"
     },
     {
-      "type": "stat",
-      "seconds": 2.8,
-      "value": 8,
-      "suffix": {
-        "es": "VICTORIAS"
+      "type": "story",
+      "seconds": 3,
+      "caption": {
+        "es": "Los Lakers ya llevan 8 victorias seguidas."
       },
-      "label": {
-        "es": "seguidas de los Lakers, que van 12-2 tras ganar 131-123."
-      },
-      "source": "NBA.com",
+      "items": [
+        {
+          "s": "scoreboard",
+          "x": 50,
+          "y": 44,
+          "size": 520,
+          "m": "pop",
+          "txt": "131 - 123"
+        }
+      ],
+      "badges": [
+        {
+          "kind": "num",
+          "x": 50,
+          "y": 72,
+          "value": 8,
+          "unit": "victorias seguidas",
+          "d": 14,
+          "color": "#2ecc71"
+        }
+      ],
       "narration": {
         "es": "Los Lakers ya llevan ocho victorias seguidas."
-      }
+      },
+      "stage": "court"
     },
     {
-      "type": "outro",
-      "seconds": 3,
-      "big": {
-        "es": "43"
+      "type": "story",
+      "seconds": 3.2,
+      "caption": {
+        "es": "¿MVP desde ya, o es muy pronto?"
       },
-      "small": {
-        "es": "¿MVP desde ya o es muy pronto?"
-      },
-      "cta": {
-        "es": "Síguenos · la NBA en datos"
-      },
+      "items": [
+        {
+          "s": "trophy",
+          "x": 50,
+          "y": 44,
+          "size": 420,
+          "m": "pop"
+        },
+        {
+          "s": "hoop",
+          "x": 80,
+          "y": 26,
+          "size": 240,
+          "m": "float",
+          "d": 6
+        },
+        {
+          "s": "ball",
+          "x": 80,
+          "y": 29,
+          "size": 64,
+          "m": "arc",
+          "d": 12
+        }
+      ],
+      "badges": [
+        {
+          "kind": "num",
+          "x": 50,
+          "y": 76,
+          "value": 43,
+          "unit": "puntos",
+          "d": 10,
+          "color": "#e63946"
+        }
+      ],
       "narration": {
         "es": "Cuarenta y tres anoche. Entonces dime: ¿MVP desde ya, o es muy pronto?"
-      }
+      },
+      "stage": "court"
     }
   ],
   "meta": {
@@ -146,7 +387,8 @@
     "https://www.nba.com/watch/video/game-recap-lakers-131-suns-123-nov-15",
     "https://www.basketball-reference.com/leagues/NBA_2027_leaders.html"
   ],
-  "deco": "ball",
+  "deco": "none",
   "narrate": true,
-  "mascotType": "ficha"
+  "mascot": false,
+  "captionPos": "top"
 }
