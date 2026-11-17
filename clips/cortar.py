@@ -351,21 +351,30 @@ def detectar_camara(seg, ini, fin):
         W, H = _tam(seg)
         det = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
         cajas = []
-        for k in range(8):
-            t = ini + (fin - ini) * (k + 0.5) / 8
+        N = 14
+        for k in range(N):
+            t = ini + (fin - ini) * (k + 0.5) / N
             f = tmp / 'cam.png'
             run(['ffmpeg', '-loglevel', 'error', '-y', '-ss', f'{t:.2f}', '-i', str(seg), '-frames:v', '1', '-vf', 'scale=1280:-2', str(f)])
             im = cv2.imread(str(f), cv2.IMREAD_GRAYSCALE)
             if im is None:
                 continue
-            for (x, y, w, h) in det.detectMultiScale(im, 1.1, 6, minSize=(60, 60)):
+            for (x, y, w, h) in det.detectMultiScale(im, 1.08, 4, minSize=(40, 40)):
                 cajas.append((x / im.shape[1], y / im.shape[0], w / im.shape[1], h / im.shape[0]))
-        if len(cajas) < 2:
+        print(f'  caras encontradas: {len(cajas)} en {N} cuadros')
+        if len(cajas) < 3:
             return None
         a = np.array(cajas)
-        c = np.median(a, axis=0)
-        # solo vale si la cara cae siempre en el mismo sitio (cámara fija) y no ocupa media pantalla
-        if c[2] > 0.3 or np.std(a[:, 0]) > 0.04 or np.std(a[:, 1]) > 0.04:
+        # la cámara es la zona donde la cara aparece una y otra vez: se toma el grupo más repetido
+        celdas = {}
+        for k, (x, y, w, h) in enumerate(a):
+            celdas.setdefault((round((x + w / 2) / 0.06), round((y + h / 2) / 0.06)), []).append(k)
+        mejor = max(celdas.values(), key=len)
+        print(f'  grupo más repetido: {len(mejor)} caras')
+        if len(mejor) < 3:
+            return None
+        c = np.median(a[mejor], axis=0)
+        if c[2] > 0.3:
             return None
         _cam = tuple(float(v) for v in c)
         print(f'  cámara detectada: cara en x={c[0]:.2f} y={c[1]:.2f} ancho={c[2]:.2f}')
