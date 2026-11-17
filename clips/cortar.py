@@ -369,7 +369,9 @@ def detectar_camara(seg, ini, fin):
         celdas = {}
         for k, (x, y, w, h) in enumerate(a):
             celdas.setdefault((round((x + w / 2) / 0.06), round((y + h / 2) / 0.06)), []).append(k)
-        mejor = max(celdas.values(), key=len)
+        # entre los grupos repetidos (3+ caras) gana el de la cara más grande: la cámara real, no una copia pequeña en pantalla
+        validos = [v for v in celdas.values() if len(v) >= 3] or list(celdas.values())
+        mejor = max(validos, key=lambda v: float(np.median(a[v][:, 2])))
         print(f'  grupo más repetido: {len(mejor)} caras')
         if len(mejor) < 3:
             return None
