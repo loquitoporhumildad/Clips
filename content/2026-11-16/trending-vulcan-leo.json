@@ -17,50 +17,205 @@
   },
   "scenes": [
     {
-      "type": "hook",
-      "seconds": 2.6,
-      "kicker": {
-        "en": "ROCKET FAILURE"
-      },
-      "text": {
+      "type": "story",
+      "seconds": 2.8,
+      "caption": {
         "en": "Amazon just lost 40 satellites in 10 minutes."
+      },
+      "items": [
+        {
+          "s": "rocket",
+          "x": 50,
+          "y": 82,
+          "size": 540,
+          "m": "rise"
+        }
+      ],
+      "narration": {
+        "en": "Amazon just lost forty satellites in ten minutes."
       }
     },
     {
-      "type": "stat",
+      "type": "story",
       "seconds": 3,
-      "value": 40,
-      "suffix": {
-        "en": "SATELLITES"
+      "count": {
+        "value": 40,
+        "suffix": {
+          "en": "SATELLITES"
+        }
       },
-      "label": {
-        "en": "Amazon Leo internet satellites lost on Sunday's Vulcan launch."
+      "caption": {
+        "en": "all riding one Vulcan rocket."
       },
-      "source": "Spaceflight Now"
+      "items": [
+        {
+          "s": "satellite",
+          "x": 50,
+          "y": 60,
+          "size": 106,
+          "grid": [
+            8,
+            5
+          ],
+          "stagger": 1,
+          "m": "pop"
+        }
+      ],
+      "narration": {
+        "en": "Forty internet satellites, all riding one Vulcan rocket."
+      }
     },
     {
-      "type": "stat",
-      "seconds": 2.8,
-      "value": 10,
-      "suffix": {
-        "en": "MINUTES"
+      "type": "story",
+      "seconds": 3,
+      "caption": {
+        "en": "10 minutes in, the rocket failed."
       },
-      "label": {
-        "en": "into the flight. That's when the rocket failed."
+      "items": [
+        {
+          "s": "clock",
+          "x": 27,
+          "y": 58,
+          "size": 400,
+          "m": "pop"
+        },
+        {
+          "s": "rocket",
+          "x": 70,
+          "y": 66,
+          "size": 380,
+          "m": "shake",
+          "d": 6
+        },
+        {
+          "s": "warning",
+          "x": 78,
+          "y": 42,
+          "size": 220,
+          "m": "blink",
+          "d": 10
+        }
+      ],
+      "narration": {
+        "en": "Ten minutes into the flight, the rocket failed."
       },
-      "source": "Spaceflight Now · UPI"
+      "badges": [
+        {
+          "kind": "num",
+          "x": 27,
+          "y": 76,
+          "value": 10,
+          "unit": "min",
+          "d": 6,
+          "color": "#e63946"
+        }
+      ]
     },
     {
-      "type": "stat",
+      "type": "story",
       "seconds": 3.2,
-      "value": 5,
-      "suffix": {
-        "en": "FLIGHTS"
+      "caption": {
+        "en": "The first total mission failure for ULA."
       },
-      "label": {
-        "en": "is all Vulcan has flown. This was United Launch Alliance's first total mission failure."
+      "items": [
+        {
+          "s": "explosion",
+          "x": 50,
+          "y": 52,
+          "size": 640,
+          "m": "pop"
+        },
+        {
+          "s": "satellite",
+          "x": 22,
+          "y": 40,
+          "size": 180,
+          "m": "fall",
+          "d": 8
+        },
+        {
+          "s": "satellite",
+          "x": 80,
+          "y": 36,
+          "size": 180,
+          "m": "fall",
+          "d": 12
+        },
+        {
+          "s": "satellite",
+          "x": 50,
+          "y": 30,
+          "size": 180,
+          "m": "fall",
+          "d": 16
+        }
+      ],
+      "narration": {
+        "en": "It was the first total failure for United Launch Alliance."
       },
-      "source": "Spaceflight Now"
+      "badges": [
+        {
+          "kind": "day",
+          "x": 50,
+          "y": 84,
+          "label": {
+            "en": "FIRST TOTAL FAILURE"
+          },
+          "d": 14,
+          "color": "#e63946"
+        }
+      ]
+    },
+    {
+      "type": "story",
+      "seconds": 3.2,
+      "caption": {
+        "en": "Vulcan had flown just 5 times."
+      },
+      "items": [
+        {
+          "s": "rocket",
+          "x": 50,
+          "y": 45,
+          "size": 170,
+          "grid": [
+            5,
+            1
+          ],
+          "stagger": 5,
+          "m": "pop"
+        },
+        {
+          "s": "check",
+          "x": 50,
+          "y": 65,
+          "size": 130,
+          "grid": [
+            5,
+            1
+          ],
+          "stagger": 5,
+          "m": "pop",
+          "d": 4,
+          "alt": {
+            "4": "cross"
+          }
+        }
+      ],
+      "narration": {
+        "en": "And Vulcan had flown just five times."
+      },
+      "badges": [
+        {
+          "kind": "num",
+          "x": 50,
+          "y": 80,
+          "value": 5,
+          "unit": "flights",
+          "d": 20,
+          "color": "#3a86ff"
+        }
+      ]
     },
     {
       "type": "versus",
@@ -83,7 +238,10 @@
       "note": {
         "en": "More than 3,300 needed to finish the constellation"
       },
-      "source": "Spaceflight Now"
+      "source": "Spaceflight Now",
+      "narration": {
+        "en": "Amazon needs more than three thousand satellites to finish its network."
+      }
     },
     {
       "type": "outro",
@@ -96,6 +254,9 @@
       },
       "cta": {
         "en": "Follow · numbers behind trends"
+      },
+      "narration": {
+        "en": "So can Amazon still catch Starlink?"
       }
     }
   ],
@@ -116,5 +277,9 @@
   "sources": [
     "https://spaceflightnow.com/2026/11/15/ula-suffers-first-total-mission-failure-with-loss-of-vulcan-rocket-carrying-40-amazon-leo-satellites/",
     "https://ca.news.yahoo.com/ula-vulcan-rocket-fails-liftoff-002821389.html"
-  ]
+  ],
+  "mascot": false,
+  "deco": "none",
+  "narrate": true,
+  "captionPos": "top"
 }

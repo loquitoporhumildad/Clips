@@ -3,11 +3,17 @@ import {AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig} from 'remoti
 import {Lang, Scene, tr} from '../types';
 import {Theme} from '../themes';
 import {BODY, HEAD, Rise, Source, fmt, useEnter} from './common';
+import {StoryScene} from './Story';
 
 // Zona segura: TikTok/Reels tapan ~380px abajo y ~150px a la derecha.
-const Frame: React.FC<{children: React.ReactNode}> = ({children}) => (
-  <AbsoluteFill style={{padding: '300px 160px 440px 80px', justifyContent: 'center', textShadow: '0 6px 0 rgba(0,0,0,0.45), 0 0 40px rgba(0,0,0,0.5)'}}>{children}</AbsoluteFill>
-);
+const Frame: React.FC<{children: React.ReactNode}> = ({children}) => {
+  const p = useEnter(0);
+  return (
+    <AbsoluteFill style={{padding: '280px 40px 450px 40px', justifyContent: 'center'}}>
+      <div style={{padding: '48px 56px', borderRadius: 48, background: 'rgba(8,8,16,0.55)', border: '3px solid rgba(255,255,255,0.14)', boxShadow: '0 18px 0 rgba(0,0,0,0.3)', textShadow: '0 4px 0 rgba(0,0,0,0.4)', transform: `translateY(${(1 - p) * 80}px) scale(${0.94 + 0.06 * p})`, opacity: p, marginRight: 150}}>{children}</div>
+    </AbsoluteFill>
+  );
+};
 
 const Hook: React.FC<{s: Extract<Scene, {type: 'hook'}>; t: Theme; lang: Lang}> = ({s, t, lang}) => {
   const frame = useCurrentFrame();
@@ -15,7 +21,7 @@ const Hook: React.FC<{s: Extract<Scene, {type: 'hook'}>; t: Theme; lang: Lang}> 
   return (
     <Frame>
       {s.kicker && (
-        <div style={{fontFamily: HEAD, fontSize: 200, lineHeight: 0.95, color: t.accent, transform: `scale(${scale})`, transformOrigin: 'left center'}}>
+        <div style={{fontFamily: HEAD, fontSize: 150, lineHeight: 0.95, color: t.accent, transform: `scale(${scale})`, transformOrigin: 'left center'}}>
           {tr(s.kicker, lang)}
         </div>
       )}
@@ -167,6 +173,8 @@ export const SceneView: React.FC<{s: Scene; t: Theme; lang: Lang}> = ({s, t, lan
       return <Versus s={s} t={t} lang={lang} />;
     case 'progress':
       return <Progress s={s} t={t} lang={lang} />;
+    case 'story':
+      return <StoryScene s={s} t={t} lang={lang} />;
     case 'outro':
       return <Outro s={s} t={t} lang={lang} />;
   }

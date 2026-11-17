@@ -83,6 +83,25 @@ export function makeAudio(spec, file, opts = {}) {
       });
       add(at + d + 0.05, 0.18, (t) => 0.12 * Math.sin(2 * Math.PI * 1320 * t) * Math.exp(-t * 30));
     }
+    if (s.type === 'story') {
+      const pop = (t0, f0 = 620, g = 0.16) =>
+        add(at + t0, 0.1, (t, p) => g * Math.sin(2 * Math.PI * (f0 + 520 * p) * t) * Math.exp(-t * 38));
+      for (const it of s.items ?? []) {
+        const d0 = (it.d ?? 0) / 30;
+        if (it.grid) {
+          const cnt = Math.min(it.grid[0] * it.grid[1], 12);
+          for (let k = 0; k < cnt; k++) pop(d0 + (k * (it.stagger ?? 1)) / 30, 560 + (k % 6) * 70, 0.09);
+        } else if (it.m === 'slideL' || it.m === 'slideR') {
+          let lp = 0;
+          add(at + d0, 0.22, (t, p) => { lp += 0.4 * (rnd() - lp); return 0.2 * Math.sin(Math.PI * p) * lp; });
+        } else pop(d0);
+      }
+      for (const b of s.badges ?? []) pop((b.d ?? 0) / 30, 900, 0.14);
+      if (s.count) {
+        let p3 = 0;
+        add(at + 0.05, 1, (t, p) => { p3 += (2 * Math.PI * (300 + 700 * p)) / SR; return 0.05 * Math.sin(p3) * Math.sin(Math.PI * p); });
+      }
+    }
     at += s.seconds;
   }
 

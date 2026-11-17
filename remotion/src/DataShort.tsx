@@ -8,6 +8,10 @@ import {Props, Scene, tr} from './types';
 import {theme} from './themes';
 import {SceneView} from './scenes/Scenes';
 import {Captions} from './Captions';
+import {Floaters, Mascot, Mood} from './Mascot';
+import {TopCaptions} from './scenes/common';
+
+const MOOD: Record<string, Mood> = {hook: 'shock', stat: 'hype', bars: 'think', versus: 'think', progress: 'hype', outro: 'smile'};
 
 const isVideo = (f: string) => /\.(mp4|webm|mov)$/i.test(f);
 
@@ -81,14 +85,20 @@ export const DataShort: React.FC<Props> = ({spec, lang}) => {
     <AbsoluteFill style={{background: `linear-gradient(${160 + drift}deg, ${t.bg1}, ${t.bg2})`}}>
       {/* barra de progreso: ayuda a la retención */}
       <div style={{position: 'absolute', top: 0, left: 0, height: 12, width: `${(frame / durationInFrames) * 100}%`, background: t.accent}} />
+      {spec.deco !== 'none' && <Floaters t={t} kind={spec.deco ?? 'dots'} />}
       {spec.scenes.map((s, i) => {
         const len = Math.round(s.seconds * fps);
         const seq = (
           <Sequence key={i} from={from} durationInFrames={len}>
             <Bg s={s} dark={t.bg1} />
-            {spec.scenes.length === 1 ? <SceneView s={s} t={t} lang={lang} /> : (
+            {spec.mascot !== false && (
+              <div style={{position: 'absolute', right: 40, bottom: 380}}>
+                <Mascot mood={s.mood ?? MOOD[s.type]} t={t} variant={spec.mascotType} />
+              </div>
+            )}
+            {spec.scenes.length === 1 ? <TopCaptions.Provider value={spec.captionPos === 'top' && Boolean(spec.voiceTrack)}><SceneView s={s} t={t} lang={lang} /></TopCaptions.Provider> : (
               <Cut>
-                <SceneView s={s} t={t} lang={lang} />
+                <TopCaptions.Provider value={spec.captionPos === 'top' && Boolean(spec.voiceTrack)}><SceneView s={s} t={t} lang={lang} /></TopCaptions.Provider>
               </Cut>
             )}
           </Sequence>
@@ -104,7 +114,7 @@ export const DataShort: React.FC<Props> = ({spec, lang}) => {
       <Grain />
       {spec.audio !== false && <Audio src={staticFile(spec.audioFile ?? `audio/${spec.id}.wav`)} volume={spec.voiceTrack ? 0.45 : 1} />}
       {spec.voiceTrack && <Audio src={staticFile(spec.voiceTrack.file)} />}
-      {spec.voiceTrack && <Captions words={spec.voiceTrack.words} t={t} />}
+      {spec.voiceTrack && <Captions words={spec.voiceTrack.words} t={t} pos={spec.captionPos} />}
       {spec.music && (
         <Audio
           src={staticFile(`media/${spec.music}`)}
