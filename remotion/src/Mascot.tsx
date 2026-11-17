@@ -3,10 +3,11 @@ import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Theme} from './themes';
 
 export type Mood = 'hype' | 'shock' | 'think' | 'smile';
+export type Variant = 'bolo' | 'robo' | 'zorro' | 'buho';
 
 // "Bolo": personaje propio de la fábrica. Cuerpo redondo con ojos que parpadean,
 // brazos que se mueven y una boca que cambia según el ánimo de la escena.
-export const Mascot: React.FC<{mood: Mood; t: Theme}> = ({mood, t}) => {
+export const Mascot: React.FC<{mood: Mood; t: Theme; variant?: Variant}> = ({mood, t, variant = 'bolo'}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const pop = spring({frame, fps, config: {damping: 9, stiffness: 140}});
@@ -33,8 +34,40 @@ export const Mascot: React.FC<{mood: Mood; t: Theme}> = ({mood, t}) => {
       </g>
       <rect x={52} y={176} width={30} height={30} rx={12} fill={t.accent2} stroke="#000" strokeWidth={5} />
       <rect x={118} y={176} width={30} height={30} rx={12} fill={t.accent2} stroke="#000" strokeWidth={5} />
-      <circle cx={100} cy={105} r={78} fill={t.accent} stroke="#000" strokeWidth={6} />
-      <path d="M40 80 Q60 40 100 36" stroke="#fff" strokeOpacity={0.45} strokeWidth={9} strokeLinecap="round" fill="none" />
+      {variant === 'robo' && (
+        <>
+          <line x1={100} y1={34} x2={100} y2={14} stroke="#000" strokeWidth={6} />
+          <circle cx={100} cy={12} r={9} fill={t.accent2} stroke="#000" strokeWidth={5} style={{transform: `scale(${1 + beat * 0.4})`, transformOrigin: '100px 12px'}} />
+          <rect x={20} y={80} width={14} height={40} rx={6} fill={t.accent2} stroke="#000" strokeWidth={5} />
+          <rect x={166} y={80} width={14} height={40} rx={6} fill={t.accent2} stroke="#000" strokeWidth={5} />
+          <rect x={30} y={34} width={140} height={142} rx={30} fill={t.accent} stroke="#000" strokeWidth={6} />
+          <rect x={44} y={56} width={112} height={78} rx={18} fill="#10131c" stroke="#000" strokeWidth={4} />
+        </>
+      )}
+      {variant === 'zorro' && (
+        <>
+          <path d="M34 70 L44 14 L92 42 Z" fill={t.accent} stroke="#000" strokeWidth={6} strokeLinejoin="round" />
+          <path d="M166 70 L156 14 L108 42 Z" fill={t.accent} stroke="#000" strokeWidth={6} strokeLinejoin="round" />
+          <path d="M46 62 L50 32 L72 46 Z M154 62 L150 32 L128 46 Z" fill="#fff" opacity={0.9} />
+          <ellipse cx={100} cy={108} rx={80} ry={72} fill={t.accent} stroke="#000" strokeWidth={6} />
+          <path d="M22 118 Q60 160 100 168 Q140 160 178 118 Q140 128 100 112 Q60 128 22 118 Z" fill="#fff" />
+          <ellipse cx={100} cy={118} rx={9} ry={7} fill="#000" />
+        </>
+      )}
+      {variant === 'buho' && (
+        <>
+          <path d="M36 52 L30 14 L70 34 Z M164 52 L170 14 L130 34 Z" fill={t.accent} stroke="#000" strokeWidth={6} strokeLinejoin="round" />
+          <ellipse cx={100} cy={110} rx={74} ry={80} fill={t.accent} stroke="#000" strokeWidth={6} />
+          <ellipse cx={100} cy={142} rx={42} ry={34} fill="#fff" opacity={0.5} />
+          <path d="M92 114 L108 114 L100 128 Z" fill={t.accent2} stroke="#000" strokeWidth={4} strokeLinejoin="round" />
+        </>
+      )}
+      {variant === 'bolo' && (
+        <>
+          <circle cx={100} cy={105} r={78} fill={t.accent} stroke="#000" strokeWidth={6} />
+          <path d="M40 80 Q60 40 100 36" stroke="#fff" strokeOpacity={0.45} strokeWidth={9} strokeLinecap="round" fill="none" />
+        </>
+      )}
       <g transform={`translate(0 ${mood === 'think' ? -4 : 0})`}>
         <ellipse cx={74} cy={92} rx={20} ry={24 * blink + 1} fill="#fff" stroke="#000" strokeWidth={5} />
         <ellipse cx={126} cy={92} rx={20} ry={24 * blink + 1} fill="#fff" stroke="#000" strokeWidth={5} />
@@ -42,7 +75,7 @@ export const Mascot: React.FC<{mood: Mood; t: Theme}> = ({mood, t}) => {
         <circle cx={126 + look} cy={94} r={mood === 'shock' ? 5 : 9} fill="#000" opacity={blink > 0.5 ? 1 : 0} />
       </g>
       {mood === 'think' && <path d="M54 62 L92 70 M146 62 L108 70" stroke="#000" strokeWidth={6} strokeLinecap="round" />}
-      <path d={mouth} fill={fillMouth ? '#3a0a1a' : 'none'} stroke="#000" strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" />
+      <path d={mouth} transform={variant === 'zorro' || variant === 'buho' ? 'translate(0 26)' : undefined} fill={fillMouth ? '#3a0a1a' : 'none'} stroke="#000" strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 };

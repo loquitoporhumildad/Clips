@@ -92,7 +92,7 @@ export const DataShort: React.FC<Props> = ({spec, lang}) => {
             <Bg s={s} dark={t.bg1} />
             {spec.mascot !== false && (
               <div style={{position: 'absolute', right: 40, bottom: 380}}>
-                <Mascot mood={s.mood ?? MOOD[s.type]} t={t} />
+                <Mascot mood={s.mood ?? MOOD[s.type]} t={t} variant={spec.mascotType} />
               </div>
             )}
             {spec.scenes.length === 1 ? <SceneView s={s} t={t} lang={lang} /> : (

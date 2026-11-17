@@ -27,6 +27,7 @@ export type VideoSpec = {
   brand?: string;
   deco?: 'ball' | 'star' | 'dots';
   mascot?: boolean;
+  mascotType?: 'bolo' | 'robo' | 'zorro' | 'buho';
   tag?: T | string;
   scenes: Scene[];
 };
