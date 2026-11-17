@@ -422,6 +422,12 @@ def vertical(seg, ini, fin, ass, destino, titulo=None):
     run(['ffmpeg', '-loglevel', 'error', '-y', '-ss', f'{ini:.2f}', '-t', f'{fin - ini:.2f}', '-i', str(seg),
          '-filter_complex', vf, '-map', '[v]', '-map', '0:a?', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20',
          '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', str(destino)])
+    if E('CLIP_DEBUG') == '1':                 # imprime un cuadro del resultado y del original (base64) para revisarlos en el log
+        import base64
+        for nombre, entrada, t, ancho in (('RESULTADO', destino, (fin - ini) / 2, 405), ('ORIGINAL', seg, ini + (fin - ini) / 2, 960)):
+            jpg = tmp / f'dbg_{nombre}.jpg'
+            run(['ffmpeg', '-loglevel', 'error', '-y', '-ss', f'{t:.2f}', '-i', str(entrada), '-frames:v', '1', '-vf', f'scale={ancho}:-2', '-q:v', '8', str(jpg)])
+            print(f'FRAME_{nombre}_B64:' + base64.b64encode(jpg.read_bytes()).decode(), flush=True)
 
 
 # ---------- 5. Supabase y Discord ----------

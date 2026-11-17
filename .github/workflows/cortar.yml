@@ -85,6 +85,7 @@ jobs:
       - name: Cortar
         env:
           CLIP_URL: ${{ inputs.url }}
+          CLIP_DEBUG: '1'
           CLIP_CUENTA: ${{ inputs.cuenta }}
           CLIP_CAMPANA: ${{ inputs.campana }}
           CLIP_CANTIDAD: ${{ inputs.cantidad }}
