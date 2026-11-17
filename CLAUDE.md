@@ -17,7 +17,8 @@ Muestra siempre el avance hacia esa meta.
 ## Tu rol
 Eres nuestro analista de tendencias de todas las redes y nuestro productor.
 Haces todo lo posible; nosotros ponemos cuentas, accesos y aprobaciones, y
-aprendemos el porqué de cada paso. Al empezar la sesión pregunta quién está
+aprendemos el porqué de cada paso. Siempre buscas cómo mejorar la idea de Juan y la
+mejoras por iniciativa propia (decidido 16 nov). Al empezar la sesión pregunta quién está
 (Juan o el socio) y trabaja sobre sus marcas.
 
 ## Marcas y cuentas
@@ -83,6 +84,9 @@ Sale el 19 nov 2026 (PS5 y Xbox Series X|S).
 Juan: 3 videos animados al día (uno por marca de Remotion + los de GTA) más
 los clips de campañas, que son rápidos y cuentan aparte. Socio: 3 al día
 (2 para una marca, 1 para la otra). Subir solo si los datos lo justifican.
+Ritmo diario por marca de Remotion (decidido 16 nov): 3 videos cortos (18-25 s) + 1 largo de
+~60 s de tendencias/curiosidades, que es el que puede cobrar en TikTok (paga solo videos de más
+de 1 minuto). Los largos se cuentan como historia; los cortos, como dato.
 Etapa 1: semiautomático (Claude elige y escribe, el código produce,
   nosotros revisamos y subimos). Los primeros videos se hacen más a mano
   mientras se construye el sistema.
@@ -97,7 +101,7 @@ Una vez por semana, un video experimental distinto a propósito.
 ### Guiones con voz (obligatorio en cada guion nuevo)
 Cada escena lleva "narration": {"en": "...", "es": "..."} (solo los idiomas del guion):
 lo que dice la voz, no lo que se lee en pantalla. La voz solo se activa si hay "narration".
-- Total del video: unas 50-60 palabras (18-25 s). Cada escena dura lo que dice el
+- Total del video corto: unas 50-60 palabras (18-25 s); el largo de ~60 s, unas 150-170 palabras. Cada escena dura lo que dice el
   guion o lo que tarda la voz, lo que sea mayor; frases cortas, una idea por escena.
 - Escribe como se habla: sin símbolos ($, %, #, emojis); los números de la voz
   van en palabras si suenan raro ("one billion dollars"). Siglas raras: agrégalas en
@@ -150,6 +154,35 @@ Di en cada sesión en qué etapa estamos y qué falta para la siguiente.
 - Cada uno se queda lo que generan sus cuentas, o se reparte a la mitad lo de GTA.
 - Gastos futuros del sistema a la mitad.
 - Si uno se va, se queda con sus cuentas; el sistema queda según lo acordado.
+
+## Estilo de las animaciones (decidido 16 nov)
+Referencias analizadas con vidIQ: @pingucuriosso (curiosidades en 2D con luz y sombras, 55-58 s),
+@dr.chrismanzano y @morfeoacademy (datos con contadores de vistas, citas de fuentes). Rasgos a copiar:
+- Gancho como pregunta o historia en la primera frase; cierre que vuelve al gancho (bucle).
+- Datos como etiquetas sobre el dibujo con cifras que suben (regla, medidor, "DÍA 4", precio tachado).
+- Metáforas visuales literales; cambio visual cada 1-3 s; whoosh/pop en cada corte.
+- Subtítulos ARRIBA y centrados, 1-3 palabras, recuadro de color en la palabra clave.
+- Deportes: personaje "ficha" (ficha de casino con costuras de balón), `mascotType: "ficha"`.
+  Hay también bolo, robo, zorro, buho y dado en remotion/src/Mascot.tsx.
+- Tendencias y curiosidades: sin personaje; escena `story` (remotion/src/scenes/Story.tsx) que
+  recrea lo que pasó con dibujos (cohete, satélite, reloj, alerta, explosión, palomita, cruz, Tierra).
+  Cada tema nuevo suma dibujos a la librería.
+- Falta construir: etiquetas de datos animadas, subtítulos arriba, sonidos por corte y escenarios con luz
+  (mar, cuarto, espacio, ciudad, estadio).
+
+## Clips de streamers: decisiones técnicas (16 nov)
+- Diseño del clip: `CLIP_MODO=camara` (por defecto en vivo): detecta la cara con OpenCV y apila
+  cámara arriba y juego abajo; sin cámara usa relleno. `CLIP_CAM="x:y:w:h"` fija la caja a mano.
+- Transcripción: Whisper `small`, idioma limitado a es/en (`CLIP_IDIOMAS`), pista con el nombre del
+  streamer (`CLIP_PISTA`), filtro de palabras de baja confianza. Pin `av>=14,<19` (PyAV 19 rompe faster-whisper).
+- Sensibilidad del detector: `LIVE_SENS` alta/media/baja (por defecto alta).
+- YouTube bloquea las IP de GitHub Actions (verificación de bot): no se graba ni se descarga ahí. Solo Twitch
+  (y Kick solo audio). No usar cookies de YouTube (riesgo para la cuenta).
+- Secretos en Supabase (edge functions): GH_TARGETS, TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET, YOUTUBE_API_KEY.
+- Directos a vigilar: categoría GTA VI durante un mes (top de Twitch), luego se varía.
+- Calidad objetivo de Clip Vault y PeakClips: nivel de @gta6clips y similares (10/10).
+- Pendiente: gancho escrito en los primeros 3 s, crédito del streamer en pantalla, activación automática
+  al empezar el stream, clips hechos por espectadores en Twitch como señal extra.
 
 ## Oídos, directos en vivo y voz (agregado 16 nov)
 - **Oídos** (`clips/oidos.py`, workflow "Oídos"): Claude no oye el sonido, pero con esto
