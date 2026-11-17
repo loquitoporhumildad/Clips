@@ -1,0 +1,37 @@
+name: Poner título
+
+# Lo lanza la página (botón "Poner título" en un clip en vivo). Quema el título que elige Juan
+# sobre la copia sin título del clip y reemplaza el video del panel. Dura ~1 minuto.
+
+on:
+  workflow_dispatch:
+    inputs:
+      video_id:
+        description: 'Id del video en clips_videos'
+        required: true
+      titulo:
+        description: 'Texto del título (vacío = quitarlo)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: titulo-${{ inputs.video_id }}
+  cancel-in-progress: true
+
+jobs:
+  titulo:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-montserrat
+      - name: Quemar título
+        env:
+          CLIP_VIDEO_ID: ${{ inputs.video_id }}
+          CLIP_TITULO: ${{ inputs.titulo }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: python clips/titulo.py

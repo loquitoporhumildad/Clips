@@ -109,6 +109,14 @@ export const api = {
     try { mensaje = (await error.context.json()).error || mensaje; } catch { /* sin detalle */ }
     return {ok: false, error: mensaje};
   },
+  async titulo(video, owner, texto) {
+    if (DEMO) return {ok: true};
+    const {data, error} = await sb.functions.invoke('vigilar', {body: {accion: 'titulo', id: video, owner, texto}});
+    if (!error) return data;
+    let mensaje = error.message;
+    try { mensaje = (await error.context.json()).error || mensaje; } catch { /* sin detalle */ }
+    return {ok: false, error: mensaje};
+  },
   async directos(dueno) {
     if (DEMO) return [{id: 1, created_at: new Date().toISOString(), owner: 'juan', cuenta: 'Clip Vault', url: 'https://www.twitch.tv/ejemplo', campana: 'Whop: ejemplo', minutos: 330, estado: 'vigilando', clips: 3, minutos_usados: 120}];
     let q = sb.from('clips_vigilar').select('*').order('id', {ascending: false}).limit(30);
