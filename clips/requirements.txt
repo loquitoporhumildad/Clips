@@ -4,4 +4,4 @@ chat-downloader
 streamlink
 numpy
 av>=14,<19
-opencv-python-headless
+opencv-python-headless<5
