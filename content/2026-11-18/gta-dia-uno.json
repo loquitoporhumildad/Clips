@@ -1,0 +1,162 @@
+{
+  "id": "gta-dia-uno",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": [
+    "en",
+    "es"
+  ],
+  "beat": false,
+  "tag": {
+    "en": "DAY ONE",
+    "es": "DÍA UNO"
+  },
+  "accounts": {
+    "en": "Vice Data",
+    "es": "Datos de Vice"
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 3.2,
+      "kicker": {
+        "en": "DAY ONE",
+        "es": "DÍA UNO"
+      },
+      "text": {
+        "en": "GTA VI launches tomorrow, but two things aren't in the box.",
+        "es": "GTA VI sale mañana, pero dos cosas no vienen en la caja."
+      },
+      "narration": {
+        "en": "GTA VI launches tomorrow, but two things are missing on day one.",
+        "es": "GTA VI sale mañana, pero faltan dos cosas."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 4.0
+    },
+    {
+      "type": "hook",
+      "seconds": 3.6,
+      "kicker": {
+        "en": "YES",
+        "es": "SÍ"
+      },
+      "text": {
+        "en": "The story of Jason and Lucia in Leonida.",
+        "es": "La historia de Jason y Lucia en Leonida."
+      },
+      "narration": {
+        "en": "What you get: the story of Jason and Lucia in Leonida.",
+        "es": "Sí trae la historia de Jason y Lucia en Leonida."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 10.0
+    },
+    {
+      "type": "hook",
+      "seconds": 4.0,
+      "kicker": {
+        "en": "NO",
+        "es": "NO"
+      },
+      "text": {
+        "en": "No online mode. Rockstar hasn't given a date.",
+        "es": "Sin modo en línea. Rockstar no ha dado fecha."
+      },
+      "narration": {
+        "en": "What it doesn't have: online. Rockstar hasn't given a date.",
+        "es": "No trae modo en línea. Rockstar no da fecha."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 2.4
+    },
+    {
+      "type": "hook",
+      "seconds": 4.0,
+      "kicker": {
+        "en": "NO",
+        "es": "NO"
+      },
+      "text": {
+        "en": "No PC version at launch. Only PS5 and Xbox Series X|S.",
+        "es": "Sin versión de PC al inicio. Solo PS5 y Xbox Series X|S."
+      },
+      "narration": {
+        "en": "And no PC at launch, only PlayStation five and Xbox Series X S.",
+        "es": "Tampoco sale en PC, solo PlayStation cinco y Xbox Series X S."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 16.0
+    },
+    {
+      "type": "stat",
+      "seconds": 4.0,
+      "value": 14,
+      "suffix": {
+        "en": "DAYS",
+        "es": "DÍAS"
+      },
+      "label": {
+        "en": "GTA Online arrived 14 days after GTA V launched.",
+        "es": "GTA Online llegó 14 días después del lanzamiento de GTA V."
+      },
+      "narration": {
+        "en": "With GTA V, online came fourteen days later.",
+        "es": "En GTA V, el en línea llegó catorce días después."
+      },
+      "source": "Rockstar Games",
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 8.0
+    },
+    {
+      "type": "outro",
+      "seconds": 3.2,
+      "big": {
+        "en": "NOV 19",
+        "es": "19 NOV"
+      },
+      "small": {
+        "en": "Story only, or waiting for online?",
+        "es": "¿Solo la historia o esperas el en línea?"
+      },
+      "cta": {
+        "en": "Follow · tomorrow, launch day",
+        "es": "Síguenos · mañana, día de lanzamiento"
+      },
+      "narration": {
+        "en": "Story only, or are you waiting for online?",
+        "es": "¿Te basta la historia o esperas el en línea?"
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "GTA VI day one: what it has and what it doesn't",
+      "description": "Day one is story only: no online mode and no PC version yet. GTA V's online arrived 14 days after launch. Will you wait?",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6countdown",
+        "#gaming",
+        "#rockstargames"
+      ]
+    },
+    "es": {
+      "title": "GTA VI el día uno: lo que trae y lo que no",
+      "description": "El día uno es solo la historia: sin modo en línea y sin versión de PC. En GTA V el en línea llegó 14 días después. ¿Esperas?",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6español",
+        "#videojuegos",
+        "#gaming"
+      ]
+    }
+  },
+  "notes": "Publicar el 18 de noviembre (segundo o tercer video del día). Música: la misma que el video de cuenta regresiva. Rockstar no ha anunciado modo en línea ni fecha para PC; dilo tal cual, no prometas fechas. GTA V salió el 17 sep 2013 y GTA Online el 1 oct 2013 (14 días). Cierre con pregunta: responde los primeros comentarios.",
+  "sources": [
+    "https://tech.yahoo.com/gaming/article/gta-6-preload-date-is-confirmed--plus-everything-you-need-to-know-about-the-most-anticipated-game-of-the-year-152314768.html",
+    "https://www.hotnewhiphop.com/1016686-will-gta-vi-have-multiplayer-mode",
+    "https://forbes.com/sites/erikkain/2026/11/16/gta-6-release-date-time-ps5-xbox-series-x-download-size-day-one-update"
+  ]
+}

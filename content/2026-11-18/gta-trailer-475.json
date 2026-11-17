@@ -1,0 +1,143 @@
+{
+  "id": "gta-trailer-475",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": [
+    "en",
+    "es"
+  ],
+  "beat": false,
+  "tag": {
+    "en": "RECORD",
+    "es": "RÉCORD"
+  },
+  "accounts": {
+    "en": "Vice Data",
+    "es": "Datos de Vice"
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 3.4,
+      "kicker": {
+        "en": "RECORD",
+        "es": "RÉCORD"
+      },
+      "text": {
+        "en": "475 million views in a single day.",
+        "es": "475 millones de vistas en un solo día."
+      },
+      "narration": {
+        "en": "Four hundred seventy five million views in a single day.",
+        "es": "Cuatrocientos setenta y cinco millones de vistas en un solo día."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 4.0
+    },
+    {
+      "type": "bars",
+      "seconds": 5.0,
+      "title": {
+        "en": "Views in the first 24 hours (millions)",
+        "es": "Vistas en las primeras 24 horas (millones)"
+      },
+      "unit": {
+        "en": "M",
+        "es": "M"
+      },
+      "items": [
+        {
+          "label": {
+            "en": "GTA VI · Trailer 2",
+            "es": "GTA VI · Tráiler 2"
+          },
+          "value": 475,
+          "highlight": true
+        },
+        {
+          "label": "Deadpool & Wolverine",
+          "value": 365
+        },
+        {
+          "label": "Spider-Man: No Way Home",
+          "value": 355.5
+        }
+      ],
+      "source": "Rockstar Games via The Hollywood Reporter · all platforms",
+      "narration": {
+        "en": "GTA VI's second trailer beat Deadpool and Wolverine, and Spider-Man.",
+        "es": "El segundo tráiler de GTA VI superó a Deadpool y Wolverine, y a Spider-Man."
+      }
+    },
+    {
+      "type": "stat",
+      "seconds": 4.2,
+      "value": 90.4,
+      "label": {
+        "en": "million YouTube views in 24h for Trailer 1. Still a Guinness record.",
+        "es": "millones de vistas en YouTube en 24 h del Tráiler 1. Sigue siendo récord Guinness."
+      },
+      "narration": {
+        "en": "Trailer one still holds the YouTube Guinness record, ninety million views.",
+        "es": "El tráiler uno sigue con el récord Guinness en YouTube, noventa millones."
+      },
+      "source": "Guinness World Records",
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 16.0,
+      "suffix": {
+        "en": "MILLION",
+        "es": "MILLONES"
+      },
+      "decimals": 1
+    },
+    {
+      "type": "outro",
+      "seconds": 3.4,
+      "big": {
+        "en": "NOV 19",
+        "es": "19 NOV"
+      },
+      "small": {
+        "en": "Tomorrow the trailer becomes a game.",
+        "es": "Mañana el tráiler se vuelve juego."
+      },
+      "cta": {
+        "en": "Follow · tomorrow, launch day",
+        "es": "Síguenos · mañana, día de lanzamiento"
+      },
+      "narration": {
+        "en": "Tomorrow the trailer becomes a game. Will you play it?",
+        "es": "Mañana el tráiler se vuelve juego. ¿Lo vas a jugar?"
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "475 million views in 24 hours: the GTA VI trailer record",
+      "description": "GTA VI Trailer 2 got 475 million views in 24 hours across platforms, ahead of Deadpool and Wolverine. Tomorrow it becomes a game.",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6countdown",
+        "#gaming",
+        "#rockstargames"
+      ]
+    },
+    "es": {
+      "title": "475 millones de vistas en 24 horas: el récord del tráiler de GTA VI",
+      "description": "El Tráiler 2 de GTA VI tuvo 475 millones de vistas en 24 horas en todas las plataformas, por encima de Deadpool y Wolverine. Mañana se vuelve juego.",
+      "hashtags": [
+        "#GTA6",
+        "#GTAVI",
+        "#GTA6español",
+        "#videojuegos",
+        "#gaming"
+      ]
+    }
+  },
+  "notes": "Publicar el 18 de noviembre. Los 475 millones son de todas las plataformas (cifra de Rockstar vía The Hollywood Reporter); el récord Guinness de YouTube del Tráiler 1 (90,4 millones) sigue vigente según TechRadar/Epicflix. Si lo dices de palabra, aclara 'en todas las plataformas'.",
+  "sources": [
+    "https://www.techradar.com/gaming/the-latest-grand-theft-auto-6-trailer-has-set-a-major-record-by-racking-up-475-million-views-in-just-24-hours",
+    "https://epicflix.com/grand-theft-auto-vi-trailer-2-falls-short-of-breaking-youtube-record-set-by-first-trailer"
+  ]
+}
