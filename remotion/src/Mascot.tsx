@@ -3,7 +3,7 @@ import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Theme} from './themes';
 
 export type Mood = 'hype' | 'shock' | 'think' | 'smile';
-export type Variant = 'bolo' | 'robo' | 'zorro' | 'buho';
+export type Variant = 'bolo' | 'robo' | 'zorro' | 'buho' | 'ficha' | 'dado';
 
 // "Bolo": personaje propio de la fábrica. Cuerpo redondo con ojos que parpadean,
 // brazos que se mueven y una boca que cambia según el ánimo de la escena.
@@ -60,6 +60,22 @@ export const Mascot: React.FC<{mood: Mood; t: Theme; variant?: Variant}> = ({moo
           <ellipse cx={100} cy={110} rx={74} ry={80} fill={t.accent} stroke="#000" strokeWidth={6} />
           <ellipse cx={100} cy={142} rx={42} ry={34} fill="#fff" opacity={0.5} />
           <path d="M92 114 L108 114 L100 128 Z" fill={t.accent2} stroke="#000" strokeWidth={4} strokeLinejoin="round" />
+        </>
+      )}
+      {variant === 'ficha' && (
+        <>
+          <circle cx={100} cy={105} r={78} fill={t.accent} stroke="#000" strokeWidth={6} />
+          <circle cx={100} cy={105} r={67} fill="none" stroke="#fff" strokeWidth={11} strokeDasharray="17 14" opacity={0.9} />
+          <circle cx={100} cy={105} r={54} fill="none" stroke="#000" strokeOpacity={0.35} strokeWidth={4} />
+          <path d="M100 51 V159 M46 105 H154 M62 64 Q86 105 62 146 M138 64 Q114 105 138 146" stroke="#000" strokeOpacity={0.28} strokeWidth={4} fill="none" />
+          <text x={100} y={178} textAnchor="middle" fontFamily="Anton, Impact, sans-serif" fontSize={26} fill="#fff" stroke="#000" strokeWidth={4} paintOrder="stroke">$</text>
+        </>
+      )}
+      {variant === 'dado' && (
+        <>
+          <rect x={26} y={30} width={148} height={148} rx={34} fill={t.accent} stroke="#000" strokeWidth={6} />
+          {[[52, 56], [148, 56], [52, 152], [148, 152]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r={10} fill="#000" />)}
+          <path d="M44 48 Q60 40 84 42" stroke="#fff" strokeOpacity={0.5} strokeWidth={8} strokeLinecap="round" fill="none" />
         </>
       )}
       {variant === 'bolo' && (
