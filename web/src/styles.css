@@ -201,3 +201,7 @@ button { cursor: pointer; border: 0; background: none; padding: 0; -webkit-tap-h
 .top-fila input { width: 18px; height: 18px; accent-color: var(--verde); }
 .top-nombre { overflow-wrap: anywhere; }
 .top-num { color: var(--tinta-suave); font-variant-numeric: tabular-nums; }
+
+.titulo-caja { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 10px; }
+.titulo-caja input { width: 100%; min-height: 46px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--borde); background: var(--papel); color: var(--tinta); font: inherit; font-size: 15px; }
+.titulo-caja input:focus-visible { outline: 2px solid var(--senal); outline-offset: 2px; }

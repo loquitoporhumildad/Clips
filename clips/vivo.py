@@ -330,15 +330,17 @@ def cortar(pico, fuente, puntos, n):
     i2, f2 = C.ajustar(frases, ini, DUR)
     ass, texto = None, ''
     if palabras:
-        ass = C.tmp / f'vivo{n}.ass'
-        texto = C.subtitulos(palabras, i2, f2, ass)
+        texto = ' '.join(w['w'] for w in palabras if w['t1'] > i2 and w['t0'] < f2 and w['w'])
+        if E('LIVE_SUBS') == '1':                    # por defecto sin subtítulos: solo el título que elige Juan
+            ass = C.tmp / f'vivo{n}.ass'
+            C.subtitulos(palabras, i2, f2, ass)
     cid = f"live-{re.sub(r'[^a-z0-9]+', '-', URL.lower().split('//')[-1])[:28].strip('-')}-{int(pico)}"
     destino = C.out / f'{cid}.mp4'
     C.vertical(tramo, i2, f2, ass, destino)
     hora = datetime.fromtimestamp(pico, timezone.utc).strftime('%H:%M:%S UTC')
     clip = {
         'id': cid, 'archivo': destino, 'idioma': idioma,
-        'titulo': (texto[:70] + '…') if len(texto) > 70 else (texto or f'Momento en vivo {hora}'),
+        'titulo': f'Momento en vivo {hora}', 'base': True,
         'descripcion': f'{URL} · en vivo {hora}',
         'notas': (f"Campaña: {CAMP or 'SIN CAMPAÑA: no publicar hasta confirmar permiso'}. EN VIVO {hora}, elegido por "
                   f"{fuente} (fuerza {puntos:.1f}). Fuente: {URL}. Directo: {datos_directo() or 'sin datos'}. "

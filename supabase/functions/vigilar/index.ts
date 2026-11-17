@@ -22,6 +22,19 @@ Deno.serve(async (req) => {
   const cuota = Number(Deno.env.get("CUOTA_MIN") || 2000);
   if (body.accion === "ping") return json({ ok: true, listos: Object.keys(targets), cuota });
 
+  if (body.accion === "titulo") {
+    const t0 = targets[body.owner === "socio" ? "socio" : "juan"];
+    if (!t0) return json({ error: "Falta conectar GitHub. Mira la pestaña Cómo funciona." }, 503);
+    const id = String(Number(body.id) || "");
+    if (!id) return json({ error: "Falta el video." }, 400);
+    const r0 = await fetch(`https://api.github.com/repos/${t0.repo}/actions/workflows/titulo.yml/dispatches`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${t0.token}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28", "User-Agent": "clips-panel" },
+      body: JSON.stringify({ ref: "main", inputs: { video_id: id, titulo: String(body.texto ?? "").trim().slice(0, 90) } }),
+    });
+    return r0.status === 204 ? json({ ok: true }) : json({ error: `GitHub ${r0.status}: ${(await r0.text()).slice(0, 200)}` }, 502);
+  }
+
   const urls: string[] = (body.urls ?? []).map((u: string) => String(u).trim()).filter(Boolean);
   const owner = body.owner === "socio" ? "socio" : "juan";
   const cuenta = body.cuenta === "PeakClips" ? "PeakClips" : "Clip Vault";

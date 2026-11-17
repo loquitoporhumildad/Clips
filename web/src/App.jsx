@@ -99,6 +99,9 @@ function Video({v, avisar, recargar}) {
   const [url, setUrl] = useState(null);
   const [verTexto, setVerTexto] = useState(false);
   const [recien, setRecien] = useState(false);
+  const [hook, setHook] = useState(v.hook || '');
+  const [poniendo, setPoniendo] = useState(false);
+  const enVivo = v.spec_id?.startsWith('live-') && v.base_path;
   const texto = [v.title, '', v.description, '', (v.hashtags || []).join(' ')].join('\n');
   const publicado = v.status === 'publicado';
 
@@ -112,6 +115,12 @@ function Video({v, avisar, recargar}) {
   };
   const copiar = async () => {
     try { await navigator.clipboard.writeText(texto); avisar('Texto copiado'); } catch { setVerTexto(true); avisar('Mantén presionado el texto para copiarlo.'); }
+  };
+  const ponerTitulo = async () => {
+    setPoniendo(true);
+    const r = await api.titulo(v.id, v.owner, hook);
+    setPoniendo(false);
+    avisar(r.ok ? 'Listo: en ~1 minuto el video trae el título. Recarga la página.' : (r.error || 'No pude lanzar el título.'));
   };
   const alternar = async () => {
     await api.estado(v.id, publicado ? 'listo' : 'publicado');
@@ -137,6 +146,14 @@ function Video({v, avisar, recargar}) {
           <span className={`sello ${publicado ? 'listo' : 'pendiente'}`}>{publicado ? 'Publicado' : 'Por subir'}</span>
         </div>
         <h3>{v.title || v.spec_id}</h3>
+        {enVivo && (
+          <div className="titulo-caja">
+            <input value={hook} maxLength={90} placeholder="Título en pantalla (qué pasa en el clip)" onChange={(e) => setHook(e.target.value)} aria-label="Título en pantalla" />
+            <motion.button {...PRESION} className="pildora senal" disabled={poniendo} onClick={ponerTitulo}>
+              {poniendo ? 'Enviando…' : v.hook ? 'Cambiar título' : 'Poner título'}
+            </motion.button>
+          </div>
+        )}
         {v.notes && <p className="nota">{v.notes}</p>}
         <AnimatePresence initial={false}>
           {verTexto && (

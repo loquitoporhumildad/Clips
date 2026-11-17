@@ -305,6 +305,29 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
     return ' '.join(w['w'] for w in ws)
 
 
+def titulo_ass(texto, archivo):
+    """Título fijo arriba (lo escribe Juan). Devuelve la ruta o None si no hay texto."""
+    texto = ' '.join((texto or '').split())
+    if not texto:
+        return None
+    texto = texto.upper().replace('{', '').replace('}', '').replace('\\', '')
+    cab = """[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: T,Montserrat ExtraBold,80,&H00FFFFFF,&H00FFFFFF,&H00000000,&H96000000,-1,0,0,0,100,100,0,0,1,8,3,8,60,60,70,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+"""
+    archivo.write_text(cab + f"Dialogue: 0,0:00:00.00,9:59:59.00,T,,0,0,0,,{texto}\n", encoding='utf-8')
+    return archivo
+
+
 _cam = None   # caja de la cámara del streamer, en fracciones del cuadro; se detecta una vez por directo
 
 
@@ -353,7 +376,7 @@ def detectar_camara(seg, ini, fin):
 
 
 def _filtro_camara(cam, W, H, subs):
-    """Streamer arriba (1080x760) y juego completo debajo (1080x608) sobre fondo borroso."""
+    """Banda de título (0-250), streamer (1080x760) y juego completo (1080x608) sobre fondo borroso."""
     fx, fy, fw, fh = cam
     cw = min(W, fw * W * 3.4)
     ch = min(H, cw * 760 / 1080)
@@ -361,11 +384,12 @@ def _filtro_camara(cam, W, H, subs):
     cy = min(max(0, (fy + fh / 2) * H - ch * 0.5), H - ch)
     return (f"[0:v]split=3[a][b][c];[a]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=24:4,eq=brightness=-0.15[bg];"
             f"[c]crop={cw:.0f}:{ch:.0f}:{cx:.0f}:{cy:.0f},scale=1080:760[cam];[b]scale=1080:-2[fg];"
-            f"[bg][cam]overlay=0:0[t];[t][fg]overlay=0:790,{subs},fps=30[v]")
+            f"[bg][cam]overlay=0:250[t];[t][fg]overlay=0:1040,{subs},fps=30[v]")
 
 
-def vertical(seg, ini, fin, ass, destino):
-    subs = f"subtitles='{ass.as_posix()}'" if ass else 'null'
+def vertical(seg, ini, fin, ass, destino, titulo=None):
+    partes = [f"subtitles='{a.as_posix()}'" for a in (ass, titulo) if a]
+    subs = ','.join(partes) if partes else 'null'
     modo = MODO
     cam = None
     if modo == 'camara':
@@ -378,7 +402,7 @@ def vertical(seg, ini, fin, ass, destino):
         vf = _filtro_camara(cam, W, H, subs)
     elif modo == 'relleno':
         vf = ("[0:v]split[a][b];[a]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=24:4,eq=brightness=-0.12[bg];"
-              f"[b]scale=1080:-2[fg];[bg][fg]overlay=0:(H-h)/2-140,{subs},fps=30[v]")
+              f"[b]scale=1080:-2[fg];[bg][fg]overlay=0:(H-h)/2+60,{subs},fps=30[v]")
     else:
         vf = f"[0:v]scale=-2:1920,crop=1080:1920,{subs},fps=30[v]"
     run(['ffmpeg', '-loglevel', 'error', '-y', '-ss', f'{ini:.2f}', '-t', f'{fin - ini:.2f}', '-i', str(seg),
@@ -401,9 +425,14 @@ def subir(c):
     ruta = f"{hoy}/{c['archivo'].name}"
     http(f"{base}/storage/v1/object/clips-videos/{ruta}", c['archivo'].read_bytes(),
          {**auth, 'Content-Type': 'video/mp4', 'x-upsert': 'true'})
+    base_path = None
+    if c.get('base'):                    # copia sin título: de ahí sale cada título nuevo que elija Juan
+        base_path = f"{hoy}/{c['archivo'].stem}.base.mp4"
+        http(f"{base}/storage/v1/object/clips-videos/{base_path}", c['archivo'].read_bytes(),
+             {**auth, 'Content-Type': 'video/mp4', 'x-upsert': 'true'})
     fila = {'day': hoy, 'spec_id': c['id'], 'brand': 'clips', 'lang': c['idioma'] or 'en', 'account': E('CLIP_CUENTA') or 'Clip Vault',
             'owner': OWNER, 'storage_path': ruta, 'title': c['titulo'], 'description': c['descripcion'],
-            'hashtags': [], 'notes': c['notas']}
+            'hashtags': [], 'notes': c['notas'], 'base_path': base_path}
     http(f"{base}/rest/v1/clips_videos?on_conflict=day,spec_id,lang", json.dumps(fila).encode(),
          {**auth, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates'})
     return True
