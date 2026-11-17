@@ -462,15 +462,17 @@ def main():
             ass = None
             texto = ''
             if palabras:
-                ass = tmp / f'subs{i}.ass'
-                texto = subtitulos(palabras, a, b, ass)
+                texto = ' '.join(w['w'] for w in palabras if w['t1'] > a and w['t0'] < b and w['w'])
+                if E('CLIP_SUBS') == '1':                 # por defecto sin subtítulos: solo el título que elige Juan
+                    ass = tmp / f'subs{i}.ass'
+                    subtitulos(palabras, a, b, ass)
             cid = f"clip-{slug}-{int(m['inicio'])}"
             destino = out / f"{cid}.mp4"
             vertical(seg, a, b, ass, destino)
             quien = info.get('uploader') or ''
             hechos.append({
                 'id': cid, 'archivo': destino, 'idioma': idioma,
-                'titulo': (texto[:70] + '…') if len(texto) > 70 else (texto or f"Momento {hms(m['inicio'])}"),
+                'titulo': f"Momento {hms(m['inicio'])}", 'base': True,
                 'descripcion': f"{quien} · {info.get('title', '')}".strip(' ·'),
                 'notas': (f"Campaña: {CAMPANA or 'SIN CAMPAÑA: no publicar hasta confirmar permiso'}. "
                           f"Minuto del stream {hms(m['inicio'])}, elegido por {m['fuente']} (fuerza {m['puntos']}). "

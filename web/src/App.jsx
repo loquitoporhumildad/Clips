@@ -101,7 +101,7 @@ function Video({v, avisar, recargar}) {
   const [recien, setRecien] = useState(false);
   const [hook, setHook] = useState(v.hook || '');
   const [poniendo, setPoniendo] = useState(false);
-  const enVivo = v.spec_id?.startsWith('live-') && v.base_path;
+  const enVivo = Boolean(v.base_path);
   const texto = [v.title, '', v.description, '', (v.hashtags || []).join(' ')].join('\n');
   const publicado = v.status === 'publicado';
 
