@@ -35,7 +35,9 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 
-os.environ.setdefault('WHISPER_MODEL', 'base')       # en vivo importa la velocidad
+os.environ.setdefault('WHISPER_MODEL', 'small')      # base se equivocaba mucho con canales ruidosos
+os.environ.setdefault('CLIP_MODO', 'camara')         # streamer arriba, juego abajo (si no hay cámara, relleno)
+os.environ.setdefault('CLIP_PISTA', os.environ.get('LIVE_ENTRADA', '').split('|')[0].rstrip('/').split('/')[-1])
 os.environ.setdefault('CLIP_URL', 'vivo')
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import cortar as C                                    # noqa: E402  (reutiliza subtítulos, 9:16, subida)

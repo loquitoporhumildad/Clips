@@ -30,7 +30,10 @@ E = os.environ.get
 URL = E('CLIP_URL', '')
 N = int(E('CLIP_CANTIDAD') or 5)
 DUR = int(E('CLIP_DURACION') or 35)            # segundos por clip
-MODO = E('CLIP_MODO') or 'recorte'             # recorte (centro) | relleno (video completo sobre fondo borroso)
+MODO = E('CLIP_MODO') or 'recorte'             # recorte (centro) | relleno (completo sobre fondo borroso) | camara (streamer arriba, juego abajo)
+IDIOMAS = [x.strip() for x in (E('CLIP_IDIOMAS') or 'es,en').split(',') if x.strip()]   # idiomas permitidos para transcribir
+CAM_MANUAL = E('CLIP_CAM') or ''                # "x:y:w:h" en fracciones 0-1 de la cámara, si se conoce
+PISTA = E('CLIP_PISTA') or ''                   # nombre del streamer / juego: ayuda a Whisper con nombres propios
 CAMPANA = E('CLIP_CAMPANA') or ''
 DESDE = float(E('CLIP_DESDE_MIN') or 0)        # minuto del stream donde empezar a buscar
 HASTA = float(E('CLIP_HASTA_MIN') or 0)        # 0 = hasta el final
@@ -208,19 +211,40 @@ def bajar_tramo(m, i):
 _whisper = None
 
 
+def _idioma(audio):
+    """Mejor idioma entre los permitidos (es/en): evita que un canal ruidoso salga en coreano o chino."""
+    try:
+        _, _, probs = _whisper.detect_language(audio)
+        puntos = dict(probs)
+        ok = [(puntos.get(i, 0), i) for i in IDIOMAS]
+        return max(ok)[1] if ok else None
+    except Exception as e:
+        print(f'  no pude detectar idioma ({e}); uso {IDIOMAS[0]}')
+        return IDIOMAS[0] if IDIOMAS else None
+
+
 def transcribir(seg):
     """Lista de palabras {t0, t1, w} y de frases {t0, t1}."""
     global _whisper
     if SIN_VOZ:
         return [], [], ''
-    from faster_whisper import WhisperModel
+    from faster_whisper import WhisperModel, decode_audio
     if _whisper is None:
         _whisper = WhisperModel(MODELO, device='cpu', compute_type='int8')
-    segs, info = _whisper.transcribe(str(seg), word_timestamps=True, vad_filter=True)
+    audio = decode_audio(str(seg), sampling_rate=16000)
+    idioma = _idioma(audio)
+    pista = (f'Streamer en vivo: {PISTA}. ' if PISTA else '') + {'es': 'Conversación informal de un directo de videojuegos.', 'en': 'Casual live stream chat about video games.'}.get(idioma, '')
+    segs, info = _whisper.transcribe(audio, language=idioma, word_timestamps=True, vad_filter=True,
+                                     beam_size=5, condition_on_previous_text=False, initial_prompt=pista or None,
+                                     no_speech_threshold=0.5, temperature=0.0)
     palabras, frases = [], []
     for s in segs:
+        if s.avg_logprob < -1.2 or s.no_speech_prob > 0.7:   # ruido o alucinación
+            continue
         frases.append({'t0': s.start, 't1': s.end})
         for w in s.words or []:
+            if w.probability < 0.25 or not w.word.strip():
+                continue
             palabras.append({'t0': w.start, 't1': w.end, 'w': w.word.strip()})
     return palabras, frases, info.language
 
@@ -281,9 +305,78 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
     return ' '.join(w['w'] for w in ws)
 
 
+_cam = None   # caja de la cámara del streamer, en fracciones del cuadro; se detecta una vez por directo
+
+
+def _tam(seg):
+    r = run(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of', 'csv=p=0', str(seg)])
+    w, h = (r.stdout if hasattr(r, 'stdout') else str(r)).strip().split(',')[:2]
+    return int(w), int(h)
+
+
+def detectar_camara(seg, ini, fin):
+    """Busca la cara del streamer (OpenCV) y devuelve (x, y, w, h) en fracciones 0-1, o None."""
+    global _cam
+    if _cam:
+        return _cam
+    if CAM_MANUAL:
+        _cam = tuple(float(v) for v in CAM_MANUAL.split(':'))
+        return _cam
+    try:
+        import cv2
+        import numpy as np
+        W, H = _tam(seg)
+        det = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+        cajas = []
+        for k in range(8):
+            t = ini + (fin - ini) * (k + 0.5) / 8
+            f = tmp / 'cam.png'
+            run(['ffmpeg', '-loglevel', 'error', '-y', '-ss', f'{t:.2f}', '-i', str(seg), '-frames:v', '1', '-vf', 'scale=1280:-2', str(f)])
+            im = cv2.imread(str(f), cv2.IMREAD_GRAYSCALE)
+            if im is None:
+                continue
+            for (x, y, w, h) in det.detectMultiScale(im, 1.1, 6, minSize=(60, 60)):
+                cajas.append((x / im.shape[1], y / im.shape[0], w / im.shape[1], h / im.shape[0]))
+        if len(cajas) < 2:
+            return None
+        a = np.array(cajas)
+        c = np.median(a, axis=0)
+        # solo vale si la cara cae siempre en el mismo sitio (cámara fija) y no ocupa media pantalla
+        if c[2] > 0.3 or np.std(a[:, 0]) > 0.04 or np.std(a[:, 1]) > 0.04:
+            return None
+        _cam = tuple(float(v) for v in c)
+        print(f'  cámara detectada: cara en x={c[0]:.2f} y={c[1]:.2f} ancho={c[2]:.2f}')
+        return _cam
+    except Exception as e:
+        print(f'  sin detección de cámara ({e})')
+        return None
+
+
+def _filtro_camara(cam, W, H, subs):
+    """Streamer arriba (1080x760) y juego completo debajo (1080x608) sobre fondo borroso."""
+    fx, fy, fw, fh = cam
+    cw = min(W, fw * W * 3.4)
+    ch = min(H, cw * 760 / 1080)
+    cx = min(max(0, (fx + fw / 2) * W - cw / 2), W - cw)
+    cy = min(max(0, (fy + fh / 2) * H - ch * 0.5), H - ch)
+    return (f"[0:v]split=3[a][b][c];[a]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=24:4,eq=brightness=-0.15[bg];"
+            f"[c]crop={cw:.0f}:{ch:.0f}:{cx:.0f}:{cy:.0f},scale=1080:760[cam];[b]scale=1080:-2[fg];"
+            f"[bg][cam]overlay=0:0[t];[t][fg]overlay=0:790,{subs},fps=30[v]")
+
+
 def vertical(seg, ini, fin, ass, destino):
     subs = f"subtitles='{ass.as_posix()}'" if ass else 'null'
-    if MODO == 'relleno':
+    modo = MODO
+    cam = None
+    if modo == 'camara':
+        cam = detectar_camara(seg, ini, fin)
+        if not cam:
+            print('  no encontré cámara: uso modo relleno')
+            modo = 'relleno'
+    if cam:
+        W, H = _tam(seg)
+        vf = _filtro_camara(cam, W, H, subs)
+    elif modo == 'relleno':
         vf = ("[0:v]split[a][b];[a]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=24:4,eq=brightness=-0.12[bg];"
               f"[b]scale=1080:-2[fg];[bg][fg]overlay=0:(H-h)/2-140,{subs},fps=30[v]")
     else:
