@@ -372,6 +372,11 @@ def detectar_camara(seg, ini, fin):
         return _cam
     except Exception as e:
         print(f'  sin detección de cámara ({e})')
+        try:
+            import cv2 as _c
+            print('  cv2:', getattr(_c, '__file__', None), getattr(_c, '__version__', None), list(getattr(_c, '__path__', []))[:2])
+        except Exception as e2:
+            print('  cv2 no importa:', e2)
         return None
 
 
