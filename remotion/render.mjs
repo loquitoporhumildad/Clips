@@ -177,13 +177,24 @@ if (hasSb) {
 }
 
 // --- Discord (opcional) ---
-if (DISCORD_WEBHOOK && done.length) {
-  const lines = done.map((d) => `• **${d.spec.accounts?.[d.lang] ?? d.spec.brand}** (${d.lang}): ${d.meta.title ?? d.spec.id}`);
-  await fetch(DISCORD_WEBHOOK, {
+// Un canal por persona: los videos del socio van a DISCORD_WEBHOOK_SOCIO si existe;
+// todo lo demás (o todo, si falta ese secreto) va a DISCORD_WEBHOOK.
+const ownerOf = (d) => d.spec.owners?.[d.lang] ?? (d.lang === 'es' ? 'socio' : 'juan');
+const lineOf = (d) => `• **${d.spec.accounts?.[d.lang] ?? d.spec.brand}** (${d.lang}): ${d.meta.title ?? d.spec.id}`;
+const avisar = async (hook, list) => {
+  if (!hook || !list.length) return;
+  await fetch(hook, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({content: `🎬 ${done.length} videos listos para ${date}\n${lines.join('\n')}`}),
+    body: JSON.stringify({content: `🎬 ${list.length} videos listos para ${date}\n${list.map(lineOf).join('\n')}`}),
   });
+};
+const SOCIO_HOOK = process.env.DISCORD_WEBHOOK_SOCIO;
+if (SOCIO_HOOK) {
+  await avisar(SOCIO_HOOK, done.filter((d) => ownerOf(d) === 'socio'));
+  await avisar(DISCORD_WEBHOOK, done.filter((d) => ownerOf(d) !== 'socio'));
+} else {
+  await avisar(DISCORD_WEBHOOK, done);
 }
 
 console.log(`Listo: ${done.length} videos en ${outDir}`);
