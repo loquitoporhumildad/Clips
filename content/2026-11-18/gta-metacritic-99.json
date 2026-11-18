@@ -1,0 +1,108 @@
+{
+  "id": "gta-metacritic-99",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": ["en", "es"],
+  "beat": false,
+  "tag": {"en": "REVIEWS", "es": "RESEÑAS"},
+  "accounts": {"en": "Vice Data", "es": "Datos de Vice"},
+  "pronunciation": {
+    "en": {"GTA IV": "G T A four", "Metacritic": "Metacritic"},
+    "es": {"GTA IV": "ge te a cuatro", "Metacritic": "Metacrítik", "Ocarina of Time": "Ocarina of Taim"}
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 2.2,
+      "kicker": {"en": "REVIEWS ARE IN", "es": "YA HAY RESEÑAS"},
+      "text": {
+        "en": "GTA VI just scored 99 on Metacritic.",
+        "es": "GTA VI acaba de sacar 99 en Metacritic."
+      },
+      "narration": {
+        "en": "GTA VI just scored 99 on Metacritic.",
+        "es": "GTA VI acaba de sacar 99 en Metacritic."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 5.0
+    },
+    {
+      "type": "stat",
+      "seconds": 2.6,
+      "value": 99,
+      "suffix": "/100",
+      "label": {
+        "en": "Ties the highest Metascore ever recorded.",
+        "es": "Empata el Metascore más alto de la historia."
+      },
+      "source": "Metacritic",
+      "narration": {
+        "en": "That ties Ocarina of Time for the highest score ever.",
+        "es": "Empata el récord histórico de Ocarina of Time."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 9.0
+    },
+    {
+      "type": "bars",
+      "seconds": 3,
+      "title": {"en": "Metacritic score", "es": "Puntuación en Metacritic"},
+      "unit": "/100",
+      "items": [
+        {"label": "GTA VI", "value": 99, "highlight": true},
+        {"label": "Ocarina of Time", "value": 99},
+        {"label": "GTA IV", "value": 98},
+        {"label": "GTA V", "value": 97}
+      ],
+      "source": "Metacritic",
+      "narration": {
+        "en": "It beats GTA IV at 98, and GTA V at 97.",
+        "es": "Supera el 98 de GTA IV y el 97 de GTA V."
+      }
+    },
+    {
+      "type": "hook",
+      "seconds": 2.4,
+      "kicker": {"en": "THE ONE COMPLAINT", "es": "LA ÚNICA QUEJA"},
+      "text": {
+        "en": "It runs at 30 frames per second.",
+        "es": "Corre a 30 cuadros por segundo."
+      },
+      "narration": {
+        "en": "The one complaint? Thirty frames per second.",
+        "es": "¿La única queja? Treinta cuadros por segundo."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 13.0
+    },
+    {
+      "type": "outro",
+      "seconds": 2.6,
+      "big": {"en": "NOV 19", "es": "19 NOV"},
+      "small": {"en": "Does it deserve the 99?", "es": "¿Merece el 99?"},
+      "cta": {"en": "Follow · launch day coverage", "es": "Síguenos · cobertura del estreno"},
+      "narration": {
+        "en": "Out tomorrow. Does it deserve the ninety nine?",
+        "es": "Sale mañana. ¿Merece el noventa y nueve?"
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "GTA VI scores 99 on Metacritic: the highest ever",
+      "description": "GTA VI reviews are in: 99 on Metacritic, tying Ocarina of Time for the highest Metascore ever. The one complaint is 30 fps. Does it deserve it?",
+      "hashtags": ["#GTA6", "#GTAVI", "#Metacritic", "#gaming", "#rockstargames"]
+    },
+    "es": {
+      "title": "GTA VI saca 99 en Metacritic: el más alto de la historia",
+      "description": "Ya hay reseñas de GTA VI: 99 en Metacritic, empata el Metascore más alto de la historia (Ocarina of Time). La única queja: 30 fps. ¿Lo merece?",
+      "hashtags": ["#GTA6", "#GTAVI", "#Metacritic", "#videojuegos", "#gaming"]
+    }
+  },
+  "notes": "PUBLICAR PRIMERO: es la noticia del día (reseñas del 18 nov). Las cifras de Metacritic se mueven durante el día: si lo subes más tarde, revisa que siga en 99. 'Más de 100 reseñas', ninguna negativa. Música: synthwave instrumental a volumen bajo. Cierre con pregunta: responde los primeros comentarios.",
+  "sources": [
+    "https://www.forbes.com/sites/paultassi/2026/11/18/the-gta-6-metacritic-review-score-is-in-and-ties-an-all-time-record/",
+    "https://www.talkesport.com/reviews/gta-6-reviews-roundup-scores/",
+    "https://happygamer.com/gta-6-reviews-metacritic-opencritic-scores-175596/"
+  ]
+}

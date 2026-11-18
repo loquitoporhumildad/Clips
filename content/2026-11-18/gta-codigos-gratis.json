@@ -1,0 +1,108 @@
+{
+  "id": "gta-codigos-gratis",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": ["en", "es"],
+  "beat": false,
+  "tag": {"en": "FREE CODES", "es": "CÓDIGOS GRATIS"},
+  "accounts": {"en": "Vice Data", "es": "Datos de Vice"},
+  "pronunciation": {
+    "en": {"Ultimate Edition": "Ultimate Edition"},
+    "es": {"Ultimate Edition": "Ultimeit Edishon", "Xbox": "Equis box", "Kick": "Kik"}
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 2.2,
+      "kicker": {"en": "FREE", "es": "GRATIS"},
+      "text": {
+        "en": "You could win GTA VI just by watching streams.",
+        "es": "Puedes ganar GTA VI solo viendo directos."
+      },
+      "narration": {
+        "en": "You could win GTA VI just by watching streams.",
+        "es": "Puedes ganar GTA VI solo por ver directos."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 2.0
+    },
+    {
+      "type": "stat",
+      "seconds": 2.8,
+      "value": 10000,
+      "suffix": {"en": "CODES", "es": "CÓDIGOS"},
+      "label": {
+        "en": "Kick lists 10,000 Ultimate Edition codes to win.",
+        "es": "Kick tiene 10.000 códigos de la Ultimate Edition para ganar."
+      },
+      "source": "Kick · Dexerto",
+      "narration": {
+        "en": "Kick has ten thousand Ultimate Edition codes to win.",
+        "es": "Kick tiene diez mil códigos de la Ultimate Edition para ganar."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 7.0
+    },
+    {
+      "type": "stat",
+      "seconds": 2.8,
+      "value": 12,
+      "suffix": {"en": "DAYS", "es": "DÍAS"},
+      "label": {
+        "en": "Twitch drops surprise codes daily, Nov 19 to 30.",
+        "es": "Twitch suelta códigos sorpresa cada día, del 19 al 30."
+      },
+      "source": "Twitch",
+      "narration": {
+        "en": "Twitch drops surprise codes every day, November 19 to 30.",
+        "es": "Twitch suelta códigos sorpresa cada día, del 19 al 30."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 11.0
+    },
+    {
+      "type": "hook",
+      "seconds": 2.8,
+      "kicker": {"en": "XBOX OR PS5?", "es": "¿XBOX O PS5?"},
+      "text": {
+        "en": "Xbox codes: worldwide. PS5 codes: only supported regions.",
+        "es": "Xbox: casi todo el mundo. PS5: solo regiones compatibles."
+      },
+      "narration": {
+        "en": "Xbox codes work almost worldwide. PS5, only supported regions.",
+        "es": "Xbox, casi en todo el mundo. PS5, solo en regiones compatibles."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 14.0
+    },
+    {
+      "type": "outro",
+      "seconds": 2.4,
+      "big": {"en": "NOV 19", "es": "19 NOV"},
+      "small": {"en": "Are you in?", "es": "¿Vas a participar?"},
+      "cta": {"en": "Follow · we cover the drops", "es": "Síguenos · cubrimos los drops"},
+      "narration": {
+        "en": "Are you in?",
+        "es": "¿Vas a participar?"
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "Free GTA VI codes: Kick and Twitch giveaways",
+      "description": "Kick lists 10,000 GTA VI Ultimate Edition codes and Twitch plans surprise code drops daily from Nov 19 to 30. Xbox and PS5 codes work differently. Are you in?",
+      "hashtags": ["#GTA6", "#GTAVI", "#Twitch", "#Kick", "#gaming"]
+    },
+    "es": {
+      "title": "Códigos gratis de GTA VI: sorteos de Kick y Twitch",
+      "description": "Kick tiene 10.000 códigos de GTA VI Ultimate Edition y Twitch soltará códigos sorpresa cada día del 19 al 30 de noviembre. Los de Xbox y PS5 no funcionan igual. ¿Participas?",
+      "hashtags": ["#GTA6", "#GTAVI", "#Twitch", "#Kick", "#videojuegos"]
+    }
+  },
+  "notes": "Tema sacado del chat de los directos de hoy (cientos de '!participo' y '¿y para Xbox?'). Aclarar en comentarios: es un sorteo/drop sorpresa, no está garantizado; Twitch no ha confirmado cuántos códigos. Los códigos de Kick no se entregan antes del 19. PS5 solo en regiones compatibles de PSN (revisar si tu país entra).",
+  "sources": [
+    "https://dexerto.com/gta/kick-and-twitch-are-giving-away-thousands-of-gta-6-codes-to-viewers-before-launch-3428151",
+    "https://www.shacknews.com/article/151356/twitch-gta-6-ultimate-edition-code-drop-twitchcon-2026",
+    "https://www.newsbytesapp.com/news/science/gta-6-codes-up-for-grabs-on-kick-twitch/story"
+  ]
+}
