@@ -1,0 +1,109 @@
+{
+  "id": "gta-countdown-1",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": ["en", "es"],
+  "beat": false,
+  "tag": {"en": "COUNTDOWN", "es": "CUENTA REGRESIVA"},
+  "accounts": {"en": "Vice Data", "es": "Datos de Vice"},
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 2.6,
+      "kicker": {"en": "1 DAY", "es": "1 DÍA"},
+      "text": {
+        "en": "Tomorrow GTA VI comes out. Tonight is the last night of waiting.",
+        "es": "Mañana sale GTA VI. Esta es la última noche de espera."
+      },
+      "narration": {
+        "en": "Tomorrow GTA VI comes out. Tonight is the last night of waiting.",
+        "es": "Mañana sale GTA VI. Esta es la última noche de espera."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 4.0
+    },
+    {
+      "type": "stat",
+      "seconds": 3.2,
+      "value": 1080,
+      "suffix": {"en": "DAYS", "es": "DÍAS"},
+      "label": {
+        "en": "since the first trailer. They end tomorrow.",
+        "es": "desde el primer tráiler. Terminan mañana."
+      },
+      "source": "Rockstar Games",
+      "narration": {
+        "en": "One thousand and eighty days since the first trailer. They end tomorrow.",
+        "es": "Mil ochenta días desde el primer tráiler. Mañana terminan."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 9.0
+    },
+    {
+      "type": "stat",
+      "seconds": 3.2,
+      "value": 212,
+      "suffix": "GB",
+      "label": {
+        "en": "Up to this much console storage. Check your space.",
+        "es": "Hasta esto ocupa en la consola. Revisa tu espacio."
+      },
+      "source": "Rockstar Games",
+      "narration": {
+        "en": "It takes up to 212 GB on your console. Check your space tonight.",
+        "es": "Ocupa hasta 212 GB en tu consola. Revisa tu espacio esta noche."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 12.0
+    },
+    {
+      "type": "stat",
+      "seconds": 3.2,
+      "value": 2,
+      "suffix": {"en": "CONSOLES", "es": "CONSOLAS"},
+      "label": {
+        "en": "Day one: PS5 and Xbox Series X|S only. No PC announced.",
+        "es": "Día uno: solo PS5 y Xbox Series X|S. PC no está anunciado."
+      },
+      "source": "Rockstar Games",
+      "narration": {
+        "en": "Day one is only PS5 and Xbox Series. No PC version announced.",
+        "es": "El día uno es solo PS5 y Xbox Series. En PC, nada anunciado."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 1.0
+    },
+    {
+      "type": "outro",
+      "seconds": 3,
+      "big": {"en": "NOV 19", "es": "19 NOV"},
+      "small": {
+        "en": "Will you play it at midnight or wait?",
+        "es": "¿Lo juegas a medianoche o esperas?"
+      },
+      "cta": {"en": "Follow · tomorrow it's out", "es": "Síguenos · mañana ya sale"},
+      "narration": {
+        "en": "Will you play it at midnight, or wait?",
+        "es": "¿Lo juegas a medianoche, o esperas?"
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "1 day left for GTA VI: what to do tonight",
+      "description": "GTA VI is out tomorrow, Nov 19, on PS5 and Xbox Series X|S. It needs up to 212 GB, so check your storage tonight. Midnight or wait?",
+      "hashtags": ["#GTA6", "#GTAVI", "#GTA6countdown", "#gaming", "#rockstargames"]
+    },
+    "es": {
+      "title": "Falta 1 día para GTA VI: qué hacer esta noche",
+      "description": "GTA VI sale mañana 19 de noviembre en PS5 y Xbox Series X|S. Ocupa hasta 212 GB: revisa tu espacio esta noche. ¿Medianoche o esperas?",
+      "hashtags": ["#GTA6", "#GTAVI", "#GTA6español", "#videojuegos", "#gaming"]
+    }
+  },
+  "notes": "Publicar el 18 de noviembre, de preferencia en la tarde-noche. Música: en la app, synthwave instrumental sin letra a volumen bajo (10-15 %). Cierre con pregunta: responde los primeros comentarios. Datos de plataformas y 212 GB: Rockstar (verificar la hora de salida local antes de afirmarla).",
+  "sources": [
+    "https://gtaintel.com/news/gta-6-launch-day-what-to-expect",
+    "https://www.brut.media/in/articles/gta-6-release-date-platforms-price-and-new-features-everything-you-need-to-know",
+    "https://www.gfinityesports.com/article/gta-6-pre-load-times-download-size-confirmed-by-rockstar"
+  ]
+}
