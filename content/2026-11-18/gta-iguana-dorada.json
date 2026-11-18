@@ -1,0 +1,107 @@
+{
+  "id": "gta-iguana-dorada",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": ["en", "es"],
+  "beat": false,
+  "tag": {"en": "TWITCH", "es": "TWITCH"},
+  "accounts": {"en": "Vice Data", "es": "Datos de Vice"},
+  "pronunciation": {
+    "en": {"Prime": "Prime"},
+    "es": {"Prime": "Praim"}
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 2.2,
+      "kicker": {"en": "WHAT IS IT?", "es": "¿QUÉ ES?"},
+      "text": {
+        "en": "What is the Golden Iguana everyone is asking for?",
+        "es": "¿Qué es la Iguana Dorada que todos piden?"
+      },
+      "narration": {
+        "en": "What is the Golden Iguana everyone is asking for?",
+        "es": "¿Qué es la Iguana Dorada que todos piden?"
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 3.0
+    },
+    {
+      "type": "stat",
+      "seconds": 2.8,
+      "value": 6,
+      "suffix": {"en": "DAYS", "es": "DÍAS"},
+      "label": {
+        "en": "Watch a GTA VI stream 60 minutes on six different days.",
+        "es": "Ve un directo de GTA VI 60 minutos en seis días distintos."
+      },
+      "source": "Twitch · Giga",
+      "narration": {
+        "en": "First, watch GTA VI streams for an hour on six different days.",
+        "es": "Primero, ve directos de GTA VI una hora en seis días distintos."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 8.0
+    },
+    {
+      "type": "stat",
+      "seconds": 2.8,
+      "value": 3,
+      "suffix": {"en": "PAID SUBS", "es": "SUBS DE PAGO"},
+      "label": {
+        "en": "Then three paid subscriptions. Prime doesn't count.",
+        "es": "Luego tres suscripciones de pago. Prime no cuenta."
+      },
+      "source": "Twitch · Giga",
+      "narration": {
+        "en": "Then three paid subs. Prime doesn't count.",
+        "es": "Luego, tres suscripciones de pago. Prime no cuenta."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 12.0
+    },
+    {
+      "type": "hook",
+      "seconds": 2.6,
+      "kicker": {"en": "THE RESULT", "es": "EL RESULTADO"},
+      "text": {
+        "en": "Get all 12 other rewards and the iguana unlocks itself.",
+        "es": "Con las otras 12 recompensas, la iguana se desbloquea sola."
+      },
+      "narration": {
+        "en": "Get all twelve other rewards and the iguana unlocks itself.",
+        "es": "Con las otras doce recompensas, la iguana se desbloquea sola."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 1.0
+    },
+    {
+      "type": "outro",
+      "seconds": 2.6,
+      "big": {"en": "NOT FREE", "es": "NO ES GRATIS"},
+      "small": {"en": "Would you pay for a badge?", "es": "¿Pagarías por una insignia?"},
+      "cta": {"en": "Follow · we explain every drop", "es": "Síguenos · explicamos cada drop"},
+      "narration": {
+        "en": "So, not free. Would you pay for a badge?",
+        "es": "O sea, gratis no es. ¿Pagarías por una insignia?"
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "What is the GTA VI Golden Iguana on Twitch?",
+      "description": "The Golden Iguana needs 12 other rewards: six free chain badges (60 min on six different days) plus the paid Heist rewards (three paid subs). It's not free. Would you pay?",
+      "hashtags": ["#GTA6", "#GTAVI", "#Twitch", "#GoldenIguana", "#gaming"]
+    },
+    "es": {
+      "title": "¿Qué es la Iguana Dorada de GTA VI en Twitch?",
+      "description": "La Iguana Dorada pide otras 12 recompensas: seis insignias gratis (60 min en seis días distintos) y las de pago de Heist (tres suscripciones). No es gratis. ¿Pagarías?",
+      "hashtags": ["#GTA6", "#GTAVI", "#Twitch", "#IguanaDorada", "#videojuegos"]
+    }
+  },
+  "notes": "Tema del chat de hoy (Rubius: 'la iguana'). Dato de una sola fuente (Giga, según la campaña 'GTAVI Launch Celebration' de Twitch, 18-30 nov): verifica en la página de campañas de Twitch antes de publicar. Las recompensas son insignias y emotes de Twitch, no del juego.",
+  "sources": [
+    "https://www.giga.de/games/gta-6-twitch-drops-enthuellt-so-bekommt-ihr-13-belohnungen-gratis--01M7AC1HZT8A75GM9SPWJYR1JT",
+    "https://insider-gaming.com/how-to-get-gta-6-twitch-drops-explained/"
+  ]
+}
