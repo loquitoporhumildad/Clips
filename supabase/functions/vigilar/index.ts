@@ -1,6 +1,7 @@
 // Lanza el workflow "Vigilar directo" de GitHub desde la página de clips.
 // Secretos (se cargan solos con el workflow "Supabase: aplicar" desde GitHub Secrets, nunca por chat):
 //   GH_TARGETS = {"juan":{"repo":"loquitoporhumildad/Clips","token":"..."},"socio":{"repo":"<usuario>/Clips","token":"..."}}
+//   GH_TOKEN_SOCIO / GH_REPO_SOCIO = llave del socio aparte (sin reescribir GH_TARGETS)
 //   CUOTA_MIN  = minutos gratis al mes por repo (default 2000)
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
@@ -19,6 +20,8 @@ Deno.serve(async (req) => {
 
   let targets: Record<string, { repo: string; token: string }> = {};
   try { targets = JSON.parse(Deno.env.get("GH_TARGETS") || "{}"); } catch { /* secreto mal escrito */ }
+  const tokSocio = Deno.env.get("GH_TOKEN_SOCIO");
+  if (tokSocio && !targets.socio) targets.socio = { repo: Deno.env.get("GH_REPO_SOCIO") || "Luis00-YVL/Clips", token: tokSocio };
   const cuota = Number(Deno.env.get("CUOTA_MIN") || 2000);
   if (body.accion === "ping") return json({ ok: true, listos: Object.keys(targets), cuota });
 
