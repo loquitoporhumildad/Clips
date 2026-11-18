@@ -303,3 +303,15 @@ Sin que lo pidamos:
 Escribe la bitácora: quién trabajó, qué se publicó y dónde, vistas y
 ganancias, qué se probó, qué se aprendió, qué probar mañana. Guárdala en
 Supabase; si no hay acceso, dámela para guardarla en el proyecto.
+
+## Socio: directos con sus propios minutos y su Claude (agregado 18 nov)
+- **Fork del socio** (`<su-usuario>/Clips`, privado): sus workflows gastan SUS 2.000 minutos. Pasos: Fork, Actions
+  habilitado, secretos `SUPABASE_URL`, `SUPABASE_SERVICE_KEY` y `DISCORD_WEBHOOK` (el de su canal), Sync fork antes de usarlo.
+  Se lanza a mano en Actions → "Vigilar directo" con `owner = socio`, o desde la pestaña Directos del panel.
+- **Desde el panel**: Juan agrega la clave `socio` a `GH_TARGETS` (`{"repo":"<su-usuario>/Clips","token":"<token fine-grained con
+  Actions: read/write solo en su fork>"}`) desde el panel de Supabase (Edge Functions → Secrets). El token nunca pasa por chat.
+- **Su Claude** hace lo mismo que el de Juan: lee este CLAUDE.md, trabaja en la rama `socio` (PR a `main`, lo une Juan) y, si Juan
+  lo invita a la org de Supabase, usa el conector de Supabase sobre las tablas `clips_*` (nunca las de NBA). Vercel lo administra
+  solo Juan (plan Hobby, sin equipos): el socio ve la página con su usuario del panel.
+- **Clips en vivo del socio**: `owner = socio` en `clips_videos`; Juan puede pasarle clips con `update clips_videos set owner='socio' where id in (...)`.
+- Un directo lo vigila una sola persona: avisar en el canal común de Discord antes de lanzar.
