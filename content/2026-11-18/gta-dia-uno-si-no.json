@@ -1,0 +1,103 @@
+{
+  "id": "gta-dia-uno-si-no",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": ["en", "es"],
+  "beat": false,
+  "tag": {"en": "DAY ONE", "es": "DÍA UNO"},
+  "accounts": {"en": "Vice Data", "es": "Datos de Vice"},
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 2.6,
+      "kicker": {"en": "TOMORROW", "es": "MAÑANA"},
+      "text": {
+        "en": "Tomorrow you play GTA VI. But not everything is included.",
+        "es": "Mañana juegas GTA VI. Pero no viene todo."
+      },
+      "narration": {
+        "en": "Tomorrow you play GTA VI. But careful: not everything comes with it.",
+        "es": "Mañana juegas GTA VI. Pero ojo: no viene todo."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 6.0
+    },
+    {
+      "type": "hook",
+      "seconds": 2.8,
+      "kicker": {"en": "YES", "es": "SÍ VIENE"},
+      "text": {
+        "en": "The full story of Jason and Lucia. Single player.",
+        "es": "La historia de Jason y Lucia. Un jugador."
+      },
+      "narration": {
+        "en": "Yes: the story of Jason and Lucia, single player.",
+        "es": "Sí viene la historia de Jason y Lucia, para un jugador."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 10.0
+    },
+    {
+      "type": "hook",
+      "seconds": 2.8,
+      "kicker": {"en": "NOT YET", "es": "NO VIENE"},
+      "text": {
+        "en": "No online mode at launch. No date given.",
+        "es": "Sin modo online el día uno. Sin fecha."
+      },
+      "narration": {
+        "en": "No online mode at launch, and Rockstar gave no date for it.",
+        "es": "No viene modo online, y Rockstar no dio fecha."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 2.0
+    },
+    {
+      "type": "hook",
+      "seconds": 2.8,
+      "kicker": {"en": "NOT YET", "es": "NO VIENE"},
+      "text": {
+        "en": "No PC, PS4 or Xbox One version announced.",
+        "es": "Sin versión anunciada para PC, PS4 ni Xbox One."
+      },
+      "narration": {
+        "en": "And no version announced for PC, PS4 or Xbox One.",
+        "es": "Y ninguna versión anunciada para PC, PS4 o Xbox One."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 14.0
+    },
+    {
+      "type": "outro",
+      "seconds": 3,
+      "big": {"en": "NOV 19", "es": "19 NOV"},
+      "small": {
+        "en": "Does the online mode matter to you?",
+        "es": "¿Te importa el modo online?"
+      },
+      "cta": {"en": "Follow · launch day coverage", "es": "Síguenos · cobertura del estreno"},
+      "narration": {
+        "en": "Does the online mode matter to you? Tell me below.",
+        "es": "¿Te importa el modo online? Cuéntame abajo."
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "GTA VI day one: what comes and what doesn't",
+      "description": "GTA VI launches Nov 19 as single player on PS5 and Xbox Series X|S. No online mode at launch and no date for it. Does that matter to you?",
+      "hashtags": ["#GTA6", "#GTAVI", "#GTA6news", "#gaming", "#rockstargames"]
+    },
+    "es": {
+      "title": "GTA VI el día uno: qué viene y qué no",
+      "description": "GTA VI sale el 19 de noviembre solo para un jugador en PS5 y Xbox Series X|S. Sin modo online al lanzamiento y sin fecha para él. ¿Te importa?",
+      "hashtags": ["#GTA6", "#GTAVI", "#GTA6español", "#videojuegos", "#gaming"]
+    }
+  },
+  "notes": "Publicar el 18 de noviembre. Formato 'sí / no' para provocar comentarios sobre el online: responde los primeros. Datos: un jugador al lanzamiento, sin online y sin fecha (IGN vía Gameluster); sin PC/PS4/Xbox One anunciados (Brut). Música: synthwave instrumental a volumen bajo.",
+  "sources": [
+    "https://gameluster.com/?p=126596",
+    "https://www.brut.media/in/articles/gta-6-release-date-platforms-price-and-new-features-everything-you-need-to-know",
+    "https://gtaintel.com/news/gta-6-launch-day-what-to-expect"
+  ]
+}

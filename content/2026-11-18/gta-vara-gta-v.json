@@ -1,0 +1,91 @@
+{
+  "id": "gta-vara-gta-v",
+  "brand": "gta",
+  "theme": "vice",
+  "langs": ["en", "es"],
+  "beat": false,
+  "tag": {"en": "THE BAR", "es": "LA VARA"},
+  "accounts": {"en": "Vice Data", "es": "Datos de Vice"},
+  "scenes": [
+    {
+      "type": "hook",
+      "seconds": 2.6,
+      "kicker": {"en": "GTA V vs GTA VI", "es": "GTA V vs GTA VI"},
+      "text": {
+        "en": "Can GTA VI beat the numbers GTA V left behind?",
+        "es": "¿Puede GTA VI superar lo que dejó GTA V?"
+      },
+      "narration": {
+        "en": "Can GTA VI beat the numbers that GTA V left behind?",
+        "es": "¿Puede GTA VI superar los números que dejó GTA V?"
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 3.0
+    },
+    {
+      "type": "stat",
+      "seconds": 3.2,
+      "value": 1000,
+      "prefix": "$",
+      "suffix": {"en": "MILLION", "es": "MILLONES"},
+      "label": {
+        "en": "GTA V passed $1 billion in its first 3 days (2013).",
+        "es": "GTA V superó los mil millones de dólares en sus primeros 3 días (2013)."
+      },
+      "source": "Take-Two Interactive",
+      "narration": {
+        "en": "GTA V passed one billion dollars in its first three days.",
+        "es": "GTA V superó los mil millones de dólares en sus primeros tres días."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 7.0
+    },
+    {
+      "type": "stat",
+      "seconds": 3.2,
+      "value": 235,
+      "suffix": {"en": "MILLION", "es": "MILLONES"},
+      "label": {
+        "en": "copies of GTA V sold to date. That's the bar.",
+        "es": "copias de GTA V vendidas hasta hoy. Esa es la vara."
+      },
+      "source": "Take-Two Interactive",
+      "narration": {
+        "en": "And it has sold over two hundred thirty five million copies. That is the bar.",
+        "es": "Y lleva más de doscientos treinta y cinco millones de copias. Esa es la vara."
+      },
+      "bg": "gta/videoplayback-4-.mp4",
+      "bgStart": 15.0
+    },
+    {
+      "type": "outro",
+      "seconds": 3,
+      "big": {"en": "NOV 19", "es": "19 NOV"},
+      "small": {
+        "en": "Does GTA VI beat GTA V? Your guess.",
+        "es": "¿GTA VI supera a GTA V? Tu apuesta."
+      },
+      "cta": {"en": "Follow · we count it live", "es": "Síguenos · lo contamos en vivo"},
+      "narration": {
+        "en": "Does GTA VI beat GTA V? Drop your guess below.",
+        "es": "¿GTA VI supera a GTA V? Deja tu apuesta abajo."
+      }
+    }
+  ],
+  "meta": {
+    "en": {
+      "title": "GTA V's bar: can GTA VI beat it?",
+      "description": "GTA V made $1 billion in 3 days and has sold over 235 million copies. GTA VI is out tomorrow. Does it beat GTA V? Drop your guess.",
+      "hashtags": ["#GTA6", "#GTAVI", "#GTAV", "#gaming", "#rockstargames"]
+    },
+    "es": {
+      "title": "La vara de GTA V: ¿la supera GTA VI?",
+      "description": "GTA V hizo mil millones de dólares en 3 días y lleva más de 235 millones de copias. GTA VI sale mañana. ¿La supera? Deja tu apuesta.",
+      "hashtags": ["#GTA6", "#GTAVI", "#GTAV", "#videojuegos", "#gaming"]
+    }
+  },
+  "notes": "Publicar el 18 de noviembre (versión corta, 15 s). Pregunta al cierre para comentarios: responde los primeros y fija la mejor apuesta. Cifras de GTA V de Take-Two (las mismas del video del 16 nov, repetidas con otro gancho: fórmula 'pregunta que obliga a comentar').",
+  "sources": [
+    "https://gematsu.com/2013/09/grand-theft-auto-v-sales-surpass-1-billion-in-first-three-days"
+  ]
+}
