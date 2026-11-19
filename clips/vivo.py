@@ -41,6 +41,7 @@ os.environ.setdefault('CLIP_PISTA', os.environ.get('LIVE_ENTRADA', '').split('|'
 os.environ.setdefault('CLIP_URL', 'vivo')
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import cortar as C                                    # noqa: E402  (reutiliza subtítulos, 9:16, subida)
+import filtro as F                                   # noqa: E402  (descarta chat dormido y donaciones leídas)
 
 E = os.environ.get
 entrada = E('LIVE_ENTRADA', '')
@@ -57,6 +58,7 @@ SEG = 10
 # Sensibilidad del chat: LIVE_SENS=alta (por defecto, más clips, tú filtras) | media | baja (solo momentos muy claros)
 Z_MIN, F_MIN, VECES = {'alta': (2.2, 5, 2.0), 'media': (3.0, 8, 2.5), 'baja': (4.0, 14, 3.5)}.get(E('LIVE_SENS') or 'alta', (2.2, 5, 2.0))
 ENFRIAR = DUR * 2                                    # no repetir momento dentro de este margen
+FILTRO = E('LIVE_FILTRO') != '0'                     # LIVE_FILTRO=0 apaga los filtros de momentos falsos
 AUDIO_DB = 9                                         # subida de volumen que cuenta como momento
 
 REGISTRO = E('LIVE_REGISTRO') or ''                  # fila de clips_vigilar (la crea la página)
@@ -306,6 +308,19 @@ class Chat:
 
 
 # ---------- Contexto para el título ----------
+def chat_cerca(pico, antes=60, despues=30):
+    """Textos del chat de 60 s antes a 30 s después del pico (para saber si el streamer está dormido)."""
+    for _ in range(3):
+        try:
+            copia = list(chat)
+            break
+        except RuntimeError:
+            copia = []
+    else:
+        copia = []
+    return [m for t, m in copia if pico - antes <= t <= pico + despues and m.strip()]
+
+
 def chat_del_momento(pico, n=25):
     """Mensajes del chat de 25 s antes a 10 s después del pico: lo que la gente reaccionó. Los más repetidos primero."""
     for _ in range(3):
@@ -352,6 +367,9 @@ def cortar(pico, fuente, puntos, n):
     if len(segs) < 2:
         log('  sin segmentos suficientes para ese momento')
         return None
+    if FILTRO and F.chat_dormido(chat_cerca(pico)):
+        log(f'  descartado ({fuente} {puntos:.1f}): el chat dice que el streamer duerme')
+        return None
     lista = C.tmp / f'vivo{n}.txt'
     lista.write_text(''.join(f"file '{f.as_posix()}'\n" for _, f in segs))
     tramo = C.tmp / f'vivo{n}.ts'
@@ -362,6 +380,12 @@ def cortar(pico, fuente, puntos, n):
     ass, texto = None, ''
     if palabras:
         texto = ' '.join(w['w'] for w in palabras if w['t1'] > i2 and w['t0'] < f2 and w['w'])
+    if FILTRO and fuente == 'audio' and F.es_donacion(texto):
+        log(f'  descartado (audio {puntos:.1f}): es una donación leída por voz')
+        for x in (lista, tramo):
+            Path(x).unlink(missing_ok=True)
+        return None
+    if palabras:
         if E('LIVE_SUBS') == '1':                    # por defecto sin subtítulos: solo el título que elige Juan
             ass = C.tmp / f'vivo{n}.ass'
             C.subtitulos(palabras, i2, f2, ass)
