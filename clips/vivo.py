@@ -3,7 +3,7 @@
 Qué hace, todo gratis y sin API de pago:
   1. Graba el directo con streamlink en pedazos de 10 s (se guardan solo ~20 min).
   2. Lee el chat en vivo (Twitch por IRC anónimo, YouTube con chat-downloader).
-     En Kick u otras plataformas sin chat legible usa solo el audio.
+     En Kick lo intenta por Pusher; si falla (o en otras plataformas) usa solo el audio.
   3. Cada 10 s mide la fuerza del chat (una reacción vale triple) y la compara con
      los 5 min anteriores. Si se dispara, o si el streamer sube la voz muy por
      encima de lo normal, es un momento.
@@ -132,6 +132,34 @@ def chat_twitch(canal):
             time.sleep(5)
 
 
+def canal_kick(url):
+    m = re.search(r'kick\.com/([A-Za-z0-9_\-]+)', url)
+    return m.group(1).lower() if m else ''
+
+
+def chat_kick(canal):
+    """Chat de Kick por Pusher (público, sin login). Si Cloudflare bloquea, queda solo el audio."""
+    import urllib.request
+    while not parar.is_set():
+        try:
+            req = urllib.request.Request(f'https://kick.com/api/v2/channels/{canal}', headers={'User-Agent': 'Mozilla/5.0', 'Accept': 'application/json'})
+            sala = json.loads(urllib.request.urlopen(req, timeout=30).read())['chatroom']['id']
+            import websocket
+            ws = websocket.create_connection('wss://ws-us2.pusher.com/app/32cbd69e4b950bf97679?protocol=7&client=js&version=8.4.0-rc2&flash=false', timeout=90)
+            ws.send(json.dumps({'event': 'pusher:subscribe', 'data': {'auth': '', 'channel': f'chatrooms.{sala}.v2'}}))
+            log(f'chat Kick conectado (sala {sala})')
+            while not parar.is_set():
+                ev = json.loads(ws.recv())
+                if ev.get('event') == 'pusher:ping':
+                    ws.send(json.dumps({'event': 'pusher:pong', 'data': {}}))
+                elif 'ChatMessageEvent' in str(ev.get('event')):
+                    chat.append((time.time(), str(json.loads(ev['data']).get('content', ''))))
+                    chat_vivo.set()
+        except Exception as e:
+            log(f'chat Kick reconectando ({str(e)[:80]})')
+            time.sleep(15)
+
+
 def chat_youtube(url):
     while not parar.is_set():
         try:
@@ -170,7 +198,10 @@ def arrancar_chat():
     if 'youtube.com' in URL or 'youtu.be' in URL:
         threading.Thread(target=chat_youtube, args=(URL,), daemon=True).start()
         return 'YouTube'
-    return ''                                         # Kick y otros: solo audio
+    if canal_kick(URL):
+        threading.Thread(target=chat_kick, args=(canal_kick(URL),), daemon=True).start()
+        return 'Kick (si Cloudflare lo deja)'
+    return ''                                         # otros: solo audio
 
 
 # ---------- Grabación ----------

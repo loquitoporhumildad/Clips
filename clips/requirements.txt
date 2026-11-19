@@ -5,3 +5,4 @@ streamlink
 numpy
 av>=14,<19
 opencv-python-headless<5
+websocket-client

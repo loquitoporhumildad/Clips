@@ -112,7 +112,9 @@ def volumen(audio):
 
 # ---------- 2. Momentos ----------
 REACCION = re.compile(r"(?i)\b(l+o+l+|lmf?ao+|(ja|ha|je|ka){2,}\w*|kekw+|omegalul|lul+w*|pog\w*|w+|clip( it| that)?|"
-                      r"no way|wtf|omg|bro+|xd+|holy|insane|goat|nooo+|que+|dios)\b|[😂🤣💀😭🔥]")
+                      r"no way|wtf|omg|bro+|xd+|holy|insane|goat|nooo+|que+|dios|"
+                      r"hp?ta|hijueputa|gonorrea|no jodas|jodas|qu[eé] verga|mam[oó]n|uy+|ay+ no|no puede ser|"
+                      r"qu[eé] es esto|brutal|locura|rid[ií]culo|duro|nea|ctm|hdp|csm|lpm|f+|rip)\b|[😂🤣💀😭🔥😱🤯]")
 
 
 def bajar_chat():
