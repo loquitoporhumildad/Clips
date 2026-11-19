@@ -114,7 +114,7 @@ def volumen(audio):
 REACCION = re.compile(r"(?i)\b(l+o+l+|lmf?ao+|(ja|ha|je|ka){2,}\w*|kekw+|omegalul|lul+w*|pog\w*|w+|clip( it| that)?|"
                       r"no way|wtf|omg|bro+|xd+|holy|insane|goat|nooo+|que+|dios|"
                       r"hp?ta|hijueputa|gonorrea|no jodas|jodas|qu[eé] verga|mam[oó]n|uy+|ay+ no|no puede ser|"
-                      r"qu[eé] es esto|brutal|locura|rid[ií]culo|duro|nea|ctm|hdp|csm|lpm|f+|rip)\b|[😂🤣💀😭🔥😱🤯]")
+                      r"qu[eé] es esto|brutal|locura|rid[ií]culo|duro|nea|ctm|hdp|csm|lpm|f+|rip|easter egg|secreto|descubr\w*|encontr[eé]|glitch|bug|mira esto|mir[aá] eso|no sab[ií]a|nunca visto|incre[ií]ble|ojo|wow|w+o+w+|boss|jefe|final|mapa|auto|helic[oó]ptero|polic[ií]a)\b|[😂🤣💀😭🔥😱🤯]")
 
 
 def bajar_chat():
