@@ -1,0 +1,27 @@
+name: Lanzar vigilantes
+
+# Al subir lanzar/pendiente.txt (líneas "link|id_registro"), lanza "Vigilar directo" por cada canal.
+on:
+  push:
+    paths: ['lanzar/pendiente.txt']
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  lanzar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          while IFS='|' read -r url reg; do
+            [ -z "$url" ] && continue
+            gh workflow run vivo.yml -R "$GITHUB_REPOSITORY" \
+              -f urls="$url" -f campana="Crecimiento sin campaña" -f cuenta="PeakClips" -f owner="juan" \
+              -f registro="$reg" -f minutos="330" -f hasta_utc="2026-11-20T12:00" -f cantidad_max="60"
+            sleep 2
+          done < lanzar/pendiente.txt
