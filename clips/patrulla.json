@@ -1,0 +1,14 @@
+{
+  "categoria": "Grand Theft Auto VI",
+  "canales": ["westcol", "rdjavi", "danirep", "auronplay", "illojuan", "rubius", "kaicenat", "xqc", "lacobraaa", "peereira7", "jynxzi", "djmariio", "honeymad"],
+  "solo_en_categoria": true,
+  "top_categoria": 5,
+  "idiomas_top": ["en", "es"],
+  "min_espectadores_top": 3000,
+  "max_activos": 5,
+  "minutos": 330,
+  "horas_cadena": 10,
+  "owner": "juan",
+  "cuenta": "PeakClips",
+  "campana": "Crecimiento sin campaña"
+}
