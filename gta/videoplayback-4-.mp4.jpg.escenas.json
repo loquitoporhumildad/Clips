@@ -1,0 +1,130 @@
+[
+ {
+  "inicio": 0,
+  "fin": 2,
+  "descripcion": "Promoción de Grand Theft Auto VI con consola PlayStation 5.",
+  "energia": 1,
+  "texto_o_logo": true,
+  "sirve_de_fondo": false
+ },
+ {
+  "inicio": 2,
+  "fin": 4.5,
+  "descripcion": "Mujer bailando con vestido brillante en club con luces de neón.",
+  "energia": 3,
+  "texto_o_logo": false,
+  "sirve_de_fondo": true
+ },
+ {
+  "inicio": 4.5,
+  "fin": 6,
+  "descripcion": "Hombre con traje de carreras haciendo mortal hacia atrás en el muelle.",
+  "energia": 4,
+  "texto_o_logo": true,
+  "sirve_de_fondo": false
+ },
+ {
+  "inicio": 6,
+  "fin": 8.2,
+  "descripcion": "Logo de Grand Theft Auto VI sobre coche acelerando en carrera nocturna.",
+  "energia": 4,
+  "texto_o_logo": true,
+  "sirve_de_fondo": false
+ },
+ {
+  "inicio": 8.2,
+  "fin": 9.5,
+  "descripcion": "Hombre con sombrero pescador y gafas de sol hablando en interior iluminado.",
+  "energia": 2,
+  "texto_o_logo": false,
+  "sirve_de_fondo": true
+ },
+ {
+  "inicio": 9.5,
+  "fin": 10.5,
+  "descripcion": "Pelea en habitación donde empujan a un hombre contra la bañera.",
+  "energia": 4,
+  "texto_o_logo": false,
+  "sirve_de_fondo": false
+ },
+ {
+  "inicio": 10.5,
+  "fin": 12,
+  "descripcion": "Yate de lujo navegando a toda velocidad y saltando olas.",
+  "energia": 3,
+  "texto_o_logo": false,
+  "sirve_de_fondo": true
+ },
+ {
+  "inicio": 12,
+  "fin": 13.5,
+  "descripcion": "Dos hombres saludándose y bailando en cabina de DJ iluminada.",
+  "energia": 3,
+  "texto_o_logo": false,
+  "sirve_de_fondo": true
+ },
+ {
+  "inicio": 13.5,
+  "fin": 14.7,
+  "descripcion": "Equipo táctico policial armado avanzando por un pasillo oscuro.",
+  "energia": 3,
+  "texto_o_logo": false,
+  "sirve_de_fondo": false
+ },
+ {
+  "inicio": 14.7,
+  "fin": 17,
+  "descripcion": "Mujer caminando hacia un automóvil con texto en pantalla.",
+  "energia": 2,
+  "texto_o_logo": true,
+  "sirve_de_fondo": false
+ },
+ {
+  "inicio": 17,
+  "fin": 18,
+  "descripcion": "Hombre con gafas de sol saliendo enérgicamente por una puerta.",
+  "energia": 3,
+  "texto_o_logo": false,
+  "sirve_de_fondo": false
+ },
+ {
+  "inicio": 18,
+  "fin": 19,
+  "descripcion": "Coche deportivo conduciendo de noche por avenida con luces de neón.",
+  "energia": 3,
+  "texto_o_logo": false,
+  "sirve_de_fondo": true
+ },
+ {
+  "inicio": 19,
+  "fin": 21.5,
+  "descripcion": "Gente bailando en discoteca mientras aparece el logo del juego.",
+  "energia": 4,
+  "texto_o_logo": true,
+  "sirve_de_fondo": false
+ },
+ {
+  "inicio": 21.5,
+  "fin": 26.2,
+  "descripcion": "Pantalla final con fecha de lanzamiento de GTA VI y preventa.",
+  "energia": 1,
+  "texto_o_logo": true,
+  "sirve_de_fondo": false
+ },
+ {
+  "inicio": 26.2,
+  "fin": 28,
+  "descripcion": "Animación del logotipo de Rockstar Games.",
+  "energia": 1,
+  "texto_o_logo": true,
+  "sirve_de_fondo": false
+ },
+ {
+  "inicio": 28,
+  "fin": 30,
+  "descripcion": "Cierre con eslogan y símbolos clásicos de PlayStation.",
+  "energia": 1,
+  "texto_o_logo": true,
+  "sirve_de_fondo": false
+ }
+]
