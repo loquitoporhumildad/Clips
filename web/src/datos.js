@@ -45,6 +45,12 @@ export const api = {
     const {data} = await sb.storage.from('clips-videos').createSignedUrl(ruta, 3600, descargar ? {download: true} : undefined);
     return data?.signedUrl ?? null;
   },
+  async porAprobar(dueno) {
+    if (DEMO) return muestra.videos.filter((v) => v.status === 'listo' && (dueno === 'todos' || v.owner === dueno));
+    const {data, error} = await porDueno(sb.from('clips_videos').select('*').eq('status', 'listo'), dueno).order('day', {ascending: false}).order('id').limit(40);
+    if (error) throw error;
+    return data;
+  },
   async estado(id, status) {
     if (!DEMO) await sb.from('clips_videos').update({status}).eq('id', id);
   },

@@ -16,6 +16,7 @@ const Icono = ({d, ...p}) => (
   </svg>
 );
 const I = {
+  aprobar: ['M5 12.5l4.5 4.5L19 7.5', 'M4 4l16 16'],
   videos: ['M4 6h16v12H4z', 'M10 9.5v5l4.5-2.5z'],
   pedidos: ['M12 15V4', 'M8 8l4-4 4 4', 'M5 15v4h14v-4'],
   directos: ['M12 12m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0', 'M7.8 7.8a6 6 0 0 0 0 8.4', 'M16.2 7.8a6 6 0 0 1 0 8.4', 'M5 5a10 10 0 0 0 0 14', 'M19 5a10 10 0 0 1 0 14'],
@@ -612,7 +613,53 @@ function ComoFunciona() {
   );
 }
 
+// Aprobar: un clip a la vez. Derecha = aprobado (se sube), izquierda = descartado.
+function Aprobar({dueno, avisar}) {
+  const [lista, setLista] = useState(null);
+  const [url, setUrl] = useState(null);
+  useEffect(() => { setLista(null); api.porAprobar(dueno).then(setLista).catch((e) => avisar(e.message)); }, [dueno]);
+  const v = lista?.[0];
+  useEffect(() => {
+    setUrl(null);
+    if (v) api.urlVideo(v.storage_path).then(setUrl).catch(() => {});
+  }, [v?.id]);
+  if (!lista) return null;
+  if (!v) return <Vacio>No hay clips por aprobar. Cuando lleguen nuevos, te avisa Discord.</Vacio>;
+  const decidir = async (ok) => {
+    await api.estado(v.id, ok ? 'aprobado' : 'descartado');
+    avisar(ok ? 'Aprobado: listo para subir' : 'Descartado');
+    setLista((l) => l.slice(1));
+  };
+  return (
+    <div className="aprobar">
+      <motion.article
+        key={v.id}
+        className="tinder"
+        drag="x"
+        dragSnapToOrigin
+        dragElastic={0.7}
+        whileDrag={{rotate: 0}}
+        onDragEnd={(_, i) => { if (i.offset.x > 110) decidir(true); else if (i.offset.x < -110) decidir(false); }}
+        initial={{opacity: 0, y: 14}}
+        animate={{opacity: 1, y: 0}}
+      >
+        {url ? <video src={url} controls playsInline loop autoPlay muted /> : <div className="poster-grande">{DEMO ? 'Vista de muestra' : 'Cargando…'}</div>}
+        <div className="info">
+          <div className="cuenta">{v.account || v.brand}</div>
+          <h3>{v.title || v.spec_id}</h3>
+        </div>
+      </motion.article>
+      <div className="acciones centradas">
+        <motion.button {...PRESION} className="pildora" onClick={() => decidir(false)}>← Descartar</motion.button>
+        <motion.button {...PRESION} className="pildora senal" onClick={() => decidir(true)}>Aprobar →</motion.button>
+      </div>
+      <p className="nota" style={{textAlign: 'center'}}>{lista.length} por revisar · desliza a la derecha para aprobar, a la izquierda para descartar</p>
+    </div>
+  );
+}
+
 const PESTANAS = [
+  ['aprobar', 'Aprobar', 'Un clip a la vez,', 'derecha sí, izquierda no'],
   ['videos', 'Videos', 'Tus videos,', 'listos para subir'],
   ['pedidos', 'Pedidos', 'Lo que falta,', 'para los próximos'],
   ['directos', 'Directos', 'Clips en vivo,', 'sin perderte nada'],
@@ -623,7 +670,7 @@ const DUENOS = [['juan', 'Juan'], ['socio', 'Socio'], ['todos', 'Los dos']];
 
 export default function App() {
   const [estado, setEstado] = useState({cargando: true});
-  const [pestana, setPestana] = useState(() => (DEMO && new URLSearchParams(location.search).get('tab')) || 'videos');
+  const [pestana, setPestana] = useState(() => (DEMO && new URLSearchParams(location.search).get('tab')) || 'aprobar');
   const [dueno, setDueno] = useState('juan');
   const [aviso, setAviso] = useState(null);
   const [tema, setTema] = useState(() => document.documentElement.dataset.tema || (matchMedia('(prefers-color-scheme: dark)').matches ? 'oscuro' : 'claro'));
@@ -671,6 +718,7 @@ export default function App() {
             <Selector id="dueno" valor={dueno} onCambio={setDueno} opciones={DUENOS} />
             <AnimatePresence mode="wait">
               <motion.main key={pestana + dueno} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} transition={{duration: 0.12}}>
+                {pestana === 'aprobar' && <Aprobar dueno={dueno} avisar={avisar} />}
                 {pestana === 'videos' && <Videos dueno={dueno} avisar={avisar} />}
                 {pestana === 'pedidos' && <Pedidos dueno={dueno} avisar={avisar} />}
                 {pestana === 'directos' && <Directos dueno={dueno} avisar={avisar} />}

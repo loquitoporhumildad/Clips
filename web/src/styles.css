@@ -205,3 +205,10 @@ button { cursor: pointer; border: 0; background: none; padding: 0; -webkit-tap-h
 .titulo-caja { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 10px; }
 .titulo-caja input { width: 100%; min-height: 46px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--borde); background: var(--papel); color: var(--tinta); font: inherit; font-size: 15px; }
 .titulo-caja input:focus-visible { outline: 2px solid var(--senal); outline-offset: 2px; }
+
+.aprobar { display: grid; gap: 14px; justify-items: center; }
+.tinder { width: min(100%, 380px); background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 28px; box-shadow: var(--sombra); overflow: hidden; touch-action: pan-y; cursor: grab; }
+.tinder video, .poster-grande { width: 100%; aspect-ratio: 9 / 16; max-height: 62vh; object-fit: cover; background: #000; display: grid; place-items: center; color: #fff; }
+.tinder .info { padding: 14px 16px 18px; }
+.tinder h3 { margin: 4px 0 0; font-size: 16.5px; line-height: 1.25; }
+.acciones.centradas { justify-content: center; }
